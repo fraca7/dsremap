@@ -70,6 +70,7 @@ def resources():
         fileobj.write('<!DOCTYPE RCC>\n')
         fileobj.write('<RCC version="1.0">\n')
         fileobj.write('  <qresource>\n')
+        fileobj.write('    <file>about.html</file>\n')
         for dirpath, dirnames, filenames in os.walk(path):
             for filename in filenames:
                 if filename.endswith('.svg') or filename.endswith('.jpg'):
