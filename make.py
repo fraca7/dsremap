@@ -169,7 +169,7 @@ def exe():
         with codecs.getwriter('utf-8')(open('installer.nsi', 'wb')) as dst:
             with codecs.getreader('utf-8')(open('installer.nsi.in', 'rb')) as src:
                 for line in src:
-                    dst.write(line.replace('@APPNAME@', Meta.appName()).replace('@APPVERSION@', str(Meta.appVersion())).replace('@DISTDIR@', distdir)).replace('@WEBSITE@', Meta.appSite())
+                    dst.write(line.replace('@APPNAME@', Meta.appName()).replace('@APPVERSION@', str(Meta.appVersion())).replace('@DISTDIR@', distdir).replace('@WEBSITE@', Meta.appSite()))
         import winreg
         key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'SOFTWARE', 0, winreg.KEY_READ|winreg.KEY_WOW64_32KEY)
         try:
