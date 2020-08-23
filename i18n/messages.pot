@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-18 13:58+0200\n"
+"POT-Creation-Date: 2020-08-23 12:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,6 +131,18 @@ msgstr ""
 msgid "TPAD"
 msgstr ""
 
+#: src/dsrlib/domain/changelog.py:75
+msgid "New features"
+msgstr ""
+
+#: src/dsrlib/domain/changelog.py:76
+msgid "Bugs fixes"
+msgstr ""
+
+#: src/dsrlib/domain/changelog.py:77
+msgid "Others"
+msgstr ""
+
 #: src/dsrlib/domain/configuration.py:17
 msgid "New configuration"
 msgstr ""
@@ -139,28 +151,21 @@ msgstr ""
 msgid "{appname} v{appversion}"
 msgstr ""
 
-#: src/dsrlib/ui/about.py:15
-msgid ""
-"\n"
-"Copyright 2020 {author}\n"
-"\n"
-"Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n"
-"\n"
-"The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n"
-"\n"
-"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
-"\n"
-"Icons courtesy of <a href=\"https://iconmonstr.com/\">iconmonstr</a>.\n"
-"\n"
-msgstr ""
-
-#: src/dsrlib/ui/about.py:32 src/dsrlib/ui/ide/editor.py:26
+#: src/dsrlib/ui/about.py:27 src/dsrlib/ui/ide/editor.py:26
 #: src/dsrlib/ui/settings.py:136
 msgid "Done"
 msgstr ""
 
-#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:57
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:65
 msgid "Edit"
+msgstr ""
+
+#: src/dsrlib/ui/changelog.py:14
+msgid "New release available"
+msgstr ""
+
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:223
+msgid "OK"
 msgstr ""
 
 #: src/dsrlib/ui/configupload.py:29
@@ -224,7 +229,7 @@ msgid "You can install <b>avrdude</b> on Windows using <a href=\"https://sourcef
 msgstr ""
 
 #: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
-#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:184
+#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:220
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr ""
@@ -309,80 +314,76 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:48
+#: src/dsrlib/ui/main.py:55
 msgid "{appName} v{appVersion}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:51
+#: src/dsrlib/ui/main.py:58
 msgid "File"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:63
+#: src/dsrlib/ui/main.py:71
 msgid "Upload"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:68
+#: src/dsrlib/ui/main.py:76
 msgid "Help"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:116
+#: src/dsrlib/ui/main.py:135
 msgid "<i>groups</i> exited with code {code}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:119
+#: src/dsrlib/ui/main.py:138
 msgid "Cannot find groups"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:119
-msgid "Unable to find out which groups you belong to:<p />{error}<p />For this program to work correctly, you must belong to the <i>dialout</i> group."
+#: src/dsrlib/ui/main.py:138
+msgid "Unable to find out which groups you belong to:<p />{error}<p />For this program to work correctly, you must belong to the <i>plugdev</i> group."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:129
+#: src/dsrlib/ui/main.py:148
 msgid "The following operations must be done before this program can work correctly:"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:131
+#: src/dsrlib/ui/main.py:150
 msgid "Install udev rules to allow HID communication"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:133
-msgid "Add you to the <i>dialout</i> group"
+#: src/dsrlib/ui/main.py:152
+msgid "Add you to the <i>plugdev</i> group"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:136
+#: src/dsrlib/ui/main.py:155
 msgid "You may have to logout and login again, or even reboot, and unplug/replug the Arduino for those changes to apply."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:138
+#: src/dsrlib/ui/main.py:157
 msgid "You may be prompted for your password."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:140
+#: src/dsrlib/ui/main.py:159
 msgid "System setup"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:149
+#: src/dsrlib/ui/main.py:169
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:149 src/dsrlib/ui/main.py:151
+#: src/dsrlib/ui/main.py:169 src/dsrlib/ui/main.py:171
 msgid "Error"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:151
+#: src/dsrlib/ui/main.py:171
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:172
+#: src/dsrlib/ui/main.py:208
 msgid "Password needed"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:180
+#: src/dsrlib/ui/main.py:216
 msgid "You need to enter your password to setup groups and udev rules."
-msgstr ""
-
-#: src/dsrlib/ui/main.py:187
-msgid "OK"
 msgstr ""
 
 #: src/dsrlib/ui/settings.py:117
@@ -531,20 +532,24 @@ msgid ""
 "{error}"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:13
+#: src/dsrlib/ui/uicommands/misc.py:15
 msgid "Program the microcontroller with DSRemap firmware"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:13
+#: src/dsrlib/ui/uicommands/misc.py:15
 msgid "Update firmware"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:22
+#: src/dsrlib/ui/uicommands/misc.py:24
 msgid "About {appname}..."
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:32
+#: src/dsrlib/ui/uicommands/misc.py:34
 msgid "Settings..."
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:45
+msgid "Open documentation"
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/workspace.py:14
