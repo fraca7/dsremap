@@ -9,5 +9,4 @@
 * Codesign mac OS binary
 * Common subexpr elimination
 * Optimization pass
-* Include doc in bundles, open on first launch
 

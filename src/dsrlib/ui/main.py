@@ -86,6 +86,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.raise_()
         self.show()
 
+        settings = Settings()
+        if settings.isFirstVersionLaunch():
+            QtGui.QDesktopServices.openUrl(QtCore.QUrl(Meta.documentationUrl()))
+
         self.check()
 
     def history(self):

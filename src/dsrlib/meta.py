@@ -42,6 +42,10 @@ class Meta:
         return 'https://www.example.com/'
 
     @staticmethod
+    def documentationUrl():
+        return 'https://dsremap.readthedocs.io/en/release-%d.%d.%d/' % Meta.appVersion()
+
+    @staticmethod
     def dataPath(*args):
         path = QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.AppDataLocation)
         path = os.path.join(path, *args)

@@ -6,6 +6,8 @@ import contextlib
 
 from PyQt5 import QtCore
 
+from dsrlib.meta import Meta
+
 
 class Settings(QtCore.QSettings):
     @contextlib.contextmanager
@@ -66,6 +68,13 @@ class Settings(QtCore.QSettings):
     def setFirmwareUploaded(self):
         with self.grouped('Settings'):
             self.setBooleanValue('firmwareUploaded', True)
+
+    def isFirstVersionLaunch(self):
+        with self.grouped('Versions'):
+            key = 'v%d_%d_%d' % Meta.appVersion()
+            ret = self.booleanValue(key, True)
+            self.setBooleanValue(key, False)
+            return ret
 
     # Depending on the platform, some versions of QSettings fuck up the types
 
