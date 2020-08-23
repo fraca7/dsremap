@@ -38,8 +38,7 @@ class Meta:
 
     @staticmethod
     def appSite():
-        # FIXME
-        return 'https://www.example.com/'
+        return 'https://github.com/fraca7/dsremap'
 
     @staticmethod
     def documentationUrl():
