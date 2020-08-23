@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from PyQt5 import QtCore, QtGui
+
 from dsrlib.ui.hexuploader import HexUploaderWizard
 from dsrlib.ui.about import AboutDialog
 from dsrlib.ui.settings import SettingsDialog
@@ -36,3 +38,11 @@ class ShowSettingsDialogUICommand(UICommand):
         dlg = SettingsDialog(self.mainWindow(), mainWindow=self.mainWindow())
         if dlg.exec_() == dlg.Accepted:
             self.mainWindow().reloadSettings()
+
+
+class OpenDocsUICommand(UICommand):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, text=_('Open documentation'), icon='help', **kwargs)
+
+    def do(self):
+        QtGui.QDesktopServices.openUrl(QtCore.QUrl(Meta.documentationUrl()))

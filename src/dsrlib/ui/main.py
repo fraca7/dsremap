@@ -59,6 +59,7 @@ class MainWindow(QtWidgets.QMainWindow):
         filemenu.addAction(uicommands.ExportConfigurationUICommand(self, mainWindow=self, container=self.centralWidget()))
         filemenu.addAction(uicommands.ImportConfigurationUICommand(self, mainWindow=self, workspace=self._workspace))
         filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace))
+        filemenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))
         self.menuBar().addMenu(filemenu)
 
         editmenu = QtWidgets.QMenu(_('Edit'), self)
