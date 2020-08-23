@@ -80,7 +80,7 @@ class Meta:
         if platform.system() == 'Linux':
             return set(glob.glob('/dev/ttyACM*'))
         if platform.system() == 'Windows':
-            from serial.tools import list_ports
+            from serial.tools import list_ports # pylint: disable=C0415
             return {info.device for info in list_ports.comports()}
         raise RuntimeError('Unsupported platform')
 
