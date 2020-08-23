@@ -10,13 +10,14 @@ import subprocess
 import glob
 import zipfile
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 
 from dsrlib import resources # pylint: disable=W0611
 from dsrlib.meta import Meta
 from dsrlib.settings import Settings
-from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter
+from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter, Changelog
 from dsrlib.ui.hexuploader import FirstLaunchWizard
+from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
 
 from dsrlib.domain.sudo import sudoLaunch, SudoNotFound, SudoError
@@ -92,6 +93,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.check()
 
+        manager = QtNetwork.QNetworkAccessManager(self)
+        self._changelogReply = manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
+        self._changelogReply.finished.connect(self._onChangelogReply)
+
     def history(self):
         return self._workspace.history()
 
@@ -100,6 +105,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self._workspace.cleanup()
 
         self._enum.cancel()
+
+        if self._changelogReply:
+            self._changelogReply.abort()
 
         with Settings().grouped('UIState') as settings:
             settings.setValue('WindowGeometry', self.saveGeometry())
@@ -175,6 +183,22 @@ class MainWindow(QtWidgets.QMainWindow):
         if not Settings().firmwareUploaded():
             wizard = FirstLaunchWizard(self)
             wizard.exec_()
+
+    def _onChangelogReply(self):
+        reply, self._changelogReply = self._changelogReply, None
+        try:
+            logger = logging.getLogger('dsremap')
+            status = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
+            if status != 200:
+                logger.warning('Got status %d while downloading changelog', status)
+                return
+            changelog = bytes(reply.readAll()).decode('utf-8')
+
+            win = ChangelogView(self, Changelog(changelog))
+            win.show()
+            win.raise_()
+        except: # pylint: disable=W0702
+            logger.exception('Cannot download changelog')
 
 
 class PasswordDialog(QtWidgets.QDialog):

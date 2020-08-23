@@ -41,8 +41,16 @@ class Meta:
         return 'https://github.com/fraca7/dsremap'
 
     @staticmethod
+    def changelogUrl():
+        return 'https://jeromelaheurte.net/changelogs/dsremap.txt'
+
+    @staticmethod
     def documentationUrl():
         return 'https://dsremap.readthedocs.io/en/release-%d.%d.%d/' % Meta.appVersion()
+
+    @staticmethod
+    def releasesUrl():
+        return 'https://github.com/fraca7/dsremap/releases'
 
     @staticmethod
     def dataPath(*args):
