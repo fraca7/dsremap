@@ -1,0 +1,7 @@
+// -*- c++ -*-
+
+state idle {
+  idle() {
+    L2Value = 42;
+  }
+};

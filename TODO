@@ -1,0 +1,15 @@
+
+* Remap buttons action
+* Macros
+* Documentation
+* Handle errors in HID uploader
+* Debug info in separate file
+* Update notification
+* IDE
+* Codesign mac OS binary
+* Common subexpr elimination
+* Optimization pass
+* Warning 09cc
+* Include doc in bundles, open on first launch
+* Mention 3rdparties in About
+

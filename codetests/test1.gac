@@ -1,0 +1,21 @@
+// -*- c++ -*-
+
+float bar(int x) {
+  float y = 13;
+
+  {
+    int z = x;
+    y = 4;
+    return 0;
+  }
+
+  y = 15;
+
+  return 1;
+}
+
+state idle {
+  idle() {
+    float a = bar(42);
+  }
+};

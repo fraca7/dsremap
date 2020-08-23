@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=DSRemap
+Exec=dsremap
+Comment=DSRemap
+Icon=dsremap
+Categories=Utility;
+Terminal=false
+X-AppImage-Version=0.99.0
+

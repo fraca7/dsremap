@@ -1,0 +1,577 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2020-08-18 13:58+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: src/dsrlib/domain/actions/axis.py:25
+msgid "left pad"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:25
+msgid "right pad"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:29
+msgid "X axis"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:29
+msgid "Y axis"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:45
+msgid "Invert {pad} {axis}"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:74
+msgid "left pad X"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:75
+msgid "left pad Y"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:76
+msgid "right pad X"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:77
+msgid "right pad Y"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:78
+msgid "L2 value"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:79
+msgid "R2 value"
+msgstr ""
+
+#: src/dsrlib/domain/actions/axis.py:109
+msgid "Swap {axis1} and {axis2}"
+msgstr ""
+
+#: src/dsrlib/domain/actions/custom.py:13
+msgid "Custom action: {line}"
+msgstr ""
+
+#: src/dsrlib/domain/actions/custom.py:21
+msgid "empty"
+msgstr ""
+
+#: src/dsrlib/domain/actions/gyro.py:14
+msgid "Gyro aiming when pressing {buttons}"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:26
+msgid "□"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:27
+msgid "×"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:28
+msgid "△"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:29
+msgid "○"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:30
+msgid "L1"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:31
+msgid "R1"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:32
+msgid "L2"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:33
+msgid "R2"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:34
+msgid "L3"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:35
+msgid "R3"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:36
+msgid "Share"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:37
+msgid "Options"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:38
+msgid "PS"
+msgstr ""
+
+#: src/dsrlib/domain/buttons.py:39
+msgid "TPAD"
+msgstr ""
+
+#: src/dsrlib/domain/configuration.py:17
+msgid "New configuration"
+msgstr ""
+
+#: src/dsrlib/ui/about.py:13
+msgid "{appname} v{appversion}"
+msgstr ""
+
+#: src/dsrlib/ui/about.py:15
+msgid ""
+"\n"
+"Copyright 2020 {author}\n"
+"\n"
+"Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the \"Software\"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:\n"
+"\n"
+"The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.\n"
+"\n"
+"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n"
+"\n"
+"Icons courtesy of <a href=\"https://iconmonstr.com/\">iconmonstr</a>.\n"
+"\n"
+msgstr ""
+
+#: src/dsrlib/ui/about.py:32 src/dsrlib/ui/ide/editor.py:26
+#: src/dsrlib/ui/settings.py:136
+msgid "Done"
+msgstr ""
+
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:57
+msgid "Edit"
+msgstr ""
+
+#: src/dsrlib/ui/configupload.py:29
+msgid "Uploading to {name}..."
+msgstr ""
+
+#: src/dsrlib/ui/configupload.py:57
+msgid "CRC check..."
+msgstr ""
+
+#: src/dsrlib/ui/configupload.py:65
+msgid "The CRC check failed. You will probably want to retry."
+msgstr ""
+
+#: src/dsrlib/ui/configupload.py:65
+msgid "Warning"
+msgstr ""
+
+#: src/dsrlib/ui/configuration.py:38 src/dsrlib/ui/workspace.py:70
+msgid "{count} bytes"
+msgstr ""
+
+#: src/dsrlib/ui/configuration.py:115
+msgid "Drop an image here"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:21 src/dsrlib/ui/hexuploader.py:103
+msgid "Firmware upload"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:22
+msgid "Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Upload menu in the menu bar."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:41
+msgid "Install avrdude"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:42
+msgid "The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:44
+msgid "Try to detect avrdude again"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:45 src/dsrlib/ui/settings.py:22
+msgid "Browse"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:49
+msgid "You can install <b>avrdude</b> on mac OS using <a href=\"https://brew.sh\">Homebrew</a>. After installing brew, launch a terminal and type<br /><pre>brew install avrdude</pre>"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:51
+msgid "You can install <b>avrdude</b> on Linux using your regular package manager, for instance<br /><pre>apt-get install avrdude</pre>"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:53
+msgid "You can install <b>avrdude</b> on Windows using <a href=\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
+#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:184
+#: src/dsrlib/ui/settings.py:137
+msgid "Cancel"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:79
+msgid "Cannot find avrdude"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:79
+msgid "avrdude found"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:84
+msgid "Browse for avrdude"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:104
+msgid "Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:121
+msgid "Looking for Leonardo"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:132
+msgid "Release the <b>reset</b> button now."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:154
+msgid "Found Leonardo at {path}."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:170
+msgid "Error resetting the device: {error}"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:182
+msgid "Updating"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:183
+msgid "Update in progress..."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:210
+msgid "Process failed to start"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:211
+msgid "Process crashed"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:212
+msgid "Timeout"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:213
+msgid "Write error"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:214
+msgid "Read error"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:215
+msgid "Unknown error"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:218
+msgid "Error launching avrdude: {error}"
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:227
+msgid "Done."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:230
+msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
+msgstr ""
+
+#: src/dsrlib/ui/hexuploader.py:252
+msgid "Skip"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:48
+msgid "{appName} v{appVersion}"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:51
+msgid "File"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:63
+msgid "Upload"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:68
+msgid "Help"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:116
+msgid "<i>groups</i> exited with code {code}"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:119
+msgid "Cannot find groups"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:119
+msgid "Unable to find out which groups you belong to:<p />{error}<p />For this program to work correctly, you must belong to the <i>dialout</i> group."
+msgstr ""
+
+#: src/dsrlib/ui/main.py:129
+msgid "The following operations must be done before this program can work correctly:"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:131
+msgid "Install udev rules to allow HID communication"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:133
+msgid "Add you to the <i>dialout</i> group"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:136
+msgid "You may have to logout and login again, or even reboot, and unplug/replug the Arduino for those changes to apply."
+msgstr ""
+
+#: src/dsrlib/ui/main.py:138
+msgid "You may be prompted for your password."
+msgstr ""
+
+#: src/dsrlib/ui/main.py:140
+msgid "System setup"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:149
+msgid "Unable to find <i>sudo</i> on the path."
+msgstr ""
+
+#: src/dsrlib/ui/main.py:149 src/dsrlib/ui/main.py:151
+msgid "Error"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:151
+msgid "Command failed with exit code {code}.<p />{stderr}"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:172
+msgid "Password needed"
+msgstr ""
+
+#: src/dsrlib/ui/main.py:180
+msgid "You need to enter your password to setup groups and udev rules."
+msgstr ""
+
+#: src/dsrlib/ui/main.py:187
+msgid "OK"
+msgstr ""
+
+#: src/dsrlib/ui/settings.py:117
+msgid "Autodetect"
+msgstr ""
+
+#: src/dsrlib/ui/settings.py:117
+msgid "Path to avrdude"
+msgstr ""
+
+#: src/dsrlib/ui/settings.py:118
+msgid "Developper mode"
+msgstr ""
+
+#: src/dsrlib/ui/settings.py:124
+msgid "Miscellaneous"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/base.py:24
+msgid "Undo"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/base.py:24
+msgid "Undo last action"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/base.py:29
+msgid "Redo"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/base.py:29
+msgid "Redo last undone action"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Add an action to invert an axis"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Invert pad axis"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:25
+msgid "Add an action to swap two axis"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:25
+msgid "Swap axis"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:34
+msgid "Add an action to implement gyro aiming"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:34
+msgid "Gyro aiming"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:43
+msgid "Add a custom action and open the code editor"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:43
+msgid "Custom action"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:61
+msgid "Add a remapping action"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:77
+msgid "Delete the selected action"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/configuration.py:94
+msgid "Convert the selected action to a custom one and open the code editor"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:15
+msgid "Send enabled configurations to EEPROM of device {name}"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:32
+msgid "Upload configurations to"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:37
+msgid "No devices detected"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:43
+msgid "Firmware version mismatch"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:44
+msgid "A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device."
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:18
+msgid "Export selected configuration"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:18
+msgid "Export the selected configuration as a zip file"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:33
+msgid ""
+"Cannot export configuration:\n"
+"{error}"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:33 src/dsrlib/ui/uicommands/io.py:66
+msgid "Export error"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:38
+msgid "Import a previously exported configuration"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:38
+msgid "Import configuration"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:50
+msgid ""
+"Cannot import configuration:\n"
+"{error}"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:50
+msgid "Import error"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:55
+msgid "Export bytecode"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:55
+msgid "Export bytecode to file"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/io.py:66
+msgid ""
+"Cannot export bytecode:\n"
+"{error}"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:13
+msgid "Program the microcontroller with DSRemap firmware"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:13
+msgid "Update firmware"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:22
+msgid "About {appname}..."
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:32
+msgid "Settings..."
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/workspace.py:14
+msgid "Create a new configuration"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/workspace.py:31
+msgid "Delete the selected configuration"
+msgstr ""
+
+#: src/dsrlib/ui/utils.py:100
+msgid "Save"
+msgstr ""
+
+#: src/dsrlib/ui/utils.py:107
+msgid "Overwrite file?"
+msgstr ""
+
+#: src/dsrlib/ui/utils.py:108
+msgid "This file already exists. Overwrite?"
+msgstr ""
+
+#: src/dsrlib/ui/utils.py:127
+msgid "Open file"
+msgstr ""
+
+#: src/dsrlib/ui/workspace.py:136
+msgid "Select a configuration"
+msgstr ""
+

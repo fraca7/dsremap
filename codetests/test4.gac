@@ -1,0 +1,37 @@
+// -*- c++ -*-
+
+struct ST {
+  float member;
+
+  float bar(int x) {
+    float y = 13;
+
+    member = 16;
+
+    {
+      int z = 1;
+      y = 4;
+      member = 17;
+
+      return 0;
+    }
+
+    y = 15;
+
+    return 1;
+  }
+};
+
+struct ST2 {
+  int y;
+  ST st;
+};
+
+state idle {
+  idle() {
+    int z;
+    ST2 st;
+
+    float a = st.st.bar(42);
+  }
+};

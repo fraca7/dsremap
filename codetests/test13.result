@@ -1,0 +1,9 @@
+label_0
+label_1
+label_2
+label_4
+	LOADC	L2Value, 42
+label_5
+	YIELD
+	JUMP	label_2
+label_6

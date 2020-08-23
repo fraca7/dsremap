@@ -1,0 +1,13 @@
+label_0
+label_1
+label_2
+label_4
+	ADDC	%SP, 4
+	LOADC	[%SP-4]i, 1
+	ADDC	[%SP-4]i, 1
+	LOADA	[%SP-2]i, [%SP-4]i
+label_5
+	SUBC	%SP, 4
+	YIELD
+	JUMP	label_2
+label_6

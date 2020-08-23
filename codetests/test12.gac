@@ -1,0 +1,24 @@
+// -*- c++ -*-
+
+float a;
+int b;
+
+state idle {
+  float x;
+
+  idle() {
+    go test;
+  }
+};
+
+state test {
+  int y;
+
+  enter() {
+    a = 4;
+  }
+
+  test() {
+    b = 2;
+  }
+};

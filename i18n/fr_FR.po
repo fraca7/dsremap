@@ -1,0 +1,688 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-08-18 13:58+0200\n"
+"PO-Revision-Date: 2020-08-18 14:05+0200\n"
+"Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: pygettext.py 1.5\n"
+"X-Generator: Poedit 2.0.5\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: src/dsrlib/domain/actions/axis.py:25
+msgid "left pad"
+msgstr "pad gauche"
+
+#: src/dsrlib/domain/actions/axis.py:25
+msgid "right pad"
+msgstr "pad droit"
+
+#: src/dsrlib/domain/actions/axis.py:29
+msgid "X axis"
+msgstr "axe X"
+
+#: src/dsrlib/domain/actions/axis.py:29
+msgid "Y axis"
+msgstr "axe Y"
+
+#: src/dsrlib/domain/actions/axis.py:45
+msgid "Invert {pad} {axis}"
+msgstr "Inverser l’{axis} du {pad}"
+
+#: src/dsrlib/domain/actions/axis.py:74
+msgid "left pad X"
+msgstr "pad gauche X"
+
+#: src/dsrlib/domain/actions/axis.py:75
+msgid "left pad Y"
+msgstr "pad gauche Y"
+
+#: src/dsrlib/domain/actions/axis.py:76
+msgid "right pad X"
+msgstr "pad droit X"
+
+#: src/dsrlib/domain/actions/axis.py:77
+msgid "right pad Y"
+msgstr "pad droit Y"
+
+#: src/dsrlib/domain/actions/axis.py:78
+msgid "L2 value"
+msgstr "valeur de L2"
+
+#: src/dsrlib/domain/actions/axis.py:79
+msgid "R2 value"
+msgstr "valeur de R2"
+
+#: src/dsrlib/domain/actions/axis.py:109
+msgid "Swap {axis1} and {axis2}"
+msgstr "Échanger {axis1} et {axis2}"
+
+#: src/dsrlib/domain/actions/custom.py:13
+msgid "Custom action: {line}"
+msgstr "Action personnalisée: {line}"
+
+#: src/dsrlib/domain/actions/custom.py:21
+msgid "empty"
+msgstr "vide"
+
+#: src/dsrlib/domain/actions/gyro.py:14
+msgid "Gyro aiming when pressing {buttons}"
+msgstr "Visée gyroscopique lorsque {buttons} sont enfoncés"
+
+#: src/dsrlib/domain/buttons.py:26
+msgid "□"
+msgstr "□"
+
+#: src/dsrlib/domain/buttons.py:27
+msgid "×"
+msgstr "×"
+
+#: src/dsrlib/domain/buttons.py:28
+msgid "△"
+msgstr "△"
+
+#: src/dsrlib/domain/buttons.py:29
+msgid "○"
+msgstr "○"
+
+#: src/dsrlib/domain/buttons.py:30
+msgid "L1"
+msgstr "L1"
+
+#: src/dsrlib/domain/buttons.py:31
+msgid "R1"
+msgstr "R1"
+
+#: src/dsrlib/domain/buttons.py:32
+msgid "L2"
+msgstr "L2"
+
+#: src/dsrlib/domain/buttons.py:33
+msgid "R2"
+msgstr "R2"
+
+#: src/dsrlib/domain/buttons.py:34
+msgid "L3"
+msgstr "L3"
+
+#: src/dsrlib/domain/buttons.py:35
+msgid "R3"
+msgstr "R3"
+
+#: src/dsrlib/domain/buttons.py:36
+msgid "Share"
+msgstr "Share"
+
+#: src/dsrlib/domain/buttons.py:37
+msgid "Options"
+msgstr "Options"
+
+#: src/dsrlib/domain/buttons.py:38
+msgid "PS"
+msgstr "PS"
+
+#: src/dsrlib/domain/buttons.py:39
+msgid "TPAD"
+msgstr "TPAD"
+
+#: src/dsrlib/domain/configuration.py:17
+msgid "New configuration"
+msgstr "Nouvelle configuration"
+
+#: src/dsrlib/ui/about.py:13
+msgid "{appname} v{appversion}"
+msgstr "{appname} v{appversion}"
+
+#: src/dsrlib/ui/about.py:15
+msgid ""
+"\n"
+"Copyright 2020 {author}\n"
+"\n"
+"Permission is hereby granted, free of charge, to any person obtaining a copy "
+"of this software and associated documentation files (the \"Software\"), to "
+"deal in the Software without restriction, including without limitation the "
+"rights to use, copy, modify, merge, publish, distribute, sublicense, and/or "
+"sell copies of the Software, and to permit persons to whom the Software is "
+"furnished to do so, subject to the following conditions:\n"
+"\n"
+"The above copyright notice and this permission notice shall be included in "
+"all copies or substantial portions of the Software.\n"
+"\n"
+"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR "
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, "
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE "
+"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER "
+"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING "
+"FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS "
+"IN THE SOFTWARE.\n"
+"\n"
+"Icons courtesy of <a href=\"https://iconmonstr.com/\">iconmonstr</a>.\n"
+"\n"
+msgstr ""
+"\n"
+"Copyright 2020 {author}\n"
+"\n"
+"Permission is hereby granted, free of charge, to any person obtaining a copy "
+"of this software and associated documentation files (the « Software »), to "
+"deal in the Software without restriction, including without limitation the "
+"rights to use, copy, modify, merge, publish, distribute, sublicense, and/or "
+"sell copies of the Software, and to permit persons to whom the Software is "
+"furnished to do so, subject to the following conditions:\n"
+"\n"
+"The above copyright notice and this permission notice shall be included in "
+"all copies or substantial portions of the Software.\n"
+"\n"
+"THE SOFTWARE IS PROVIDED « AS IS », WITHOUT WARRANTY OF ANY KIND, EXPRESS OR "
+"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, "
+"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE "
+"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER "
+"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING "
+"FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS "
+"IN THE SOFTWARE.\n"
+"\n"
+"Icons courtesy of <a href=\"https://iconmonstr.com/\">iconmonstr</a>.\n"
+"\n"
+
+#: src/dsrlib/ui/about.py:32 src/dsrlib/ui/ide/editor.py:26
+#: src/dsrlib/ui/settings.py:136
+msgid "Done"
+msgstr "Terminé"
+
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:57
+msgid "Edit"
+msgstr "Édition"
+
+#: src/dsrlib/ui/configupload.py:29
+msgid "Uploading to {name}..."
+msgstr "Téléversement vers {name}…"
+
+#: src/dsrlib/ui/configupload.py:57
+msgid "CRC check..."
+msgstr "Vérification du CRC…"
+
+#: src/dsrlib/ui/configupload.py:65
+msgid "The CRC check failed. You will probably want to retry."
+msgstr "Le CRC a échoué. Vous voudrez probablement réessayer."
+
+#: src/dsrlib/ui/configupload.py:65
+msgid "Warning"
+msgstr "Avertissement"
+
+#: src/dsrlib/ui/configuration.py:38 src/dsrlib/ui/workspace.py:70
+msgid "{count} bytes"
+msgstr "{count} octets"
+
+#: src/dsrlib/ui/configuration.py:115
+msgid "Drop an image here"
+msgstr "Déposez une image ici"
+
+#: src/dsrlib/ui/hexuploader.py:21 src/dsrlib/ui/hexuploader.py:103
+msgid "Firmware upload"
+msgstr "Mise à jour du microcode"
+
+#: src/dsrlib/ui/hexuploader.py:22
+msgid ""
+"Welcome. The first thing to do is to program your Leonardo board. If you "
+"choose to skip this step, you can do it whenever using the Upload menu in "
+"the menu bar."
+msgstr ""
+"Bienvenue. La première chose à faire est de programmer votre Leonardo. Si "
+"vous sautez cette étape, vous pourrez le faire n’importe quand depuis le "
+"menu Téléverser."
+
+#: src/dsrlib/ui/hexuploader.py:41
+msgid "Install avrdude"
+msgstr "Installer avrdude"
+
+#: src/dsrlib/ui/hexuploader.py:42
+msgid ""
+"The <b>avrdude</b> program could not be found on the path. Please install it "
+"or manually specify its path here."
+msgstr ""
+"Le programme <b>avrdude</b> n’a pas été trouvé. Veuillez l’installer ou "
+"spécifier son chemin ici."
+
+#: src/dsrlib/ui/hexuploader.py:44
+msgid "Try to detect avrdude again"
+msgstr "Réessayer de détecter avrdude"
+
+#: src/dsrlib/ui/hexuploader.py:45 src/dsrlib/ui/settings.py:22
+msgid "Browse"
+msgstr "Parcourir"
+
+#: src/dsrlib/ui/hexuploader.py:49
+msgid ""
+"You can install <b>avrdude</b> on mac OS using <a href=\"https://brew.sh"
+"\">Homebrew</a>. After installing brew, launch a terminal and type<br /"
+"><pre>brew install avrdude</pre>"
+msgstr ""
+"Vous pouvez installer <b>avrdude</b> sur mac OS via <a href=\"https://brew.sh"
+"\">Homebrew</a>. Après avoir installé brew, lancez un terminal et tapez<br /"
+"><pre>brew install avrdude</pre>"
+
+#: src/dsrlib/ui/hexuploader.py:51
+msgid ""
+"You can install <b>avrdude</b> on Linux using your regular package manager, "
+"for instance<br /><pre>apt-get install avrdude</pre>"
+msgstr ""
+"Vous pouvez installer <b>avrdude</b> sur Linux grâce à votre gestionnaire de "
+"paquets habituel, par exemple<br /><pre>apt-get install avrdude</pre>"
+
+#: src/dsrlib/ui/hexuploader.py:53
+msgid ""
+"You can install <b>avrdude</b> on Windows using <a href=\"https://"
+"sourceforge.net/projects/winavr/\">WinAVR</a>"
+msgstr ""
+"Vous pouvez installer <b>avrdude</b> sous Windows en installant <a href="
+"\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
+
+#: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
+#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:184
+#: src/dsrlib/ui/settings.py:137
+msgid "Cancel"
+msgstr "Annuler"
+
+#: src/dsrlib/ui/hexuploader.py:79
+msgid "Cannot find avrdude"
+msgstr "Impossible de trouver avrdude"
+
+#: src/dsrlib/ui/hexuploader.py:79
+msgid "avrdude found"
+msgstr "avrdude trouvé"
+
+#: src/dsrlib/ui/hexuploader.py:84
+msgid "Browse for avrdude"
+msgstr "Parcourir vers avrdude"
+
+#: src/dsrlib/ui/hexuploader.py:104
+msgid ""
+"Please plug the Leonardo to this computer and press the <b>reset</b> button. "
+"Click Continue while holding it."
+msgstr ""
+"Veuillez brancher le Leonardo à cet ordinateur et appuyer sur le bouton "
+"<b>reset</b>. Cliquez sur Continuer en le maintenant enfoncé."
+
+#: src/dsrlib/ui/hexuploader.py:121
+msgid "Looking for Leonardo"
+msgstr "Recherche du Leonardo"
+
+#: src/dsrlib/ui/hexuploader.py:132
+msgid "Release the <b>reset</b> button now."
+msgstr "Relâchez le bouton <b>reset</b> maintenant."
+
+#: src/dsrlib/ui/hexuploader.py:154
+msgid "Found Leonardo at {path}."
+msgstr "Leonardo trouvé sur {path}."
+
+#: src/dsrlib/ui/hexuploader.py:170
+msgid "Error resetting the device: {error}"
+msgstr "Erreur lors de la réinitialisation du périphérique: {error}"
+
+#: src/dsrlib/ui/hexuploader.py:182
+msgid "Updating"
+msgstr "Mise  jour"
+
+#: src/dsrlib/ui/hexuploader.py:183
+msgid "Update in progress..."
+msgstr "Mise à jour en cours…"
+
+#: src/dsrlib/ui/hexuploader.py:210
+msgid "Process failed to start"
+msgstr "Le processus n’a pas pu démarrer"
+
+#: src/dsrlib/ui/hexuploader.py:211
+msgid "Process crashed"
+msgstr "Le processus s’est vautré"
+
+#: src/dsrlib/ui/hexuploader.py:212
+msgid "Timeout"
+msgstr "Dépassement de délai"
+
+#: src/dsrlib/ui/hexuploader.py:213
+msgid "Write error"
+msgstr "Erreur d’écriture"
+
+#: src/dsrlib/ui/hexuploader.py:214
+msgid "Read error"
+msgstr "Erreur de lecture"
+
+#: src/dsrlib/ui/hexuploader.py:215
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: src/dsrlib/ui/hexuploader.py:218
+msgid "Error launching avrdude: {error}"
+msgstr "Erreur au lancement de avrdude: {error}"
+
+#: src/dsrlib/ui/hexuploader.py:227
+msgid "Done."
+msgstr "Terminé."
+
+#: src/dsrlib/ui/hexuploader.py:230
+msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
+msgstr ""
+"<b>avrdude</b> s’est terminé avec le code {code}. Quelque chose a foiré."
+
+#: src/dsrlib/ui/hexuploader.py:252
+msgid "Skip"
+msgstr "Passer"
+
+#: src/dsrlib/ui/main.py:48
+msgid "{appName} v{appVersion}"
+msgstr "{appName} v{appVersion}"
+
+#: src/dsrlib/ui/main.py:51
+msgid "File"
+msgstr "Fichier"
+
+#: src/dsrlib/ui/main.py:63
+msgid "Upload"
+msgstr "Téléverser"
+
+#: src/dsrlib/ui/main.py:68
+msgid "Help"
+msgstr "Aide"
+
+#: src/dsrlib/ui/main.py:116
+msgid "<i>groups</i> exited with code {code}"
+msgstr "<b>avrdude</b> s’est terminé avec le code {code}."
+
+#: src/dsrlib/ui/main.py:119
+msgid "Cannot find groups"
+msgstr "Impossible de déterminer les groupes"
+
+#: src/dsrlib/ui/main.py:119
+msgid ""
+"Unable to find out which groups you belong to:<p />{error}<p />For this "
+"program to work correctly, you must belong to the <i>dialout</i> group."
+msgstr ""
+"Impossible de déterminer à quels groupes vous appartenez:<p />{error}<p /"
+">Pour que ce programme fonctionne correctement, vous devez appartenir au "
+"groupe <i>dialout</i>."
+
+#: src/dsrlib/ui/main.py:129
+msgid ""
+"The following operations must be done before this program can work correctly:"
+msgstr ""
+"Les opérations suivantes doivent être exécutées pour que ce programme "
+"fonctionne correctement:"
+
+#: src/dsrlib/ui/main.py:131
+msgid "Install udev rules to allow HID communication"
+msgstr "Installation des règles udev pour les communications HID"
+
+#: src/dsrlib/ui/main.py:133
+msgid "Add you to the <i>dialout</i> group"
+msgstr "Vous ajouter au groupe <i>dialout</i>"
+
+#: src/dsrlib/ui/main.py:136
+msgid ""
+"You may have to logout and login again, or even reboot, and unplug/replug "
+"the Arduino for those changes to apply."
+msgstr ""
+"Vous aurez peut-être à vous déconnecter, voire redémarrer, et débrancher/"
+"rebrancher l'Arduino pour que ces modifications soient effectives."
+
+#: src/dsrlib/ui/main.py:138
+msgid "You may be prompted for your password."
+msgstr "Vous aurez peut-être à fournir votre mot de passe."
+
+#: src/dsrlib/ui/main.py:140
+msgid "System setup"
+msgstr "Configuration du système"
+
+#: src/dsrlib/ui/main.py:149
+msgid "Unable to find <i>sudo</i> on the path."
+msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
+
+#: src/dsrlib/ui/main.py:149 src/dsrlib/ui/main.py:151
+msgid "Error"
+msgstr "Erreur"
+
+#: src/dsrlib/ui/main.py:151
+msgid "Command failed with exit code {code}.<p />{stderr}"
+msgstr "La commande a échoué avec le code de retour {code}.<p />{stderr}"
+
+#: src/dsrlib/ui/main.py:172
+msgid "Password needed"
+msgstr "Mot de passe nécessaire"
+
+#: src/dsrlib/ui/main.py:180
+msgid "You need to enter your password to setup groups and udev rules."
+msgstr ""
+"Vous devez entrer votre mot de passe pour configurer les groupes et les "
+"règles udev."
+
+#: src/dsrlib/ui/main.py:187
+msgid "OK"
+msgstr "OK"
+
+#: src/dsrlib/ui/settings.py:117
+msgid "Autodetect"
+msgstr "Détecter automatiquement"
+
+#: src/dsrlib/ui/settings.py:117
+msgid "Path to avrdude"
+msgstr "Chemin vers avrdude"
+
+#: src/dsrlib/ui/settings.py:118
+msgid "Developper mode"
+msgstr "Mode développeur"
+
+#: src/dsrlib/ui/settings.py:124
+msgid "Miscellaneous"
+msgstr "Divers"
+
+#: src/dsrlib/ui/uicommands/base.py:24
+msgid "Undo"
+msgstr "Défaire"
+
+#: src/dsrlib/ui/uicommands/base.py:24
+msgid "Undo last action"
+msgstr "Défaire la dernière action"
+
+#: src/dsrlib/ui/uicommands/base.py:29
+msgid "Redo"
+msgstr "Refaire"
+
+#: src/dsrlib/ui/uicommands/base.py:29
+msgid "Redo last undone action"
+msgstr "Refaire la dernière action défaite"
+
+#: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Add an action to invert an axis"
+msgstr "Ajouter une action pour inverser un axe"
+
+#: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Invert pad axis"
+msgstr "Inverser l’axe d’un pad"
+
+#: src/dsrlib/ui/uicommands/configuration.py:25
+msgid "Add an action to swap two axis"
+msgstr "Ajouter une action pour échanger deux axes"
+
+#: src/dsrlib/ui/uicommands/configuration.py:25
+msgid "Swap axis"
+msgstr "Échanger les axes"
+
+#: src/dsrlib/ui/uicommands/configuration.py:34
+msgid "Add an action to implement gyro aiming"
+msgstr "Ajouter une action pour implémenter la visée gyroscopique"
+
+#: src/dsrlib/ui/uicommands/configuration.py:34
+msgid "Gyro aiming"
+msgstr "Visée gyroscopique"
+
+#: src/dsrlib/ui/uicommands/configuration.py:43
+msgid "Add a custom action and open the code editor"
+msgstr "Ajouter une action personnalisée et ouvrir l’éditeur de code"
+
+#: src/dsrlib/ui/uicommands/configuration.py:43
+msgid "Custom action"
+msgstr "Action personnalisée"
+
+#: src/dsrlib/ui/uicommands/configuration.py:61
+msgid "Add a remapping action"
+msgstr "Ajouter une action de réécriture"
+
+#: src/dsrlib/ui/uicommands/configuration.py:77
+msgid "Delete the selected action"
+msgstr "Supprimer l’action sélectionnée"
+
+#: src/dsrlib/ui/uicommands/configuration.py:94
+msgid "Convert the selected action to a custom one and open the code editor"
+msgstr ""
+"Convertir l’action sélectionnée en action personnalisée et ouvrir l’éditeur "
+"de code"
+
+#: src/dsrlib/ui/uicommands/hid.py:15
+msgid "Send enabled configurations to EEPROM of device {name}"
+msgstr "Envoyer les configurations activées à l’EEPROM du périphérique {name}"
+
+#: src/dsrlib/ui/uicommands/hid.py:32
+msgid "Upload configurations to"
+msgstr "Téléverser les configurations vers"
+
+#: src/dsrlib/ui/uicommands/hid.py:37
+msgid "No devices detected"
+msgstr "Aucun périphérique détecté"
+
+#: src/dsrlib/ui/uicommands/hid.py:43
+msgid "Firmware version mismatch"
+msgstr "Différence de version du microcode"
+
+#: src/dsrlib/ui/uicommands/hid.py:44
+msgid ""
+"A {appname}-enabled device was plugged, but the firmware version v{version1} "
+"does not match the one supported by this application (v{version2}). Please "
+"update the firmware using the Upload menu first, then unplug and replug the "
+"device."
+msgstr ""
+"Un périphérique compatible {appname} a été branché, mais la version du "
+"microcode v{version1} ne correspond pas à celle supportée par cette "
+"application (v{version2}). Veuillez mettre à jour le microcode via le menu "
+"Téléverser, puis débrancher et rebrancher le périphérique."
+
+#: src/dsrlib/ui/uicommands/io.py:18
+msgid "Export selected configuration"
+msgstr "Exporter la configuration sélectionnée"
+
+#: src/dsrlib/ui/uicommands/io.py:18
+msgid "Export the selected configuration as a zip file"
+msgstr "Exporter la configuration sélectionnée sous forme de fichier zip"
+
+#: src/dsrlib/ui/uicommands/io.py:33
+msgid ""
+"Cannot export configuration:\n"
+"{error}"
+msgstr "Impossible d’exporter la configuration: {error}"
+
+#: src/dsrlib/ui/uicommands/io.py:33 src/dsrlib/ui/uicommands/io.py:66
+msgid "Export error"
+msgstr "Erreur d’exportation"
+
+#: src/dsrlib/ui/uicommands/io.py:38
+msgid "Import a previously exported configuration"
+msgstr "Importer une configuration précédemment exportée"
+
+#: src/dsrlib/ui/uicommands/io.py:38
+msgid "Import configuration"
+msgstr "Importer une configuration"
+
+#: src/dsrlib/ui/uicommands/io.py:50
+msgid ""
+"Cannot import configuration:\n"
+"{error}"
+msgstr "Impossible d’importer la configuration: {error}"
+
+#: src/dsrlib/ui/uicommands/io.py:50
+msgid "Import error"
+msgstr "Erreur d’importation"
+
+#: src/dsrlib/ui/uicommands/io.py:55
+msgid "Export bytecode"
+msgstr "Exporter le code à octets"
+
+#: src/dsrlib/ui/uicommands/io.py:55
+msgid "Export bytecode to file"
+msgstr "Exporter le code à octets dans un fichier"
+
+#: src/dsrlib/ui/uicommands/io.py:66
+msgid ""
+"Cannot export bytecode:\n"
+"{error}"
+msgstr "Impossible d’exporter le code à octets: {error}"
+
+#: src/dsrlib/ui/uicommands/misc.py:13
+msgid "Program the microcontroller with DSRemap firmware"
+msgstr "Programmer le microcontrôleur avec le microcode DSRemap"
+
+#: src/dsrlib/ui/uicommands/misc.py:13
+msgid "Update firmware"
+msgstr "Mise à jour du microcode"
+
+#: src/dsrlib/ui/uicommands/misc.py:22
+msgid "About {appname}..."
+msgstr "À propos de {appname}…"
+
+#: src/dsrlib/ui/uicommands/misc.py:32
+msgid "Settings..."
+msgstr "Préférences…"
+
+#: src/dsrlib/ui/uicommands/workspace.py:14
+msgid "Create a new configuration"
+msgstr "Créer une nouvelle configuration"
+
+#: src/dsrlib/ui/uicommands/workspace.py:31
+msgid "Delete the selected configuration"
+msgstr "Supprimer la configuration sélectionnée"
+
+#: src/dsrlib/ui/utils.py:100
+msgid "Save"
+msgstr "Enregistrer"
+
+#: src/dsrlib/ui/utils.py:107
+msgid "Overwrite file?"
+msgstr "Écraser le fichier ?"
+
+#: src/dsrlib/ui/utils.py:108
+msgid "This file already exists. Overwrite?"
+msgstr "Ce fichier existe déjà. L’écraser ?"
+
+#: src/dsrlib/ui/utils.py:127
+msgid "Open file"
+msgstr "Ouvrir un fichier"
+
+#: src/dsrlib/ui/workspace.py:136
+msgid "Select a configuration"
+msgstr "Sélectionnez une configuration"
+
+#~ msgid ""
+#~ "Unable to find <b>avrdude</b> on the path. Please install it before "
+#~ "trying again."
+#~ msgstr ""
+#~ "Impossible de trouver <b>avrdude</b> sur le chemin. Veuillez l’installer "
+#~ "et réessayer."
+
+#~ msgid "Swap right and left pads"
+#~ msgstr "Échanger les pads droit et gauche"
+
+#~ msgid "Square"
+#~ msgstr "Carré"
+
+#~ msgid "Cross"
+#~ msgstr "Croix"
+
+#~ msgid "Triangle"
+#~ msgstr "Triangle"
+
+#~ msgid "Circle"
+#~ msgstr "Cercle"

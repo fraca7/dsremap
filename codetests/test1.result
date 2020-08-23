@@ -1,0 +1,35 @@
+label_0
+label_1
+label_2
+label_4
+	ADDC	%SP, 8
+	PUSHI	42
+	ADDC	%SP, 4
+	CALL	label_6
+	SUBC	%SP, 6
+	LOADA	[%SP-4]f, [%SP+2]f
+	LOADA	[%SP-8]f, [%SP-4]f
+label_5
+	SUBC	%SP, 8
+	YIELD
+	JUMP	label_2
+label_6
+label_7
+	ADDC	%SP, 4
+	LOADC	[%SP-4]f, 13.0
+label_8
+	ADDC	%SP, 2
+	LOADA	[%SP-2]i, [%SP-14]i
+	LOADC	[%SP-6]f, 4.0
+	LOADC	[%SP-12]f, 0.0
+	SUBC	%SP, 6
+	RET
+label_9
+	SUBC	%SP, 2
+	LOADC	[%SP-4]f, 15.0
+	LOADC	[%SP-10]f, 1.0
+	SUBC	%SP, 4
+	RET
+label_10
+	SUBC	%SP, 4
+label_11

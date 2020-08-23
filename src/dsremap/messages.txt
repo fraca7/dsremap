@@ -1,0 +1,68 @@
+# Common
+
+USB_INIT_FAILED USB initialization failed
+
+# Descriptors.cpp
+
+ERROR_READ_FROM_HOST Error reading from host: 0x%02x
+RECV_FROM_HOST Received %d bytes from host
+USB_CONN USB connected
+USB_DISCONN USB disconnected
+USB_CONF_CHANGED Configuration changed
+WARN_MIN_UNK_ENTITY GetMinimum for unknown entity %d
+WARN_MAX_UNK_ENTITY GetMaximum for unknown entity %d
+WARN_RES_UNK_ENTITY GetResolution for unknown entity %d
+WARN_UNHANDLED_REQ Unhandled request
+SEND_DEV_DES Sending device descriptor
+SEND_CONF_DES Sending configuration descriptor
+SEND_HID_DES Sending HID descriptor
+SEND_HID_REP_DES Sending HID report descriptor
+
+# Host.cpp
+
+REPORT_COUNT %d reports in %d ms
+LOST_REPORT Lost report
+GOT_CALIB Got calibration data
+GOT_REPORT_DATA_R Got RAM report data
+GOT_REPORT_DATA_F Got Flash report data
+ERROR_UNSUPPORTED_MEMSPACE Unsupported memory space
+LOOP_COUNT %d loops in %d ms
+ERROR_SEND_REPORT_01 Error sending main report: 0x%02x
+INFO_GET_REPORT GetReport type=0x%02x, ID=0x%02x
+INFO_SET_REPORT SetReport type=0x%02x; id=0x%02x, len=%d
+SEND_OUT_EP Send %d bytes on OUT endpoint
+SEND_SET_REPORT SetReport: send %d bytes
+WARN_OOB_REPORT_DATA Got unexpected report data from device: 0x%02x (in state %d)
+ERROR_DEVICE_PLUG Device plugged while in state %d
+ERROR_REPORTDESC Report descriptor sent while in state %d
+ERROR_GET_REPORT_STATE GET_REPORT in state %d
+ERROR_SET_REPORT_STATE SET_REPORT in state %d
+ERROR_GOT_DATA_STATE Got data in state %d
+GOT_DATA_FROM_HOST Got %d bytes from host
+
+STATE_CHANGE Going from state %d to state %d
+
+ERROR_WRONG_MAGIC Invalid magic word 0x%04x in EEPROM
+CONFIGURATION_SIZE Configuration with size %d bytes
+ACTION_SIZE Action with size %d bytes
+ACTION_STACKSIZE Stack size is %d bytes
+VM_DONE %d VMs instantiated
+
+# DS4USB.cpp
+
+DEVICE_PLUGGED Device plugged in
+ERROR_SET_IDLE Error on SetIdle: 0x%02x
+DS4_HID_IF Dualshock 4 on HID interface %d
+ERROR_GET_REPORT Error on GetReport: 0x%02x
+ERROR_SET_REPORT Error on SetReport: 0x%02x
+ERROR_SNDRPT Error on SndRpt: 0x%02x
+WARN_OOB_REPORT Got OOB report 0x%02x
+
+# Calibrator.cpp
+
+CALIB_MOVE RPAD: 0x%02x for %d frames (%d reports)
+CALIB_END Calibration over
+
+# BytecodeWriter.cpp
+
+BYTECODE_RECEIVED Received %d bytes for EEPROM at offset %d

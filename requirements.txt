@@ -1,0 +1,6 @@
+PyQt5
+ptk
+pyqtcmd
+qscintilla
+pyserial
+hidapi
