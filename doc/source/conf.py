@@ -22,6 +22,15 @@
 import os
 import sys
 
+# Mock imports from Meta
+class PyQt5:
+    class QtCore:
+        pass
+    class QtGui:
+        pass
+sys.modules['PyQt5'] = PyQt5
+
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 from dsrlib.meta import Meta
 
