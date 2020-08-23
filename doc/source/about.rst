@@ -4,6 +4,8 @@ What's the matter
 
 Using this software in combination with a specific Arduino setup allows you to alter on the fly the input of a Dual Shock before it reaches the PS4. This can be used to remap buttons, reverse analog pads, or implement gyro aiming even for games that don't support it "natively".
 
+.. note:: This has only be tested with the latest model of Dual Shock 4 (product ID 0x09cc) and will probably not work with other models.
+
 What is needed
 ==============
 
