@@ -2,6 +2,3 @@
 v1.0.0
 
   # First release
-  ! Test fix 1
-  ! Test fix 2
-  + Test feature 1
