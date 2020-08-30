@@ -733,7 +733,7 @@ This only happens if the PS4 BT address in report 0x12 does not match the PS4's.
 +--------+-------+-----------------------+
 + 1-6    +       + Host (PS4) BT address +
 +--------+-------+-----------------------+
-+ 7-21   +       + Link key              +
++ 7-22   +       + Link key              +
 +--------+-------+-----------------------+
 
 For some reason, after this I get write timeouts on the interrupt IN endpoint to the host, though the control endpoint seems unaffected. This is probably a bug on my side.
