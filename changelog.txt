@@ -1,4 +1,8 @@
 
+v1.0.1
+
+  ! Don't always show the "new version available" dialog at startup
+
 v1.0.0
 
   # First release

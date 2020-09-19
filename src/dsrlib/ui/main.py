@@ -193,11 +193,12 @@ class MainWindow(QtWidgets.QMainWindow):
             if status != 200:
                 logger.warning('Got status %d while downloading changelog', status)
                 return
-            changelog = bytes(reply.readAll()).decode('utf-8')
+            changelog = Changelog(bytes(reply.readAll()).decode('utf-8'))
 
-            win = ChangelogView(self, Changelog(changelog))
-            win.show()
-            win.raise_()
+            if changelog.changesSince(Meta.appVersion()):
+                win = ChangelogView(self, changelog)
+                win.show()
+                win.raise_()
         except: # pylint: disable=W0702
             logger.exception('Cannot download changelog')
 
