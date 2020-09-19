@@ -8,6 +8,7 @@ doc/build
 AppDir
 *.AppImage
 appimage.yml
+appimage-builder-cache
 installer.nsi
 Setup-dsremap-*.exe
 __pycache__
