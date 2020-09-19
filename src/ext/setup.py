@@ -17,8 +17,8 @@ elif platform.system() == 'Windows':
 
 base_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..'))
 ext = Extension('vmwrapper',
-                sources=['vmwrapper.cpp', os.path.join(base_path, 'src', 'dsremap', 'VM.cpp')],
-                include_dirs=[os.path.join(base_path, 'src', 'dsremap')],
+                sources=['vmwrapper.cpp', os.path.join(base_path, 'src', 'arduino', 'dsremap', 'VM.cpp')],
+                include_dirs=[os.path.join(base_path, 'src', 'arduino', 'dsremap')],
                 define_macros=[('TARGET_PC', 1), ('DEBUG', 1)] + macros,
                 undef_macros=['NDEBUG'],
                 extra_compile_args=opts)

@@ -40,17 +40,17 @@ def headers():
     # Log messages
     from tools.genids import main
     main([
-        '-o', os.path.join('src', 'dsremap', 'messages.h'),
+        '-o', os.path.join('src', 'arduino', 'dsremap', 'messages.h'),
         '-s', os.path.join('tools', 'strings.pickle'),
-        os.path.join('src', 'dsremap', 'messages.txt'),
+        os.path.join('src', 'arduino', 'dsremap', 'messages.txt'),
         ])
 
     # Opcodes
     from dsrlib.compiler.opcodes import export
-    export(os.path.join('src', 'dsremap', 'opcodes.h'))
+    export(os.path.join('src', 'arduino', 'dsremap', 'opcodes.h'))
 
     # Version
-    with codecs.getwriter('utf-8')(open(os.path.join('src', 'dsremap', 'version.h'), 'wb')) as fileobj:
+    with codecs.getwriter('utf-8')(open(os.path.join('src', 'arduino', 'dsremap', 'version.h'), 'wb')) as fileobj:
         from dsrlib.meta import Meta
         version = Meta.firmwareVersion()
 
@@ -121,7 +121,7 @@ def firmware():
     else:
         raise RuntimeError('Unsupported platform')
 
-    subprocess.run([exe, '--verify', '--board', 'arduino:avr:leonardo', '--verbose-build', '--pref', 'build.path=%s' % os.path.join(os.getcwd(), 'arduino-build'), os.path.join('src', 'dsremap', 'dsremap.ino')], check=True)
+    subprocess.run([exe, '--verify', '--board', 'arduino:avr:leonardo', '--verbose-build', '--pref', 'build.path=%s' % os.path.join(os.getcwd(), 'arduino-build'), os.path.join('src', 'arduino', 'dsremap', 'dsremap.ino')], check=True)
 
 
 # Doc and tests
