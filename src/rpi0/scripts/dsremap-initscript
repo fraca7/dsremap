@@ -1,0 +1,24 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          dsremap
+# Required-Start:    networking
+# Required-Stop:     networking
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: DSRemap HTTP server
+# Description:       DSRemap HTTP server
+### END INIT INFO
+
+set -e
+
+. /lib/lsb/init-functions
+
+# XXXTODO: stop/restart...
+
+case "$1" in
+    start)
+	nohup /usr/bin/python3 /opt/dsremap/server > /dev/null 2>&1 &
+	;;
+    *)
+	;;
+esac
