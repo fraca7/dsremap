@@ -3,7 +3,6 @@
 #define _CHANNEL_H
 
 #include <glib.h>
-#include <gio/gio.h>
 #include <bluetooth/bluetooth.h>
 
 struct channel_t {
@@ -11,9 +10,9 @@ struct channel_t {
 
   unsigned short cid;
 
-  GIOChannel* source;
+  gint source_fd;
   const gchar* source_addr;
-  GIOChannel* target;
+  gint target_fd;
   const gchar* target_addr;
 
   guint wids[2];
