@@ -3,14 +3,13 @@
 #define _LISTEN_H
 
 #include <glib.h>
-#include <gio/gio.h>
 
 struct global_context_t;
 
 struct listening_socket_data_t {
   struct global_context_t* context;
 
-  GIOChannel* sock;
+  gint fd;
   unsigned short psm;
   guint watch_id;
 
