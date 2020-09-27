@@ -37,6 +37,13 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
     guchar buf[4096];
     size_t len = read(src_fd, buf, sizeof(buf));
 
+    if (channel->parent->psm == 0x0013) {
+      // The DualShock sends so much reports the BT device (or CPU, I don't know) does not follow. Skip some.
+      static int counter = 0;
+      if ((++counter % 2) == 0)
+        return TRUE;
+    }
+
     if (len < 0) {
       g_warning("Read error from %s (PSM 0x%04x)", src_addr, channel->parent->psm);
       channel_remove(channel);
