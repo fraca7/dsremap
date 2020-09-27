@@ -24,11 +24,6 @@ case "$1" in
 	echo "libcomposite" >> /etc/modules
 	echo "usb_f_fs" >> /etc/modules
 
-	# Disable bluetooth
-	update-rc.d bluetooth disable
-	systemctl disable bluetooth.service
-	systemctl disable hciuart.service
-
 	# Enable HTTP server at startup
 	update-rc.d dsremap defaults
 
