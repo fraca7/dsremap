@@ -1,4 +1,6 @@
 
+General:
+
 * Remap buttons action
 * Macros
 * Documentation
@@ -8,4 +10,10 @@
 * Codesign mac OS binary
 * Common subexpr elimination
 * Optimization pass
+
+Bluetooth:
+
+* Support multiple interfaces
+* Better defaults
+* Asynchronous write with a ring buffer of outgoing packets
 
