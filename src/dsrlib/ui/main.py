@@ -15,7 +15,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 from dsrlib import resources # pylint: disable=W0611
 from dsrlib.meta import Meta
 from dsrlib.settings import Settings
-from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter, Changelog
+from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter, Changelog, ZeroconfEnumerator
 from dsrlib.ui.hexuploader import FirstLaunchWizard
 from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
@@ -47,10 +47,13 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
+        manager = QtNetwork.QNetworkAccessManager(self)
+
         self._workspace = Workspace()
         self.setCentralWidget(WorkspaceView(self, mainWindow=self, workspace=self._workspace))
         self._workspace.load()
-        self._enum = HIDEnumerator()
+        self._hidenum = HIDEnumerator()
+        self._zcenum = ZeroconfEnumerator(manager)
 
         self.setWindowTitle(_('{appName} v{appVersion}').format(appName=Meta.appName(), appVersion=str(Meta.appVersion())))
         self.statusBar()
@@ -69,8 +72,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.menuBar().addMenu(editmenu)
 
         upmenu = QtWidgets.QMenu(_('Upload'), self)
-        upmenu.addMenu(uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._enum))
+        upmenu.addMenu(uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._hidenum))
         upmenu.addAction(uicommands.UpdateHexUICommand(self, mainWindow=self))
+        upmenu.addMenu(uicommands.PairMenu(self, mainWindow=self, enumerator=self._zcenum, hidenum=self._hidenum))
         self.menuBar().addMenu(upmenu)
 
         helpmenu = QtWidgets.QMenu(_('Help'), self)
@@ -84,7 +88,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.resize(1280, 600)
             self.centralWidget().loadState(settings)
 
-        self._enum.start()
+        self._hidenum.start()
+        self._zcenum.start()
         self.raise_()
         self.show()
 
@@ -94,7 +99,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.check()
 
-        manager = QtNetwork.QNetworkAccessManager(self)
         self._changelogReply = manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
         self._changelogReply.finished.connect(self._onChangelogReply)
 
@@ -105,7 +109,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._workspace.save()
         self._workspace.cleanup()
 
-        self._enum.cancel()
+        self._hidenum.cancel()
+        self._zcenum.shutdown()
 
         if self._changelogReply:
             self._changelogReply.abort()
@@ -191,7 +196,7 @@ class MainWindow(QtWidgets.QMainWindow):
             logger = logging.getLogger('dsremap')
             status = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
             if status != 200:
-                logger.warning('Got status %d while downloading changelog', status)
+                logger.warning('Got status %s while downloading changelog', status)
                 return
             changelog = Changelog(bytes(reply.readAll()).decode('utf-8'))
 

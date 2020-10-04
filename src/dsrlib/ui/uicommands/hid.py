@@ -30,14 +30,16 @@ class UploadConfigurationsUICommand(WorkspaceMixin, UICommand):
 class UploadMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
     def __init__(self, parent, *, enumerator, **kwargs):
         super().__init__(_('Upload configurations to'), parent, **kwargs)
-        enumerator.deviceAdded.connect(self._deviceAdded)
-        enumerator.deviceRemoved.connect(self._deviceRemoved)
         self._devices = []
 
         self._dummy = self.addAction(_('No devices detected'))
         self._dummy.setEnabled(False)
 
-    def _deviceAdded(self, dev):
+        enumerator.connect(self)
+
+    def onDeviceAdded(self, dev):
+        if dev.fwVersion is None:
+            return
         if Meta.firmwareVersion() != dev.fwVersion:
             QtWidgets.QMessageBox.warning(self.mainWindow(),
                                           _('Firmware version mismatch'),
@@ -51,7 +53,7 @@ class UploadMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
         uicmd = UploadConfigurationsUICommand(self, device=dev, mainWindow=self.mainWindow(), workspace=self.workspace())
         self.addAction(uicmd)
 
-    def _deviceRemoved(self, dev):
+    def onDeviceRemoved(self, dev):
         for index, other in enumerate(self._devices):
             if other.path == dev.path:
                 break

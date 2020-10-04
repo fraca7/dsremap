@@ -12,7 +12,7 @@ from .base import UICommand
 
 class UpdateHexUICommand(UICommand):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, text=_('Update firmware'), tip=_('Program the microcontroller with DSRemap firmware'), **kwargs)
+        super().__init__(*args, text=_('Update Arduino firmware'), tip=_('Program the microcontroller with DSRemap firmware (if you use an Arduino)'), **kwargs)
 
     def do(self):
         wizard = HexUploaderWizard(self.mainWindow())
