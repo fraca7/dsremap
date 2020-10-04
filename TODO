@@ -15,5 +15,4 @@ Bluetooth:
 
 * Support multiple interfaces
 * Better defaults
-* Asynchronous write with a ring buffer of outgoing packets
 
