@@ -17,8 +17,6 @@ set -e
 
 case "$1" in
     start)
-	service bluetooth stop
-	hciconfig hci0 up pscan
 	nohup /usr/bin/python3 /opt/dsremap/server > /dev/null 2>&1 &
 	;;
     *)
