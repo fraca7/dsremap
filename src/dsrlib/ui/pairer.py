@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 import hid
 
 from dsrlib.domain import HIDDeviceWorker
+from dsrlib.ui.utils import LayoutBuilder
 
 
 class WaitDualshockPage(QtWidgets.QWizardPage):
@@ -20,6 +21,13 @@ class WaitDualshockPage(QtWidgets.QWizardPage):
 
         self.setTitle(_('Waiting for Dualshock'))
         self.setSubTitle(_('First, please plug your Dualshock controller to this PC using an USB cable.'))
+
+        bld = LayoutBuilder(self)
+        with bld.vbox() as layout:
+            img = QtWidgets.QLabel(self)
+            img.setPixmap(QtGui.QPixmap(':images/dualshock_pc.jpg'))
+            img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
+            layout.addWidget(img)
 
     def initializePage(self):
         self._found = False
