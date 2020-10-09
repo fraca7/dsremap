@@ -53,7 +53,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(WorkspaceView(self, mainWindow=self, workspace=self._workspace))
         self._workspace.load()
         self._hidenum = HIDEnumerator()
-        self._zcenum = ZeroconfEnumerator(manager)
+        self._zcenum = ZeroconfEnumerator()
 
         self.setWindowTitle(_('{appName} v{appVersion}').format(appName=Meta.appName(), appVersion=str(Meta.appVersion())))
         self.statusBar()

@@ -78,7 +78,7 @@ class PairHostPage(QtWidgets.QWizardPage):
         dev = self.wizard().device()
         url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.info.server, dev.info.port))
         query = QtCore.QUrlQuery()
-        query.addQueryItem('interface', dev.btinfo['bt_interfaces'][0])
+        query.addQueryItem('interface', self.wizard().dongle())
         url.setQuery(query)
         self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
         self._reply.finished.connect(self._onQueryResponse)
@@ -87,6 +87,8 @@ class PairHostPage(QtWidgets.QWizardPage):
         if self._state == self.STATE_CONTACTING:
             status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
             if status == 200:
+                data = json.loads(bytes(self._reply.readAll()).decode('utf-8'))
+                self.wizard().setDongle(data['bt_interfaces'][0])
                 self._pair()
             else:
                 self._retryCount += 1
@@ -193,7 +195,7 @@ class PairControllerPage(QtWidgets.QWizardPage):
         dev = self.wizard().device()
         url = QtCore.QUrl('http://%s:%d/setup_ds4' % (dev.info.server, dev.info.port))
         query = QtCore.QUrlQuery()
-        query.addQueryItem('interface', dev.btinfo['bt_interfaces'][0])
+        query.addQueryItem('interface', self.wizard().dongle())
         query.addQueryItem('ds4', macaddr)
         query.addQueryItem('link_key', self.wizard().linkKey())
         url.setQuery(query)
@@ -235,6 +237,7 @@ class PairingWizard(QtWidgets.QWizard):
         self._device = device
         self._dualshock = None
         self._linkkey = None
+        self._dongle = None
 
         self.setWizardStyle(self.MacStyle)
 
@@ -271,3 +274,9 @@ class PairingWizard(QtWidgets.QWizard):
 
     def linkKey(self):
         return self._linkkey
+
+    def setDongle(self, addr):
+        self._dongle = addr
+
+    def dongle(self):
+        return self._dongle
