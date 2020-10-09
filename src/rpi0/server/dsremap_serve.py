@@ -54,6 +54,11 @@ class DSRemapServer:
             fileobj.write('Type=4\n')
 
     async def on_startup(self, app):
+        proc = await asyncio.create_subprocess_shell('service bluetooth stop')
+        await proc.communicate()
+        if proc.returncode:
+            self.logger.warning('Cannot stop bluetooth service')
+
         await self.start_proxy()
 
     async def on_shutdown(self, app):
@@ -63,6 +68,21 @@ class DSRemapServer:
         info = self.current_pairing()
         if 'ds4' not in info or 'ps4' not in info:
             return
+
+        # I have no idea what the BT service does but it seems to do something.
+        proc = await asyncio.create_subprocess_shell('service bluetooth start')
+        await proc.communicate()
+        if proc.returncode:
+            self.logger.warning('Cannot start bluetooth service')
+        proc = await asyncio.create_subprocess_shell('service bluetooth stop')
+        await proc.communicate()
+        if proc.returncode:
+            self.logger.warning('Cannot stop bluetooth service')
+        proc = await asyncio.create_subprocess_shell('hciconfig hci0 up pscan')
+        await proc.communicate()
+        if proc.returncode:
+            self.logger.warning('Cannot reconfigure interface')
+
         self.logger.info('Starting proxy')
         self.proxy = await asyncio.create_subprocess_exec('/opt/dsremap/proxy',
                                                           '-h', info['ps4']['addr'],
