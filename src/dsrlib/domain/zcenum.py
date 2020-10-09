@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import json
 import logging
-import functools
 
-from PyQt5 import QtCore, QtNetwork
+from PyQt5 import QtCore
 import zeroconf
 
 
@@ -51,13 +49,13 @@ class ZeroconfEnumerator(QtCore.QObject):
     def shutdown(self):
         self._zeroconf.close()
 
-    def add_service(self, zc, type_, name):
+    def add_service(self, zc, type_, name): # pylint: disable=C0103
         info = zc.get_service_info(type_, name)
         self._added.emit(info)
 
-    def remove_service(self, zc, type_, name):
+    def remove_service(self, zc, type_, name): # pylint: disable=C0103
         info = zc.get_service_info(type_, name)
         self._removed.emit(info)
 
-    def update_service(self, zc, type_, name):
+    def update_service(self, zc, type_, name): # pylint: disable=C0103
         pass

@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
 
-import struct
-import hashlib
-import time
 import binascii
 import json
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
-
-import hid
 
 from dsrlib.domain import HIDDeviceWorker
 from dsrlib.ui.utils import LayoutBuilder
@@ -53,6 +48,7 @@ class PairHostPage(QtWidgets.QWizardPage):
         self.setSubTitle(_('Connecting...'))
         self._message.hide()
         self._mgr = QtNetwork.QNetworkAccessManager(self)
+        self._reply = None
         self._retryCount = 0
         self._timer = QtCore.QTimer(self)
         self._timer.setSingleShot(True)
