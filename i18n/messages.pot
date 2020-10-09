@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-04 16:42+0200\n"
+"POT-Creation-Date: 2020-10-09 10:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -386,36 +386,68 @@ msgstr ""
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:21
+#: src/dsrlib/ui/pairer.py:22
 msgid "Waiting for Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:22
+#: src/dsrlib/ui/pairer.py:23
 msgid "First, please plug your Dualshock controller to this PC using an USB cable."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:55
+#: src/dsrlib/ui/pairer.py:63
 msgid "Pairing controller"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:56
+#: src/dsrlib/ui/pairer.py:64
 msgid "Pairing the controller, please wait..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:67
+#: src/dsrlib/ui/pairer.py:75
 msgid "Obtaining MAC address..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:82
+#: src/dsrlib/ui/pairer.py:90
 msgid "Uploading pairing info..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:97
+#: src/dsrlib/ui/pairer.py:105
 msgid "Error contacting the device: {status}"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:105
+#: src/dsrlib/ui/pairer.py:113
 msgid "Pairing the controller..."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:128
+msgid "Preparing to pair the PS4"
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:129
+msgid "You can now unplug the DualShock controller. Next, power on your PS4 and plug the Raspberry Pi to it. Click Next when it is done."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:147
+msgid "Pairing PS4"
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:160
+msgid "Connecting..."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:201
+msgid "Something went wrong (cannot connect to the Pi)."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:213
+msgid "An error occured while pairing the PS4."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:216
+msgid "PS4 paired. You can unplug the Raspberry Pi from it."
+msgstr ""
+
+#: src/dsrlib/ui/pairer.py:218
+msgid "Cannot connect to the Raspberry Pi."
 msgstr ""
 
 #: src/dsrlib/ui/settings.py:117

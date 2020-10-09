@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-10-04 16:42+0200\n"
-"PO-Revision-Date: 2020-10-04 16:45+0200\n"
+"POT-Creation-Date: 2020-10-09 10:48+0200\n"
+"PO-Revision-Date: 2020-10-09 10:51+0200\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -431,40 +431,77 @@ msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
 "règles udev."
 
-#: src/dsrlib/ui/pairer.py:21
+#: src/dsrlib/ui/pairer.py:22
 msgid "Waiting for Dualshock"
 msgstr "En attente de la Dualshock"
 
-#: src/dsrlib/ui/pairer.py:22
+#: src/dsrlib/ui/pairer.py:23
 msgid ""
 "First, please plug your Dualshock controller to this PC using an USB cable."
 msgstr ""
 "Tout d'abord, veuillez brancher votre contrôleur Dualshock à ce PC en "
 "utilisant un câble USB."
 
-#: src/dsrlib/ui/pairer.py:55
+#: src/dsrlib/ui/pairer.py:63
 msgid "Pairing controller"
 msgstr "Appairement du contrôleur"
 
-#: src/dsrlib/ui/pairer.py:56
+#: src/dsrlib/ui/pairer.py:64
 msgid "Pairing the controller, please wait..."
 msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
 
-#: src/dsrlib/ui/pairer.py:67
+#: src/dsrlib/ui/pairer.py:75
 msgid "Obtaining MAC address..."
 msgstr "Obtention de l'adresse MAC..."
 
-#: src/dsrlib/ui/pairer.py:82
+#: src/dsrlib/ui/pairer.py:90
 msgid "Uploading pairing info..."
 msgstr "Téléversement des informations d'appairement..."
 
-#: src/dsrlib/ui/pairer.py:97
+#: src/dsrlib/ui/pairer.py:105
 msgid "Error contacting the device: {status}"
 msgstr "Erreur du périphérique: {status}"
 
-#: src/dsrlib/ui/pairer.py:105
+#: src/dsrlib/ui/pairer.py:113
 msgid "Pairing the controller..."
 msgstr "Appairement du contrôleur..."
+
+#: src/dsrlib/ui/pairer.py:128
+msgid "Preparing to pair the PS4"
+msgstr "Préparation de l'appairement de la PS4"
+
+#: src/dsrlib/ui/pairer.py:129
+msgid ""
+"You can now unplug the DualShock controller. Next, power on your PS4 and "
+"plug the Raspberry Pi to it. Click Next when it is done."
+msgstr ""
+"Vous pouvez maintenant débrancher le contrôleur DualShock. Ensuite, allumez "
+"votre PS4 et branchez-y le Raspberry Pi. Cliquez sur Continuer lorsque c'est "
+"fait."
+
+#: src/dsrlib/ui/pairer.py:147
+msgid "Pairing PS4"
+msgstr "Appairement de la PS4"
+
+#: src/dsrlib/ui/pairer.py:160
+msgid "Connecting..."
+msgstr "Connexion en cours..."
+
+#: src/dsrlib/ui/pairer.py:201
+msgid "Something went wrong (cannot connect to the Pi)."
+msgstr "Quelque chose s'est mal passé (impossible de se connecter au Pi)"
+
+#: src/dsrlib/ui/pairer.py:213
+msgid "An error occured while pairing the PS4."
+msgstr "Une erreur s'est produite lors de l'appairement de la PS4."
+
+#: src/dsrlib/ui/pairer.py:216
+msgid "PS4 paired. You can unplug the Raspberry Pi from it."
+msgstr "PS4 appariée. Vous pouvez la débrancher du Pi."
+
+#: src/dsrlib/ui/pairer.py:218
+msgid "Cannot connect to the Raspberry Pi."
+msgstr "Impossible de se connecter au Raspberry Pi."
 
 #: src/dsrlib/ui/settings.py:117
 msgid "Autodetect"

@@ -121,6 +121,106 @@ class PairControllerPage(QtWidgets.QWizardPage):
         self.wizard().button(self.wizard().NextButton).click()
 
 
+class PairHostWaitPage(QtWidgets.QWizardPage):
+    def __init__(self, parent):
+        super().__init__(parent)
+
+        self.setTitle(_('Preparing to pair the PS4'))
+        self.setSubTitle(_('You can now unplug the DualShock controller. Next, power on your PS4 and plug the Raspberry Pi to it. Click Next when it is done.'))
+
+        bld = LayoutBuilder(self)
+        with bld.vbox() as layout:
+            img = QtWidgets.QLabel(self)
+            img.setPixmap(QtGui.QPixmap(':images/rpi_ps4.jpg'))
+            img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
+            layout.addWidget(img)
+
+
+class PairHostPage(QtWidgets.QWizardPage):
+    STATE_CONTACTING = 0
+    STATE_WAITING = 1
+    STATE_PAIRING = 2
+    STATE_DONE = 3
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setTitle(_('Pairing PS4'))
+
+        bld = LayoutBuilder(self)
+        with bld.vbox() as layout:
+            self._message = QtWidgets.QTextEdit(self)
+            self._message.setReadOnly(True)
+            layout.addWidget(self._message)
+
+    def isComplete(self):
+        return self._state == self.STATE_DONE
+
+    def initializePage(self):
+        self._state = self.STATE_CONTACTING
+        self.setSubTitle(_('Connecting...'))
+        self._message.hide()
+        self._mgr = QtNetwork.QNetworkAccessManager(self)
+        self._retryCount = 0
+        self._timer = QtCore.QTimer(self)
+        self._timer.setSingleShot(True)
+        self._timer.timeout.connect(self._getInfo)
+        self._getInfo()
+
+    def cleanupPage(self):
+        if self._reply is not None:
+            self._reply.abort()
+            self._reply = None
+        if self._state == self.STATE_WAITING:
+            self._timer.stop()
+
+    def _getInfo(self):
+        self._state = self.STATE_CONTACTING
+        dev = self.wizard().device()
+        url = QtCore.QUrl('http://%s:%d/info' % (dev.info.server, dev.info.port))
+        self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
+        self._reply.finished.connect(self._onQueryResponse)
+
+    def _pair(self):
+        self._state = self.STATE_PAIRING
+        dev = self.wizard().device()
+        url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.info.server, dev.info.port))
+        query = QtCore.QUrlQuery()
+        query.addQueryItem('interface', dev.btinfo['bt_interfaces'][0])
+        url.setQuery(query)
+        self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
+        self._reply.finished.connect(self._onQueryResponse)
+
+    def _onQueryResponse(self):
+        if self._state == self.STATE_CONTACTING:
+            status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
+            if status == 200:
+                self._pair()
+            else:
+                self._retryCount += 1
+                if self._retryCount == 10:
+                    self.setSubTitle(_('Something went wrong (cannot connect to the Pi).'))
+                    self._state = self.STATE_DONE
+                    self.completeChanged.emit()
+                    return
+                self._reply = None
+                self._state = self.STATE_WAITING
+                self._timer.start(5000)
+        elif self._state == self.STATE_PAIRING:
+            status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
+            if status == 200:
+                data = json.loads(bytes(self._reply.readAll()).decode('utf-8'))
+                if data['status'] == 'ko':
+                    self.setSubTitle(_('An error occured while pairing the PS4.'))
+                    self._message.setPlainText(data['stderr'])
+                else:
+                    self.setSubTitle(_('PS4 paired. You can unplug the Raspberry Pi from it.'))
+            else:
+                self.setSubTitle(_('Cannot connect to the Raspberry Pi.'))
+
+            self._state = self.STATE_DONE
+            self.completeChanged.emit()
+
+
 class DummyPage(QtWidgets.QWizardPage):
     pass
 
@@ -141,6 +241,8 @@ class PairingWizard(QtWidgets.QWizard):
             self.addPage(WaitDualshockPage(self, enumerator))
 
         self.addPage(PairControllerPage(self))
+        self.addPage(PairHostWaitPage(self))
+        self.addPage(PairHostPage(self))
         self.addPage(DummyPage(self))
 
         icon = QtGui.QIcon(':icons/gamepad.svg')
