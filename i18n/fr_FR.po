@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-08-23 12:07+0200\n"
-"PO-Revision-Date: 2020-08-23 12:09+0200\n"
+"POT-Creation-Date: 2020-10-04 16:42+0200\n"
+"PO-Revision-Date: 2020-10-04 16:45+0200\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/dsrlib/domain/actions/axis.py:25
@@ -158,7 +158,7 @@ msgstr "{appname} v{appversion}"
 msgid "Done"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:65
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:68
 msgid "Edit"
 msgstr "Édition"
 
@@ -166,7 +166,7 @@ msgstr "Édition"
 msgid "New release available"
 msgstr "Une nouvelle version est disponible"
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:223
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:229
 msgid "OK"
 msgstr "OK"
 
@@ -255,7 +255,7 @@ msgstr ""
 "\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
 
 #: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
-#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:220
+#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:226
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr "Annuler"
@@ -345,31 +345,31 @@ msgstr ""
 msgid "Skip"
 msgstr "Passer"
 
-#: src/dsrlib/ui/main.py:55
+#: src/dsrlib/ui/main.py:58
 msgid "{appName} v{appVersion}"
 msgstr "{appName} v{appVersion}"
 
-#: src/dsrlib/ui/main.py:58
+#: src/dsrlib/ui/main.py:61
 msgid "File"
 msgstr "Fichier"
 
-#: src/dsrlib/ui/main.py:71
+#: src/dsrlib/ui/main.py:74
 msgid "Upload"
 msgstr "Téléverser"
 
-#: src/dsrlib/ui/main.py:76
+#: src/dsrlib/ui/main.py:80
 msgid "Help"
 msgstr "Aide"
 
-#: src/dsrlib/ui/main.py:135
+#: src/dsrlib/ui/main.py:140
 msgid "<i>groups</i> exited with code {code}"
 msgstr "<b>avrdude</b> s’est terminé avec le code {code}."
 
-#: src/dsrlib/ui/main.py:138
+#: src/dsrlib/ui/main.py:143
 msgid "Cannot find groups"
 msgstr "Impossible de déterminer les groupes"
 
-#: src/dsrlib/ui/main.py:138
+#: src/dsrlib/ui/main.py:143
 msgid ""
 "Unable to find out which groups you belong to:<p />{error}<p />For this "
 "program to work correctly, you must belong to the <i>plugdev</i> group."
@@ -378,22 +378,22 @@ msgstr ""
 ">Pour que ce programme fonctionne correctement, vous devez appartenir au "
 "groupe <i>plugdev</i>."
 
-#: src/dsrlib/ui/main.py:148
+#: src/dsrlib/ui/main.py:153
 msgid ""
 "The following operations must be done before this program can work correctly:"
 msgstr ""
 "Les opérations suivantes doivent être exécutées pour que ce programme "
 "fonctionne correctement:"
 
-#: src/dsrlib/ui/main.py:150
+#: src/dsrlib/ui/main.py:155
 msgid "Install udev rules to allow HID communication"
 msgstr "Installation des règles udev pour les communications HID"
 
-#: src/dsrlib/ui/main.py:152
+#: src/dsrlib/ui/main.py:157
 msgid "Add you to the <i>plugdev</i> group"
 msgstr "Vous ajouter au groupe <i>plugdev</i>"
 
-#: src/dsrlib/ui/main.py:155
+#: src/dsrlib/ui/main.py:160
 msgid ""
 "You may have to logout and login again, or even reboot, and unplug/replug "
 "the Arduino for those changes to apply."
@@ -401,35 +401,70 @@ msgstr ""
 "Vous aurez peut-être à vous déconnecter, voire redémarrer, et débrancher/"
 "rebrancher l'Arduino pour que ces modifications soient effectives."
 
-#: src/dsrlib/ui/main.py:157
+#: src/dsrlib/ui/main.py:162
 msgid "You may be prompted for your password."
 msgstr "Vous aurez peut-être à fournir votre mot de passe."
 
-#: src/dsrlib/ui/main.py:159
+#: src/dsrlib/ui/main.py:164
 msgid "System setup"
 msgstr "Configuration du système"
 
-#: src/dsrlib/ui/main.py:169
+#: src/dsrlib/ui/main.py:174
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
 
-#: src/dsrlib/ui/main.py:169 src/dsrlib/ui/main.py:171
+#: src/dsrlib/ui/main.py:174 src/dsrlib/ui/main.py:176
 msgid "Error"
 msgstr "Erreur"
 
-#: src/dsrlib/ui/main.py:171
+#: src/dsrlib/ui/main.py:176
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr "La commande a échoué avec le code de retour {code}.<p />{stderr}"
 
-#: src/dsrlib/ui/main.py:208
+#: src/dsrlib/ui/main.py:214
 msgid "Password needed"
 msgstr "Mot de passe nécessaire"
 
-#: src/dsrlib/ui/main.py:216
+#: src/dsrlib/ui/main.py:222
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
 "règles udev."
+
+#: src/dsrlib/ui/pairer.py:21
+msgid "Waiting for Dualshock"
+msgstr "En attente de la Dualshock"
+
+#: src/dsrlib/ui/pairer.py:22
+msgid ""
+"First, please plug your Dualshock controller to this PC using an USB cable."
+msgstr ""
+"Tout d'abord, veuillez brancher votre contrôleur Dualshock à ce PC en "
+"utilisant un câble USB."
+
+#: src/dsrlib/ui/pairer.py:55
+msgid "Pairing controller"
+msgstr "Appairement du contrôleur"
+
+#: src/dsrlib/ui/pairer.py:56
+msgid "Pairing the controller, please wait..."
+msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
+
+#: src/dsrlib/ui/pairer.py:67
+msgid "Obtaining MAC address..."
+msgstr "Obtention de l'adresse MAC..."
+
+#: src/dsrlib/ui/pairer.py:82
+msgid "Uploading pairing info..."
+msgstr "Téléversement des informations d'appairement..."
+
+#: src/dsrlib/ui/pairer.py:97
+msgid "Error contacting the device: {status}"
+msgstr "Erreur du périphérique: {status}"
+
+#: src/dsrlib/ui/pairer.py:105
+msgid "Pairing the controller..."
+msgstr "Appairement du contrôleur..."
 
 #: src/dsrlib/ui/settings.py:117
 msgid "Autodetect"
@@ -462,6 +497,18 @@ msgstr "Refaire"
 #: src/dsrlib/ui/uicommands/base.py:29
 msgid "Redo last undone action"
 msgstr "Refaire la dernière action défaite"
+
+#: src/dsrlib/ui/uicommands/bt.py:13
+msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
+msgstr "Appairer une Dualshock 4 et une PS4 à ce périphérique DSRemap"
+
+#: src/dsrlib/ui/uicommands/bt.py:24
+msgid "Pair"
+msgstr "Appairement"
+
+#: src/dsrlib/ui/uicommands/bt.py:30 src/dsrlib/ui/uicommands/hid.py:35
+msgid "No devices detected"
+msgstr "Aucun périphérique détecté"
 
 #: src/dsrlib/ui/uicommands/configuration.py:16
 msgid "Add an action to invert an axis"
@@ -517,15 +564,11 @@ msgstr "Envoyer les configurations activées à l’EEPROM du périphérique {na
 msgid "Upload configurations to"
 msgstr "Téléverser les configurations vers"
 
-#: src/dsrlib/ui/uicommands/hid.py:37
-msgid "No devices detected"
-msgstr "Aucun périphérique détecté"
-
-#: src/dsrlib/ui/uicommands/hid.py:43
+#: src/dsrlib/ui/uicommands/hid.py:45
 msgid "Firmware version mismatch"
 msgstr "Différence de version du microcode"
 
-#: src/dsrlib/ui/uicommands/hid.py:44
+#: src/dsrlib/ui/uicommands/hid.py:46
 msgid ""
 "A {appname}-enabled device was plugged, but the firmware version v{version1} "
 "does not match the one supported by this application (v{version2}). Please "
@@ -588,12 +631,15 @@ msgid ""
 msgstr "Impossible d’exporter le code à octets: {error}"
 
 #: src/dsrlib/ui/uicommands/misc.py:15
-msgid "Program the microcontroller with DSRemap firmware"
-msgstr "Programmer le microcontrôleur avec le microcode DSRemap"
+msgid ""
+"Program the microcontroller with DSRemap firmware (if you use an Arduino)"
+msgstr ""
+"Programmer le microcontrôleur avec le microcode DSRemap (si vous utilisez un "
+"Arduino)"
 
 #: src/dsrlib/ui/uicommands/misc.py:15
-msgid "Update firmware"
-msgstr "Mise à jour du microcode"
+msgid "Update Arduino firmware"
+msgstr "Mise à jour du microcode de l'Arduino"
 
 #: src/dsrlib/ui/uicommands/misc.py:24
 msgid "About {appname}..."

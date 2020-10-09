@@ -4,3 +4,4 @@ pyqtcmd
 qscintilla
 pyserial
 hidapi
+zeroconf

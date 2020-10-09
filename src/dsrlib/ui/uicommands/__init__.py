@@ -6,3 +6,4 @@ from .workspace import AddConfigurationButton, DeleteConfigurationsButton
 from .hid import UploadMenu
 from .misc import UpdateHexUICommand, ShowAboutDialogUICommand, ShowSettingsDialogUICommand, OpenDocsUICommand
 from .io import ExportConfigurationUICommand, ImportConfigurationUICommand, ExportBytecodeUICommand
+from .bt import PairMenu

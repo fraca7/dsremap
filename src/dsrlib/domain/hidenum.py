@@ -72,9 +72,24 @@ class HIDEnumerator(QtCore.QThread):
         self._devices = dict()
         self._stop = False
 
+    def __iter__(self):
+        return self._devices.values().__iter__()
+
     def cancel(self):
         self._stop = True
         self.wait()
+
+    def connect(self, target):
+        for dev in self._devices.values():
+            target.onDeviceAdded(dev)
+        self.deviceAdded.connect(target.onDeviceAdded)
+        self.deviceRemoved.connect(target.onDeviceRemoved)
+
+    def disconnect(self, target):
+        self.deviceAdded.disconnect(target.onDeviceAdded)
+        self.deviceRemoved.disconnect(target.onDeviceRemoved)
+        for dev in self._devices.values():
+            target.onDeviceRemoved(dev)
 
     def run(self):
         while not self._stop:
@@ -98,6 +113,8 @@ class HIDEnumerator(QtCore.QThread):
                             handle.close()
                     except: # pylint: disable=W0702
                         self.logger.exception('Device %04x/%04x does not answer report 0x22', dev.vid, dev.pid)
+                        self._devices[device['path']] = dev
+                        self.deviceAdded.emit(dev)
             for path, dev in list(self._devices.items()):
                 if path not in found:
                     self.logger.info('Device %04x/%04x unplugged', dev.vid, dev.pid)
