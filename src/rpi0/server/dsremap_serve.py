@@ -104,7 +104,7 @@ class DSRemapServer:
         return web.json_response({'status': 'ok', 'interface': dongle, 'ds4': ds4, 'link_key': key})
 
     async def handle_setup_ps4(self, request):
-        dongle = request.query('interface')
+        dongle = request.query['interface']
 
         proc = await asyncio.create_subprocess_exec('/opt/dsremap/pairing', '-d', dongle, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = await proc.communicate()
