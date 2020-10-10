@@ -65,7 +65,7 @@ class ZeroconfEnumerator(QtCore.QObject):
         info = zc.get_service_info(type_, name)
         self._added.emit(info)
 
-    def remove_service(self, zc, type_, name): # pylint: disable=C0103
+    def remove_service(self, zc, type_, name): # pylint: disable=C0103,W0613
         self._removed.emit(name)
 
     def update_service(self, zc, type_, name): # pylint: disable=C0103
