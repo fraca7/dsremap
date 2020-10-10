@@ -54,9 +54,9 @@ class ZeroconfEnumerator(QtCore.QObject):
         self._items.append(dev)
         self.deviceAdded.emit(dev)
 
-    def _onRemoved(self, info):
+    def _onRemoved(self, name):
         for dev in self._items:
-            if (dev.name, dev.addr, dev.port) == (info.name, info.server, info.port):
+            if dev.name == name:
                 self.deviceRemoved.emit(dev)
                 self._items.remove(dev)
                 break
@@ -66,8 +66,7 @@ class ZeroconfEnumerator(QtCore.QObject):
         self._added.emit(info)
 
     def remove_service(self, zc, type_, name): # pylint: disable=C0103
-        info = zc.get_service_info(type_, name)
-        self._removed.emit(info)
+        self._removed.emit(name)
 
     def update_service(self, zc, type_, name): # pylint: disable=C0103
         pass
