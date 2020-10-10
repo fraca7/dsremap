@@ -5,6 +5,5 @@ from .configuration import Configuration
 from .mixins import ConfigurationMixin, WorkspaceMixin
 from .workspace import Workspace
 from .persistence import JSONReader, JSONWriter, JSONImporter
-from .hidenum import HIDEnumerator, HIDDevice, HIDDeviceWorker
 from .changelog import Changelog
-from .zcenum import ZeroconfEnumerator
+from .device import DeviceEnumerator

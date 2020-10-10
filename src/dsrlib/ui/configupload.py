@@ -5,7 +5,6 @@ import struct
 
 from PyQt5 import QtCore, QtWidgets
 
-from dsrlib.domain.hidenum import HIDDeviceWorker
 from dsrlib.domain.mixins import WorkspaceMixin
 
 from .utils import LayoutBuilder
@@ -17,7 +16,7 @@ class ConfigurationUploader(WorkspaceMixin, QtWidgets.QDialog):
         self._progress = QtWidgets.QProgressBar(self)
         self._bytecode = self.workspace().bytecode()
         self._offset = 0
-        self._worker = HIDDeviceWorker(device)
+        self._worker = device.worker()
         self._crc = zlib.crc32(self._bytecode)
 
         self._progress.setMinimum(0)

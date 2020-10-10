@@ -15,7 +15,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 from dsrlib import resources # pylint: disable=W0611
 from dsrlib.meta import Meta
 from dsrlib.settings import Settings
-from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter, Changelog, ZeroconfEnumerator
+from dsrlib.domain import Workspace, DeviceEnumerator, JSONImporter, Changelog
 from dsrlib.ui.hexuploader import FirstLaunchWizard
 from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
@@ -52,8 +52,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self._workspace = Workspace()
         self.setCentralWidget(WorkspaceView(self, mainWindow=self, workspace=self._workspace))
         self._workspace.load()
-        self._hidenum = HIDEnumerator()
-        self._zcenum = ZeroconfEnumerator()
+        self._devenum = DeviceEnumerator()
 
         self.setWindowTitle(_('{appName} v{appVersion}').format(appName=Meta.appName(), appVersion=str(Meta.appVersion())))
         self.statusBar()
@@ -71,11 +70,8 @@ class MainWindow(QtWidgets.QMainWindow):
         editmenu.addAction(uicommands.ShowSettingsDialogUICommand(self, mainWindow=self))
         self.menuBar().addMenu(editmenu)
 
-        upmenu = QtWidgets.QMenu(_('Upload'), self)
-        upmenu.addMenu(uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._hidenum))
-        upmenu.addAction(uicommands.UpdateHexUICommand(self, mainWindow=self))
-        upmenu.addMenu(uicommands.PairMenu(self, mainWindow=self, enumerator=self._zcenum, hidenum=self._hidenum))
-        self.menuBar().addMenu(upmenu)
+        devmenu = uicommands.DeviceMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
+        self.menuBar().addMenu(devmenu)
 
         helpmenu = QtWidgets.QMenu(_('Help'), self)
         helpmenu.addAction(uicommands.ShowAboutDialogUICommand(self, mainWindow=self))
@@ -88,8 +84,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.resize(1280, 600)
             self.centralWidget().loadState(settings)
 
-        self._hidenum.start()
-        self._zcenum.start()
         self.raise_()
         self.show()
 
@@ -108,9 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         self._workspace.save()
         self._workspace.cleanup()
-
-        self._hidenum.cancel()
-        self._zcenum.shutdown()
+        self._devenum.stop()
 
         if self._changelogReply:
             self._changelogReply.abort()

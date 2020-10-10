@@ -5,8 +5,8 @@ import json
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 
-from dsrlib.domain import HIDDeviceWorker
 from dsrlib.ui.utils import LayoutBuilder
+from dsrlib.domain.device import DeviceVisitor
 
 
 class PairHostWaitPage(QtWidgets.QWizardPage):
@@ -65,14 +65,14 @@ class PairHostPage(QtWidgets.QWizardPage):
     def _getInfo(self):
         self._state = self.STATE_CONTACTING
         dev = self.wizard().device()
-        url = QtCore.QUrl('http://%s:%d/info' % (dev.info.server, dev.info.port))
+        url = QtCore.QUrl('http://%s:%d/info' % (dev.addr, dev.port))
         self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
         self._reply.finished.connect(self._onQueryResponse)
 
     def _pair(self):
         self._state = self.STATE_PAIRING
         dev = self.wizard().device()
-        url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.info.server, dev.info.port))
+        url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.addr, dev.port))
         query = QtCore.QUrlQuery()
         query.addQueryItem('interface', self.wizard().dongle())
         url.setQuery(query)
@@ -137,12 +137,27 @@ class WaitDualshockPage(QtWidgets.QWizardPage):
     def cleanupPage(self):
         self._enumerator.disconnect(self)
 
-    def onDeviceAdded(self, dev):
-        if dev.fwVersion is None:
-            self._found = True
-            self.wizard().setDualshock(dev)
-            self.completeChanged.emit()
-            self.wizard().button(self.wizard().NextButton).click()
+    def onDeviceAdded(self, device):
+        class Visitor(DeviceVisitor):
+            def __init__(self, listener):
+                self.listener = listener
+
+            def acceptArduino(self, dev):
+                pass
+
+            def acceptNetworkDevice(self, dev):
+                pass
+
+            def acceptDualshock(self, dev):
+                self.listener.onDualshockAdded(dev)
+
+        Visitor(self).visit(device)
+
+    def onDualshockAdded(self, device):
+        self._found = True
+        self.wizard().setDualshock(device)
+        self.completeChanged.emit()
+        self.wizard().button(self.wizard().NextButton).click()
 
     def onDeviceRemoved(self, dev):
         pass
@@ -172,7 +187,7 @@ class PairControllerPage(QtWidgets.QWizardPage):
         self._reply = None
 
         self.setSubTitle(_('Obtaining MAC address...'))
-        self._worker = HIDDeviceWorker(self.wizard().dualshock())
+        self._worker = self.wizard().dualshock().worker()
         self._worker.start()
         self._worker.reportReceived.connect(self._onReport)
         self._worker.getReport(0x81, 64)
@@ -189,7 +204,7 @@ class PairControllerPage(QtWidgets.QWizardPage):
         self.setSubTitle(_('Uploading pairing info...'))
 
         dev = self.wizard().device()
-        url = QtCore.QUrl('http://%s:%d/setup_ds4' % (dev.info.server, dev.info.port))
+        url = QtCore.QUrl('http://%s:%d/setup_ds4' % (dev.addr, dev.port))
         query = QtCore.QUrlQuery()
         query.addQueryItem('interface', self.wizard().dongle())
         query.addQueryItem('ds4', macaddr)

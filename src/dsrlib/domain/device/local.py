@@ -1,26 +1,35 @@
 #!/usr/bin/env python3
 
-import time
-import queue
 import logging
+import queue
 import struct
-
-import hid
+import time
 
 from PyQt5 import QtCore
+import hid
 
 from dsrlib.meta import Version
 
 
-class HIDDevice:
+class LocalDevice:
     def __init__(self, path, name, vid, pid):
-        super().__init__()
-
         self.path = path
         self.name = name
         self.vid = vid
         self.pid = pid
-        self.fwVersion = None
+
+    def worker(self):
+        return HIDDeviceWorker(self)
+
+
+class Dualshock(LocalDevice):
+    pass
+
+
+class Arduino(LocalDevice):
+    def __init__(self, path, name, vid, pid, fwVersion):
+        super().__init__(path, name, vid, pid)
+        self.fwVersion = fwVersion
 
 
 class HIDDeviceWorker(QtCore.QThread):
@@ -61,8 +70,8 @@ class HIDDeviceWorker(QtCore.QThread):
 
 
 class HIDEnumerator(QtCore.QThread):
-    deviceAdded = QtCore.pyqtSignal(HIDDevice)
-    deviceRemoved = QtCore.pyqtSignal(HIDDevice)
+    deviceAdded = QtCore.pyqtSignal(LocalDevice)
+    deviceRemoved = QtCore.pyqtSignal(LocalDevice)
 
     logger = logging.getLogger('dsremap.HIDEnumerator')
 
@@ -72,10 +81,7 @@ class HIDEnumerator(QtCore.QThread):
         self._devices = dict()
         self._stop = False
 
-    def __iter__(self):
-        return self._devices.values().__iter__()
-
-    def cancel(self):
+    def stop(self):
         self._stop = True
         self.wait()
 
@@ -97,27 +103,29 @@ class HIDEnumerator(QtCore.QThread):
             for device in hid.enumerate():
                 found.add(device['path'])
                 if device['path'] not in self._devices and device['vendor_id'] == 0x54c:
-                    dev = HIDDevice(device['path'], device['product_string'], device['vendor_id'], device['product_id'])
-                    self.logger.info('Found device %04x/%04x', dev.vid, dev.pid)
+                    vid, pid = device['vendor_id'], device['product_id']
+                    self.logger.info('Found device %04x/%04x', vid, pid)
                     handle = hid.device()
                     try:
                         try:
-                            handle.open(dev.vid, dev.pid)
+                            handle.open(vid, pid)
                             data = bytes(handle.get_feature_report(0x80, 7))
                             # Looks like on Windows we get "aligned" buffers (length 8 here)
                             _, major, minor, patch = struct.unpack('<BHHH', data[:7])
-                            dev.fwVersion = Version(major, minor, patch)
-                            self._devices[device['path']] = dev
-                            self.deviceAdded.emit(dev)
+                            dev = Arduino(device['path'], device['product_string'], vid, pid, Version(major, minor, patch))
                         finally:
                             handle.close()
                     except: # pylint: disable=W0702
-                        self.logger.exception('Device %04x/%04x does not answer report 0x22', dev.vid, dev.pid)
-                        self._devices[device['path']] = dev
-                        self.deviceAdded.emit(dev)
+                        self.logger.info('Device %04x/%04x does not answer report 0x22', dev.vid, dev.pid)
+                        dev = Dualshock(device['path'], device['product_string'], vid, pid)
+
+                    self._devices[device['path']] = dev
+                    self.deviceAdded.emit(dev)
+
             for path, dev in list(self._devices.items()):
                 if path not in found:
                     self.logger.info('Device %04x/%04x unplugged', dev.vid, dev.pid)
                     del self._devices[path]
                     self.deviceRemoved.emit(dev)
+
             time.sleep(1)
