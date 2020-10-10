@@ -116,7 +116,7 @@ class HIDEnumerator(QtCore.QThread):
                         finally:
                             handle.close()
                     except: # pylint: disable=W0702
-                        self.logger.info('Device %04x/%04x does not answer report 0x22', dev.vid, dev.pid)
+                        self.logger.info('Device %04x/%04x does not answer report 0x22', vid, pid)
                         dev = Dualshock(device['path'], device['product_string'], vid, pid)
 
                     self._devices[device['path']] = dev
