@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-09 12:17+0200\n"
+"POT-Creation-Date: 2020-10-10 14:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,7 +156,7 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
-#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:68
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:67
 msgid "Edit"
 msgstr ""
 
@@ -164,23 +164,23 @@ msgstr ""
 msgid "New release available"
 msgstr ""
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:229
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:221
 msgid "OK"
 msgstr ""
 
-#: src/dsrlib/ui/configupload.py:29
+#: src/dsrlib/ui/configupload.py:28
 msgid "Uploading to {name}..."
 msgstr ""
 
-#: src/dsrlib/ui/configupload.py:57
+#: src/dsrlib/ui/configupload.py:56
 msgid "CRC check..."
 msgstr ""
 
-#: src/dsrlib/ui/configupload.py:65
+#: src/dsrlib/ui/configupload.py:64
 msgid "The CRC check failed. You will probably want to retry."
 msgstr ""
 
-#: src/dsrlib/ui/configupload.py:65
+#: src/dsrlib/ui/configupload.py:64
 msgid "Warning"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgid "You can install <b>avrdude</b> on Windows using <a href=\"https://sourcef
 msgstr ""
 
 #: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
-#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:226
+#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:218
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr ""
@@ -314,143 +314,139 @@ msgstr ""
 msgid "Skip"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:58
+#: src/dsrlib/ui/main.py:57
 msgid "{appName} v{appVersion}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:61
+#: src/dsrlib/ui/main.py:60
 msgid "File"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:74
-msgid "Upload"
-msgstr ""
-
-#: src/dsrlib/ui/main.py:80
+#: src/dsrlib/ui/main.py:76
 msgid "Help"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:140
+#: src/dsrlib/ui/main.py:132
 msgid "<i>groups</i> exited with code {code}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:143
+#: src/dsrlib/ui/main.py:135
 msgid "Cannot find groups"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:143
+#: src/dsrlib/ui/main.py:135
 msgid "Unable to find out which groups you belong to:<p />{error}<p />For this program to work correctly, you must belong to the <i>plugdev</i> group."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:153
+#: src/dsrlib/ui/main.py:145
 msgid "The following operations must be done before this program can work correctly:"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:155
+#: src/dsrlib/ui/main.py:147
 msgid "Install udev rules to allow HID communication"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:157
+#: src/dsrlib/ui/main.py:149
 msgid "Add you to the <i>plugdev</i> group"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:160
+#: src/dsrlib/ui/main.py:152
 msgid "You may have to logout and login again, or even reboot, and unplug/replug the Arduino for those changes to apply."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:162
+#: src/dsrlib/ui/main.py:154
 msgid "You may be prompted for your password."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:164
+#: src/dsrlib/ui/main.py:156
 msgid "System setup"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:174
+#: src/dsrlib/ui/main.py:166
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:174 src/dsrlib/ui/main.py:176
+#: src/dsrlib/ui/main.py:166 src/dsrlib/ui/main.py:168
 msgid "Error"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:176
+#: src/dsrlib/ui/main.py:168
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:206
 msgid "Password needed"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:222
+#: src/dsrlib/ui/main.py:214
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:21
+#: src/dsrlib/ui/pairer.py:16
 msgid "Preparing to pair the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:22
+#: src/dsrlib/ui/pairer.py:17
 msgid "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:40
+#: src/dsrlib/ui/pairer.py:35
 msgid "Pairing PS4"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:53
+#: src/dsrlib/ui/pairer.py:48
 msgid "Connecting..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:94
+#: src/dsrlib/ui/pairer.py:92
 msgid "Something went wrong (cannot connect to the Pi)."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:106
+#: src/dsrlib/ui/pairer.py:104
 msgid "An error occured while pairing the PS4."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:114
+#: src/dsrlib/ui/pairer.py:112
 msgid "Cannot connect to the Raspberry Pi."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:125
+#: src/dsrlib/ui/pairer.py:123
 msgid "Waiting for Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:126
+#: src/dsrlib/ui/pairer.py:124
 msgid "You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:166
+#: src/dsrlib/ui/pairer.py:179
 msgid "Pairing controller"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:167
+#: src/dsrlib/ui/pairer.py:180
 msgid "Pairing the controller, please wait..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:176
+#: src/dsrlib/ui/pairer.py:189
 msgid "Obtaining MAC address..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:191
+#: src/dsrlib/ui/pairer.py:204
 msgid "Uploading pairing info..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:206
+#: src/dsrlib/ui/pairer.py:219
 msgid "Error contacting the device: {status}"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:214
+#: src/dsrlib/ui/pairer.py:227
 msgid "Pairing the controller..."
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:228
+#: src/dsrlib/ui/pairer.py:241
 msgid "Finished"
 msgstr ""
 
-#: src/dsrlib/ui/pairer.py:229
+#: src/dsrlib/ui/pairer.py:242
 msgid "Done. You can unplug the DualShock and press PS to start using it through the proxy."
 msgstr ""
 
@@ -486,16 +482,8 @@ msgstr ""
 msgid "Redo last undone action"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/bt.py:13
+#: src/dsrlib/ui/uicommands/bt.py:10
 msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
-msgstr ""
-
-#: src/dsrlib/ui/uicommands/bt.py:24
-msgid "Pair"
-msgstr ""
-
-#: src/dsrlib/ui/uicommands/bt.py:30 src/dsrlib/ui/uicommands/hid.py:35
-msgid "No devices detected"
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/configuration.py:16
@@ -542,20 +530,24 @@ msgstr ""
 msgid "Convert the selected action to a custom one and open the code editor"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/hid.py:15
-msgid "Send enabled configurations to EEPROM of device {name}"
+#: src/dsrlib/ui/uicommands/device.py:17
+msgid "Devices"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/hid.py:32
-msgid "Upload configurations to"
+#: src/dsrlib/ui/uicommands/device.py:22
+msgid "No device detected"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/hid.py:45
+#: src/dsrlib/ui/uicommands/device.py:66
 msgid "Firmware version mismatch"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/hid.py:46
+#: src/dsrlib/ui/uicommands/device.py:67
 msgid "A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device."
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/hid.py:12
+msgid "Send enabled configurations to EEPROM of device {name}"
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/io.py:18
