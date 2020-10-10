@@ -61,7 +61,6 @@ class MainWindow(QtWidgets.QMainWindow):
         filemenu.addAction(uicommands.ExportConfigurationUICommand(self, mainWindow=self, container=self.centralWidget()))
         filemenu.addAction(uicommands.ImportConfigurationUICommand(self, mainWindow=self, workspace=self._workspace))
         filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace))
-        filemenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))
         self.menuBar().addMenu(filemenu)
 
         editmenu = QtWidgets.QMenu(_('Edit'), self)
@@ -75,6 +74,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         helpmenu = QtWidgets.QMenu(_('Help'), self)
         helpmenu.addAction(uicommands.ShowAboutDialogUICommand(self, mainWindow=self))
+        helpmenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))
         self.menuBar().addMenu(helpmenu)
 
         with Settings().grouped('UIState') as settings:
