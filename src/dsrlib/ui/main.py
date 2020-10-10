@@ -47,7 +47,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-        manager = QtNetwork.QNetworkAccessManager(self)
+        self._manager = QtNetwork.QNetworkAccessManager(self)
 
         self._workspace = Workspace()
         self.setCentralWidget(WorkspaceView(self, mainWindow=self, workspace=self._workspace))
@@ -93,11 +93,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.check()
 
-        self._changelogReply = manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
+        self._changelogReply = self._manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
         self._changelogReply.finished.connect(self._onChangelogReply)
 
     def history(self):
         return self._workspace.history()
+
+    def manager(self):
+        return self._manager
 
     def closeEvent(self, event):
         self._workspace.save()

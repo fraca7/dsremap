@@ -5,6 +5,7 @@ import json
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 
+from dsrlib.ui.mixins import MainWindowMixin
 from dsrlib.ui.utils import LayoutBuilder
 from dsrlib.domain.device import DeviceVisitor
 
@@ -24,14 +25,14 @@ class PairHostWaitPage(QtWidgets.QWizardPage):
             layout.addWidget(img)
 
 
-class PairHostPage(QtWidgets.QWizardPage):
+class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
     STATE_CONTACTING = 0
     STATE_WAITING = 1
     STATE_PAIRING = 2
     STATE_DONE = 3
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
         self.setTitle(_('Pairing PS4'))
 
         bld = LayoutBuilder(self)
@@ -47,7 +48,6 @@ class PairHostPage(QtWidgets.QWizardPage):
         self._state = self.STATE_CONTACTING
         self.setSubTitle(_('Connecting...'))
         self._message.hide()
-        self._mgr = QtNetwork.QNetworkAccessManager(self)
         self._reply = None
         self._retryCount = 0
         self._timer = QtCore.QTimer(self)
@@ -66,7 +66,7 @@ class PairHostPage(QtWidgets.QWizardPage):
         self._state = self.STATE_CONTACTING
         dev = self.wizard().device()
         url = QtCore.QUrl('http://%s:%d/info' % (dev.addr, dev.port))
-        self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
+        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
         self._reply.finished.connect(self._onQueryResponse)
 
     def _pair(self):
@@ -76,7 +76,7 @@ class PairHostPage(QtWidgets.QWizardPage):
         query = QtCore.QUrlQuery()
         query.addQueryItem('interface', self.wizard().dongle())
         url.setQuery(query)
-        self._reply = self._mgr.get(QtNetwork.QNetworkRequest(url))
+        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
         self._reply.finished.connect(self._onQueryResponse)
 
     def _onQueryResponse(self):
@@ -166,15 +166,15 @@ class WaitDualshockPage(QtWidgets.QWizardPage):
         return self._found
 
 
-class PairControllerPage(QtWidgets.QWizardPage):
+class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
     STATE_REPORT = 0
     STATE_NETWORK = 1
     STATE_PAIR = 2
     STATE_ERROR = 3
     STATE_OK = 4
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent, **kwargs):
+        super().__init__(parent, **kwargs)
 
         self.setTitle(_('Pairing controller'))
         self.setSubTitle(_('Pairing the controller, please wait...'))
@@ -198,7 +198,6 @@ class PairControllerPage(QtWidgets.QWizardPage):
 
     def _onReport(self, data):
         macaddr = ':'.join(['%02X' % val for val in reversed(data[1:])])
-        mgr = QtNetwork.QNetworkAccessManager(self)
 
         self._state = self.STATE_NETWORK
         self.setSubTitle(_('Uploading pairing info...'))
@@ -210,7 +209,7 @@ class PairControllerPage(QtWidgets.QWizardPage):
         query.addQueryItem('ds4', macaddr)
         query.addQueryItem('link_key', self.wizard().linkKey())
         url.setQuery(query)
-        self._reply = mgr.get(QtNetwork.QNetworkRequest(url))
+        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
         self._reply.finished.connect(self._onQueryResponse)
 
     def _onQueryResponse(self):
@@ -242,9 +241,9 @@ class FinalPage(QtWidgets.QWizardPage):
         self.setSubTitle(_('Done. You can unplug the DualShock and press PS to start using it through the proxy.'))
 
 
-class PairingWizard(QtWidgets.QWizard):
-    def __init__(self, parent, device, enumerator):
-        super().__init__(parent)
+class PairingWizard(MainWindowMixin, QtWidgets.QWizard):
+    def __init__(self, parent, device, enumerator, **kwargs):
+        super().__init__(parent, **kwargs)
         self._device = device
         self._dualshock = None
         self._linkkey = None
@@ -253,9 +252,9 @@ class PairingWizard(QtWidgets.QWizard):
         self.setWizardStyle(self.MacStyle)
 
         self.addPage(PairHostWaitPage(self))
-        self.addPage(PairHostPage(self))
+        self.addPage(PairHostPage(self, mainWindow=self.mainWindow()))
         self.addPage(WaitDualshockPage(self, enumerator))
-        self.addPage(PairControllerPage(self))
+        self.addPage(PairControllerPage(self, mainWindow=self.mainWindow()))
         self.addPage(FinalPage(self))
 
         icon = QtGui.QIcon(':icons/gamepad.svg')

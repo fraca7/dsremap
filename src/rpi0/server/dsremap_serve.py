@@ -20,6 +20,8 @@ class DSRemapServer:
             web.get('/info', self.handle_info),
             web.get('/setup_ds4', self.handle_setup_ds4),
             web.get('/setup_ps4', self.handle_setup_ps4),
+            web.get('/reboot', self.handle_reboot),
+            web.get('/halt', self.handle_halt),
             ])
         self.proxy = None
 
@@ -147,6 +149,16 @@ class DSRemapServer:
         await self.start_proxy()
 
         return web.json_response({'status': 'ok', 'ps4': ps4, 'key': key})
+
+    async def handle_reboot(self, request):
+        proc = await asyncio.create_subprocess_shell('reboot')
+        await proc.communicate()
+        return web.json_response({'status': 'ok'})
+
+    async def handle_halt(self, request):
+        proc = await asyncio.create_subprocess_shell('halt -p')
+        await proc.communicate()
+        return web.json_response({'status': 'ok'})
 
 
 def main():

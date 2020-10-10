@@ -9,7 +9,7 @@ from dsrlib.domain.device import DeviceVisitor
 
 from .misc import UpdateHexUICommand
 from .hid import UploadConfigurationsUICommand
-from .bt import PairUICommand
+from .bt import NetworkDeviceMenu
 
 
 class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
@@ -58,7 +58,7 @@ class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
             self.addAction(self._dummy)
 
     def onNetworkDeviceAdded(self, device):
-        self._addAction(device, PairUICommand(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow()))
+        self._addAction(device, NetworkDeviceMenu(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow()))
 
     def onArduinoAdded(self, device):
         if Meta.firmwareVersion() != device.fwVersion:
