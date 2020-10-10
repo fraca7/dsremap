@@ -508,7 +508,7 @@ msgid ""
 "Done. You can unplug the DualShock and press PS to start using it through "
 "the proxy."
 msgstr ""
-"C'est fait. Vous pouvez débrancher la DualShock et appuyer sur PC pour "
+"C'est fait. Vous pouvez débrancher la DualShock et appuyer sur PS pour "
 "commencer à l'utiliser à travers le mandataire."
 
 #: src/dsrlib/ui/settings.py:117
