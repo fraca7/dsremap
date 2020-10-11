@@ -2,6 +2,7 @@
 #ifdef TARGET_PC
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 #else
 #include "Config.h"
 #endif
@@ -22,20 +23,20 @@ static void set_float(uint8_t* dst, float value)
 {
   union {
     float f;
-    uint32_t u;
+    uint8_t u[4];
   } v;
 
   v.f = value;
-  *((uint32_t*)dst) = v.f;
+  memcpy(dst, v.u, 4);
 }
 
 static float get_float(uint8_t* src)
 {
   union {
     float f;
-    uint32_t u;
+    uint8_t u[4];
   } v;
-  v.u = *((uint32_t*)src);
+  memcpy(v.u, src, 4);
   return v.f;
 }
 
