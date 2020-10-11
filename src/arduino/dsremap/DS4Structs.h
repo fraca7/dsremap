@@ -2,6 +2,10 @@
 #ifndef _DS4STRUCTS_H
 #define _DS4STRUCTS_H
 
+#ifdef TARGET_PC
+#include <stdint.h>
+#endif
+
 #include "platform.h"
 
 #define DS4_COMMON_FIELDS                                       \

@@ -13,8 +13,8 @@ class IMUIntegrator
 public:
   IMUIntegrator();
 
-  void SetCalibrationData(CalibrationData_t*);
-  void Update(USBReport01_t*);
+  void SetCalibrationData(const CalibrationData_t*);
+  void Update(const USBReport01_t*);
 
   const Vector3D& Current() const {
     return m_Angles;
