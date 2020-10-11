@@ -1,10 +1,13 @@
 
 #include <glib-unix.h>
+#include <zlib.h>
 
 #include "l2cap_con.h"
 #include "optparse.h"
 #include "listen.h"
 #include "channel.h"
+#include "imu.h"
+#include "vm.h"
 
 static void channel_remove(struct channel_t* channel)
 {
@@ -16,6 +19,12 @@ static void channel_remove(struct channel_t* channel)
   close(channel->source_fd);
   close(channel->target_fd);
   channel->parent->channels = g_list_remove(channel->parent->channels, channel);
+
+  if (channel->vm)
+    vm_free(channel->vm);
+  if (channel->imu)
+    imu_free(channel->imu);
+
   g_free(channel);
 }
 
@@ -38,10 +47,6 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
     size_t len = read(src_fd, buf, sizeof(buf));
 
     if (channel->parent->psm == 0x0013) {
-      // The DualShock sends so much reports the BT device (or CPU, I don't know) does not follow. Skip some.
-      static int counter = 0;
-      if ((++counter % 2) == 0)
-        return TRUE;
     }
 
     if (len < 0) {
@@ -49,6 +54,49 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
       channel_remove(channel);
       return FALSE;
     } else if (len > 0) {
+      switch (channel->parent->psm) {
+        case 0x0011:
+          if ((buf[0] == 0xa3) && (buf[1] == 0x02) && (len == 38)) {
+            // Feature report 0x02 (IMU calibration data). Find the interrupt channel
+            gboolean found = FALSE;
+            for (GList* listener_item = g_list_first(channel->parent->context->listening); (listener_item != NULL) && !found; listener_item = g_list_next(listener_item)) {
+              struct listening_socket_data_t* listener = (struct listening_socket_data_t*)listener_item->data;
+              if (listener->psm == 0x0013) {
+                for (GList* channel_item = g_list_first(listener->channels); (channel_item != NULL) && !found; channel_item = g_list_next(channel_item)) {
+                  struct channel_t* other = (struct channel_t*)channel_item->data;
+                  if (!strcmp(channel->source_addr, other->source_addr) && !strcmp(channel->target_addr, other->target_addr)) {
+                    found = TRUE;
+                    if (other->vm) {
+                      g_info("Setting IMU calibration data");
+                      other->imu = imu_init();
+                      imu_set_calibration_data(other->imu, (CalibrationData_t*)(buf + 2));
+                    }
+                  }
+                }
+              }
+            }
+          }
+          break;
+        case 0x0013:
+          if ((buf[0] == 0xa1) && (buf[1] == 0x11) && channel->vm && channel->imu && (len == 79)) {
+            BTReport11_t* report = (BTReport11_t*)(buf + 1);
+
+            // Always update IMU even for skipped reports
+            imu_update(channel->imu, report);
+
+            // The DualShock sends so much reports the BT device does not follow. Skip some.
+            static int counter = 0;
+            if ((++counter % 2) == 0)
+              return TRUE;
+
+            vm_run(channel->vm, report, channel->imu);
+
+            uint32_t crc = crc32(0x00000000, buf, 75);
+            *((uint32_t*)(buf + 75)) = crc;
+          }
+          break;
+      }
+
       if (l2cap_send(dst_addr, channel->cid, dst_fd, buf, len) < 0) {
         g_warning("Write error to %s (PSM 0x%04x)", dst_addr, channel->parent->psm);
         channel_remove(channel);
@@ -101,12 +149,18 @@ gboolean channel_setup(struct listening_socket_data_t* data, unsigned short cid,
   struct channel_t* channel = (struct channel_t*)g_malloc(sizeof(struct channel_t));
   gint c_fd;
 
+  channel->imu = NULL;
+  channel->vm = NULL;
+
   channel->cid = cid;
   channel->wids[0] = 0;
   channel->wids[1] = 0;
 
   channel->source_fd = fd;
   channel->source_addr = addr_src;
+
+  if ((data->psm == 0x0013) && data->context->bytecode_file)
+    channel->vm = vm_init_from_file(data->context->bytecode_file);
 
   c_fd = l2cap_connect(data->context->self_addr, addr_dst, data->psm);
   if (c_fd < 0) {

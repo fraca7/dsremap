@@ -25,4 +25,4 @@ src/rpi0/pairing/*.o
 src/rpi0/pairing/pairing
 src/rpi0/proxy/*.o
 src/rpi0/proxy/proxy
-
+src/rpi0/proxy/cpp/*.o

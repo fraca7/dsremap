@@ -14,6 +14,7 @@ struct imu_t;
 struct vm_t;
 
 struct vm_t* vm_init(const uint8_t* bytecode, size_t bytecode_len, uint8_t stack_size);
+struct vm_t* vm_init_from_file(const char* filename);
 void         vm_free(struct vm_t* vm);
 void         vm_run(struct vm_t* vm, BTReport11_t* report, const struct imu_t* imu);
 

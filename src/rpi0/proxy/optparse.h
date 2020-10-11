@@ -6,6 +6,8 @@
 #include <bluetooth/bluetooth.h>
 
 struct global_context_t {
+  const char* bytecode_file;
+
   bdaddr_t self_bdaddr;
   gchar self_addr[18];
 

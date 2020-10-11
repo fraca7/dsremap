@@ -6,7 +6,7 @@
 
 #include "cpp/IMUIntegrator.h"
 
-struct imu_t* imu_new()
+struct imu_t* imu_init()
 {
   struct imu_t* imu = (struct imu_t*)g_malloc(sizeof(struct imu_t));
   imu->ptr = new IMUIntegrator();

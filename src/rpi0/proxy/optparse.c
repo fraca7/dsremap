@@ -10,6 +10,8 @@ gboolean parse_args(struct global_context_t* ctx, int argc, char *argv[])
   unsigned int mask = 0U;
   unsigned int state = 0;
 
+  ctx->bytecode_file = NULL;
+
   for (unsigned int i = 1; i < argc; ++i) {
     switch (state) {
       case 0:
@@ -19,6 +21,8 @@ gboolean parse_args(struct global_context_t* ctx, int argc, char *argv[])
           state = 2;
         else if (!strcmp(argv[i], "-s"))
           state = 3;
+        else if (!strcmp(argv[i], "-b"))
+          state = 4;
         else {
           g_warning("Unknown option %s", argv[i]);
           return FALSE;
@@ -48,6 +52,10 @@ gboolean parse_args(struct global_context_t* ctx, int argc, char *argv[])
         mask |= ARGMASK_SELF;
         state = 0;
         break;
+      case 4:
+        ctx->bytecode_file = argv[i];
+        state = 0;
+        break;
     }
   }
 
@@ -60,6 +68,9 @@ gboolean parse_args(struct global_context_t* ctx, int argc, char *argv[])
       return FALSE;
     case 3:
       g_warning("Missing address after -s");
+      return FALSE;
+    case 4:
+      g_warning("Missing bytecode file name after -b");
       return FALSE;
     default:
       break;
