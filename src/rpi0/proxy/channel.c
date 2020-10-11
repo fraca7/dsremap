@@ -67,9 +67,18 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
                   if (!strcmp(channel->source_addr, other->source_addr) && !strcmp(channel->target_addr, other->target_addr)) {
                     found = TRUE;
                     if (other->vm) {
+                      CalibrationData_t calib;
+                      memcpy(&calib, buf + 2, sizeof(calib));
+
+                      // What. The. Fuck.
+                      calib.gyro_x_minus = ((CalibrationData_t*)(buf + 2))->gyro_y_minus;
+                      calib.gyro_y_plus = ((CalibrationData_t*)(buf + 2))->gyro_x_minus;
+                      calib.gyro_y_minus = ((CalibrationData_t*)(buf + 2))->gyro_z_plus;
+                      calib.gyro_z_plus = ((CalibrationData_t*)(buf + 2))->gyro_y_plus;
+
                       g_info("Setting IMU calibration data");
                       other->imu = imu_init();
-                      imu_set_calibration_data(other->imu, (CalibrationData_t*)(buf + 2));
+                      imu_set_calibration_data(other->imu, &calib);
                     }
                   }
                 }
