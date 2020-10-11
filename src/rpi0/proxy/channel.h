@@ -5,6 +5,9 @@
 #include <glib.h>
 #include <bluetooth/bluetooth.h>
 
+struct vm_t;
+struct imu_t;
+
 struct channel_t {
   struct listening_socket_data_t* parent;
 
@@ -16,6 +19,10 @@ struct channel_t {
   const gchar* target_addr;
 
   guint wids[2];
+
+  // Only used for PSM 0x0013
+  struct imu_t* imu;
+  struct vm_t* vm;
 };
 
 gboolean channel_setup(struct listening_socket_data_t*, unsigned short cid, int fd, const gchar* addr_src, const gchar* addr_dst);

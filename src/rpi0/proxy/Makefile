@@ -7,7 +7,7 @@ CPPFLAGS=-I../l2cap_proxy $(shell pkg-config --cflags-only-I gio-2.0 bluez) -DG_
 CFLAGS=-O3 -Wall $(shell pkg-config --cflags-only-other gio-2.0 bluez)
 CXXFLAGS=$(CFLAGS)
 LDFLAGS=$(shell pkg-config --libs-only-L gio-2.0 bluez)
-LIBS=$(shell pkg-config --libs-only-l gio-2.0 bluez) -lstdc++
+LIBS=$(shell pkg-config --libs-only-l gio-2.0 bluez) -lstdc++ -lz
 
 all: $(TARGET)
 
