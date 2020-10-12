@@ -30,6 +30,13 @@ static void channel_remove(struct channel_t* channel)
 
 static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_addr, const gchar* dst_addr, GIOCondition cond, struct channel_t* channel)
 {
+  int ret = TRUE;
+#ifdef TIMINGS
+  static time_t prev = 0;
+  static unsigned read_counter = 0;
+  static unsigned write_counter = 0;
+#endif
+
   if (cond & G_IO_HUP) {
     g_info("Peer %s has closed connection (PSM 0x%04x)", src_addr, channel->parent->psm);
     channel_remove(channel);
@@ -46,13 +53,10 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
     guchar buf[4096];
     size_t len = read(src_fd, buf, sizeof(buf));
 
-    if (channel->parent->psm == 0x0013) {
-    }
-
     if (len < 0) {
       g_warning("Read error from %s (PSM 0x%04x)", src_addr, channel->parent->psm);
       channel_remove(channel);
-      return FALSE;
+      ret = FALSE;
     } else if (len > 0) {
       switch (channel->parent->psm) {
         case 0x0011:
@@ -87,6 +91,11 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
           }
           break;
         case 0x0013:
+#ifdef TIMINGS
+          if ((buf[0] == 0xa1) && (buf[1] == 0x11))
+            ++read_counter;
+#endif
+
           if ((buf[0] == 0xa1) && (buf[1] == 0x11) && channel->vm && channel->imu && (len == 79)) {
             BTReport11_t* report = (BTReport11_t*)(buf + 1);
 
@@ -106,15 +115,36 @@ static gboolean channel_in_available(gint src_fd, gint dst_fd, const gchar* src_
           break;
       }
 
-      if (l2cap_send(dst_addr, channel->cid, dst_fd, buf, len) < 0) {
-        g_warning("Write error to %s (PSM 0x%04x)", dst_addr, channel->parent->psm);
-        channel_remove(channel);
-        return FALSE;
+      if (l2cap_send(dst_addr, channel->cid, dst_fd, buf, len) > 0) {
+#ifdef TIMINGS
+        if ((buf[0] == 0xa1) && (buf[1] == 0x11))
+          ++write_counter;
+#endif
+      } else {
+        if ((errno != EAGAIN) && (errno != EWOULDBLOCK)) {
+          g_warning("Write error to %s (PSM 0x%04x)", dst_addr, channel->parent->psm);
+          channel_remove(channel);
+          ret = FALSE;
+        }
       }
     }
   }
 
-  return TRUE;
+#ifdef TIMINGS
+  if (prev) {
+    time_t now = time(NULL);
+    if (now != prev) {
+      printf("!! RX/TX %u/%u reports/s\n", read_counter, write_counter);
+      read_counter = 0;
+      write_counter = 0;
+      prev = now;
+    }
+  } else {
+    prev = time(NULL);
+  }
+#endif
+
+  return ret;
 }
 
 static gboolean channel_source_in_callback(gint fd, GIOCondition cond, struct channel_t* channel)
