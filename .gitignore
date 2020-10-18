@@ -21,8 +21,8 @@ src/arduino/dsremap/messages.h
 src/arduino/dsremap/opcodes.h
 src/arduino/dsremap/version.h
 src/ext/src/arduino/dsremap/VM.o
-src/rpi0/pairing/*.o
-src/rpi0/pairing/pairing
-src/rpi0/proxy/*.o
-src/rpi0/proxy/proxy
-src/rpi0/proxy/cpp/*.o
+src/pairing/*.o
+src/pairing/pairing
+src/proxy/*.o
+src/proxy/proxy
+src/proxy/cpp/*.o
