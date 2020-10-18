@@ -47,7 +47,7 @@ class AddrOpcodeVisitor(AddrVisitor):
 
     def visitConstAddr(self, addr):
         if addr.type() == 'int':
-            return struct.pack('<h', addr.value())
+            return struct.pack('<i', addr.value())
         if addr.type() == 'float':
             return struct.pack('<f', addr.value())
         raise RuntimeError('Unknown type "%s"' % addr.type())

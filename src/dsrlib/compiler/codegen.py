@@ -283,7 +283,7 @@ class CodeGenerator:
             self._generateBinary(asm.Load, RegAddr(Opcodes.REGINDEX_TH), ConstAddr(addr.offset))
         elif addr.reg == Opcodes.REGINDEX_SP:
             self._generateBinary(asm.Load, RegAddr(Opcodes.REGINDEX_TH), RegAddr(Opcodes.REGINDEX_SP))
-            self._generateBinary(asm.Sub, RegAddr(Opcodes.REGINDEX_TH), ConstAddr((2 - addr.offset + size)))
+            self._generateBinary(asm.Sub, RegAddr(Opcodes.REGINDEX_TH), ConstAddr((4 - addr.offset + size)))
         elif addr.reg == Opcodes.REGINDEX_TH:
             self._generateBinary(asm.Add, RegAddr(Opcodes.REGINDEX_TH), ConstAddr(addr.offset))
         else:

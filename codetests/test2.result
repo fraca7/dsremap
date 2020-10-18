@@ -27,13 +27,13 @@ label_8
 	LOADC	[%SP-4]i, 1
 	LOADC	[%SP-8]f, 4.0
 	LOADC	[%TH+0]f, 17.0
-	LOADC	[%SP-16]f, 0.0
+	LOADC	[%SP-18]f, 0.0
 	SUBC	%SP, 8
 	RET
 label_9
 	SUBC	%SP, 4
 	LOADC	[%SP-4]f, 15.0
-	LOADC	[%SP-12]f, 1.0
+	LOADC	[%SP-14]f, 1.0
 	SUBC	%SP, 4
 	RET
 label_10

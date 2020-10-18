@@ -148,7 +148,7 @@ class FunctionType(CallableType):
 
 class MethodType(CallableType):
     def savesize(self):
-        return super().savesize() + 2
+        return super().savesize() + 4 # %TH
 
 
 class StateMethodType(CallableType):
