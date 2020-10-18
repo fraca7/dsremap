@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-
 import unittest
 import io
 import struct
@@ -42,42 +41,42 @@ class TestUnary(unittest.TestCase):
 
     def test_neg_constaddr_int(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NEG)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 2, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 2, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, -2, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, -2, 3))
         self.assertEqual(vm.offset, size)
 
     def test_neg_constaddr_float(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NEG)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 2.5, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 2.5, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, -2.5, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, -2.5, 3))
         self.assertEqual(vm.offset, size)
 
     def test_neg_regoff_int(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NEG)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -4, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 2, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 2, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, -2, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, -2, 3))
         self.assertEqual(vm.offset, size)
 
     def test_neg_regoff_float(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NEG)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -6, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 2.5, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 2.5, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, -2.5, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, -2.5, 3))
         self.assertEqual(vm.offset, size)
 
     # NOT
@@ -106,82 +105,82 @@ class TestUnary(unittest.TestCase):
 
     def test_not_constaddr_int_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 2, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 2, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, 0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, 0, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_constaddr_int_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 0, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 0, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, 1, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, 1, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_constaddr_float_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 2.5, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 2.5, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, 0.0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, 0.0, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_constaddr_float_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 0.0, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 0.0, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, 1.0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, 1.0, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_regoff_int_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -4, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 2, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 2, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, 0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, 0, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_regoff_int_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -4, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_INT))
 
-        vm, size = self.create(stack=struct.pack('<hhh', 1, 0, 3))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 0, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hhh', 1, 1, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<iii', 1, 1, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_regoff_float_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -6, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 2.5, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 2.5, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, 0.0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, 0.0, 3))
         self.assertEqual(vm.offset, size)
 
     def test_not_regoff_float_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_UNARY_NOT)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -6, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_FLOAT))
 
-        vm, size = self.create(stack=struct.pack('<hfh', 1, 0.0, 3))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 0.0, 3))
         vm.step(Report())
 
-        self.assertEqual(vm.get_stack(), struct.pack('<hfh', 1, 1.0, 3))
+        self.assertEqual(vm.get_stack(), struct.pack('<ifi', 1, 1.0, 3))
         self.assertEqual(vm.offset, size)
 
 

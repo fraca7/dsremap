@@ -61,7 +61,7 @@ VOID = _VOID()
 
 class _INT(Type):
     def __init__(self):
-        super().__init__('int', 2)
+        super().__init__('int', 4)
 
     def cast(self, expr):
         if expr.type() == INT:

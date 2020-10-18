@@ -7,7 +7,7 @@ Actions (the building bricks of a configuration) are actually written in a simpl
 Builtin types
 -------------
 
-The only builtin types are `int` (signed, 16 bits) and `float`.
+The only builtin types are `int` (signed, 32 bits) and `float`.
 
 Builtin global variables
 ------------------------

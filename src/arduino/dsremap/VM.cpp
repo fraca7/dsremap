@@ -124,7 +124,7 @@ void VM::StepBinary(USBReport01_t* report, uint8_t opcode)
         float op2 = LoadFloatAddr(report, opcode);
         SetIntRegister(report, index, CLAMPS16(op2));
       } else {
-        int16_t op2 = LoadIntAddr(report, opcode);
+        int32_t op2 = LoadIntAddr(report, opcode);
         SetIntRegister(report, index, BinaryOpInt(opcode, op1, op2));
       }
 
@@ -147,11 +147,11 @@ void VM::StepBinary(USBReport01_t* report, uint8_t opcode)
         {
           if (OPCODE_SUBTYPE(opcode) == OPCODE_SUBTYPE_BINARY_CAST) {
             float op2 = LoadFloatAddr(report, opcode);
-            *((int16_t*)(m_Stack + offset)) = CLAMPS16(op2);
+            *((int32_t*)(m_Stack + offset)) = op2;
           } else {
-            int32_t op1 = *((int16_t*)(m_Stack + offset));
-            int16_t op2 = LoadIntAddr(report, opcode);
-            *((int16_t*)(m_Stack + offset)) = BinaryOpInt(opcode, op1, op2);
+            int32_t op1 = *((int32_t*)(m_Stack + offset));
+            int32_t op2 = LoadIntAddr(report, opcode);
+            *((int32_t*)(m_Stack + offset)) = BinaryOpInt(opcode, op1, op2);
           }
           break;
         }
@@ -202,7 +202,7 @@ void VM::StepUnary(USBReport01_t* report, uint8_t opcode)
       switch (addrtype) {
         case ADDR_TYPE_REG:
         {
-          int16_t val = GetIntRegister(report, (addr >> 8) & 0b111111);
+          int32_t val = GetIntRegister(report, (addr >> 8) & 0b111111);
           switch (subtype) {
             case OPCODE_SUBTYPE_UNARY_NEG:
               val = -val;
@@ -223,7 +223,7 @@ void VM::StepUnary(USBReport01_t* report, uint8_t opcode)
           if ((addr >> 10) & 0b1)
             delta = -delta;
           offset += delta;
-          int16_t val = *((int16_t*)(m_Stack + offset));
+          int32_t val = *((int32_t*)(m_Stack + offset));
           switch (subtype) {
             case OPCODE_SUBTYPE_UNARY_NEG:
               val = -val;
@@ -234,7 +234,7 @@ void VM::StepUnary(USBReport01_t* report, uint8_t opcode)
             default:
               break;
           }
-          *((int16_t*)(m_Stack + offset)) = val;
+          *((int32_t*)(m_Stack + offset)) = val;
           break;
         }
         default:
@@ -287,7 +287,8 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
     case OPCODE_SUBTYPE_STACK_POP:
     {
       int index = LoadU8() & 0b111111;
-      int16_t value = PopS16();
+      int32_t value = PopS32();
+      value = CLAMPS16(value);
 
       switch (index) {
         case REGINDEX_SP:
@@ -303,7 +304,7 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
       break;
     }
     case OPCODE_SUBTYPE_STACK_PUSHI:
-      PushS16(LoadS16());
+      PushS32(LoadS32());
       break;
     case OPCODE_SUBTYPE_STACK_PUSHF:
       PushF(LoadF());
@@ -322,7 +323,7 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
               PushF(GetFloatRegister(report, index));
               break;
             default:
-              PushS16(GetIntRegister(report, index));
+              PushS32(GetIntRegister(report, index));
               break;
           }
           break;
@@ -336,7 +337,7 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
           offset += GetIntRegister(report, (addr >> 12) & 0b11);
           switch ((addr >> 11) & 1) {
             case ADDR_VALTYPE_INT:
-              PushS16(*((int16_t*)(m_Stack + offset)));
+              PushS32(*((int32_t*)(m_Stack + offset)));
               break;
             case ADDR_VALTYPE_FLOAT:
               PushF(get_float(m_Stack + offset));
@@ -395,7 +396,7 @@ bool VM::StepFlow(USBReport01_t* report, uint8_t opcode)
 
               switch ((addr >> 11) & 1) {
                 case ADDR_VALTYPE_INT:
-                  jump = *((int16_t*)(m_Stack + offset)) == 0;
+                  jump = *((int32_t*)(m_Stack + offset)) == 0;
                   break;
                 case ADDR_VALTYPE_FLOAT:
                   jump = get_float(m_Stack + offset) == 0.0f;
@@ -427,7 +428,7 @@ bool VM::StepFlow(USBReport01_t* report, uint8_t opcode)
           break;
         }
         case OPCODE_VARIANT_CI:
-          jump = LoadS16() == 0;
+          jump = LoadS32() == 0;
           break;
         case OPCODE_VARIANT_CF:
           jump = LoadF() == 0.0;
@@ -464,6 +465,13 @@ int16_t VM::LoadS16()
   return v;
 }
 
+int32_t VM::LoadS32()
+{
+  int32_t v = *((int32_t*)(m_Bytecode + m_Offset));
+  m_Offset += 4;
+  return v;
+}
+
 float VM::LoadF()
 {
   float v = get_float(m_Bytecode + m_Offset);
@@ -489,10 +497,22 @@ void VM::PushS16(int16_t v)
   m_SP += 2;
 }
 
+void VM::PushS32(int32_t v)
+{
+  *((int32_t*)(m_Stack + m_SP)) = v;
+  m_SP += 4;
+}
+
 int16_t VM::PopS16()
 {
   m_SP -= 2;
   return *((int16_t*)(m_Stack + m_SP));
+}
+
+int32_t VM::PopS32()
+{
+  m_SP -= 4;
+  return *((int32_t*)(m_Stack + m_SP));
 }
 
 void VM::PushF(float v)
@@ -501,7 +521,7 @@ void VM::PushF(float v)
   m_SP += sizeof(v);
 }
 
-int16_t VM::GetIntRegister(USBReport01_t* report, int index)
+int32_t VM::GetIntRegister(USBReport01_t* report, int index)
 {
   switch (index) {
     case REGINDEX_ZR:
@@ -560,8 +580,10 @@ int16_t VM::GetIntRegister(USBReport01_t* report, int index)
   return 0;
 }
 
-void VM::SetIntRegister(USBReport01_t* report, int index, int16_t value)
+void VM::SetIntRegister(USBReport01_t* report, int index, int32_t value)
 {
+  value = CLAMPS16(value);
+
   switch (index) {
     case REGINDEX_LPADX:
     case REGINDEX_LPADY:
@@ -686,7 +708,7 @@ float VM::GetFloatRegister(USBReport01_t* report, int index)
   return 0.0f;
 }
 
-int16_t VM::BinaryOpInt(uint8_t opcode, int32_t op1, int16_t op2)
+int32_t VM::BinaryOpInt(uint8_t opcode, int32_t op1, int32_t op2)
 {
   switch (OPCODE_SUBTYPE(opcode)) {
     case OPCODE_SUBTYPE_BINARY_ADD:
@@ -780,11 +802,11 @@ float VM::BinaryOpFloat(uint8_t opcode, float op1, float op2)
   return op1;
 }
 
-int16_t VM::LoadIntAddr(USBReport01_t* report, uint8_t opcode)
+int32_t VM::LoadIntAddr(USBReport01_t* report, uint8_t opcode)
 {
   switch (OPCODE_VARIANT(opcode)) {
     case OPCODE_VARIANT_C:
-      return LoadS16();
+      return LoadS32();
     case OPCODE_VARIANT_A:
     {
       uint16_t addr = (uint16_t)LoadU8() << 8;
@@ -800,7 +822,7 @@ int16_t VM::LoadIntAddr(USBReport01_t* report, uint8_t opcode)
           if ((addr >> 10) & 1)
             value = -value;
           int offset = GetIntRegister(report, (addr >> 12) & 0b11) + value;
-          return *((int16_t*)(m_Stack + offset));
+          return *((int32_t*)(m_Stack + offset));
         }
         default:
           break;

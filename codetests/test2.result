@@ -1,5 +1,5 @@
 label_0
-	ADDC	%SP, 6
+	ADDC	%SP, 8
 label_1
 label_2
 label_4
@@ -7,11 +7,11 @@ label_4
 	PUSHI	42
 	ADDC	%SP, 4
 	PUSH	%TH
-	LOADC	%TH, 2
+	LOADC	%TH, 4
 	CALL	label_6
 	POP	%TH
-	SUBC	%SP, 6
-	LOADA	[%SP-4]f, [%SP+2]f
+	SUBC	%SP, 8
+	LOADA	[%SP-4]f, [%SP+4]f
 	LOADA	[%SP-8]f, [%SP-4]f
 label_5
 	SUBC	%SP, 8
@@ -23,15 +23,15 @@ label_7
 	LOADC	[%SP-4]f, 13.0
 	LOADC	[%TH+0]f, 16.0
 label_8
-	ADDC	%SP, 2
-	LOADC	[%SP-2]i, 1
-	LOADC	[%SP-6]f, 4.0
+	ADDC	%SP, 4
+	LOADC	[%SP-4]i, 1
+	LOADC	[%SP-8]f, 4.0
 	LOADC	[%TH+0]f, 17.0
-	LOADC	[%SP-14]f, 0.0
-	SUBC	%SP, 6
+	LOADC	[%SP-16]f, 0.0
+	SUBC	%SP, 8
 	RET
 label_9
-	SUBC	%SP, 2
+	SUBC	%SP, 4
 	LOADC	[%SP-4]f, 15.0
 	LOADC	[%SP-12]f, 1.0
 	SUBC	%SP, 4
@@ -39,4 +39,4 @@ label_9
 label_10
 	SUBC	%SP, 4
 label_11
-	SUBC	%SP, 6
+	SUBC	%SP, 8
