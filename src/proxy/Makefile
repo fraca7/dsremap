@@ -1,6 +1,6 @@
 
 TARGET=proxy
-L2CAP_PROXY_SRC=../../l2cap_proxy
+L2CAP_PROXY_SRC=../l2cap_proxy
 OBJS=proxy.o optparse.o listen.o channel.o imu.o cpp/IMUIntegrator.o vm.o cpp/VM.o $(L2CAP_PROXY_SRC)/l2cap_con.o $(L2CAP_PROXY_SRC)/bt_utils.o
 
 CC=gcc

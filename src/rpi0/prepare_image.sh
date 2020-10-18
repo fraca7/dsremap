@@ -51,14 +51,14 @@ case "$1" in
 	cp scripts/dsremap.service /mnt/etc/avahi/services/dsremap.service
 	cp -a scripts/dsremap-initscript /mnt/etc/init.d/dsremap
 
-	pushd pairing && make clean all && popd
+	pushd ../pairing && make clean all && popd
 
 	mkdir /mnt/opt/dsremap
-	cp -a pairing/pairing /mnt/opt/dsremap/pairing
+	cp -a ../pairing/pairing /mnt/opt/dsremap/pairing
 	cp -a server/dsremap_serve.py /mnt/opt/dsremap/server
 
 	# Clean obj files owned by root
-	pushd pairing && make clean && popd
+	pushd ../pairing && make clean && popd
 
 	# Copy self to root, relaunch in chroot
 	name=`basename "$0"`

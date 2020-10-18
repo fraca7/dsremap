@@ -11,7 +11,7 @@
 #include <linux/usb/functionfs.h>
 
 #define PROGMEM
-#include "../../arduino/dsremap/DS4HID.h"
+#include "../arduino/dsremap/DS4HID.h"
 
 #include "utils.h"
 #include "config.h"
