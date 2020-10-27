@@ -579,7 +579,7 @@ class Parser(LRParser, ReLexer):
     @production('method_definition<pos> -> callable_definition<func>')
     def method_definition(self, pos, func):
         rettype, name, args, body, symbols = func
-        symbols.addSize(2) # %TH on the stack
+        symbols.addSize(4) # %TH on the stack
         node = MethodNode(rettype=rettype, name=name, args=args, body=body, symbols=symbols, pos=pos)
         self._symbols.add(name, node)
         return node
