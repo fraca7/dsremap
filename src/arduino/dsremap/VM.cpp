@@ -122,7 +122,7 @@ void VM::StepBinary(USBReport01_t* report, uint8_t opcode)
 
       if (OPCODE_SUBTYPE(opcode) == OPCODE_SUBTYPE_BINARY_CAST) {
         float op2 = LoadFloatAddr(report, opcode);
-        SetIntRegister(report, index, CLAMPS16(op2));
+        SetIntRegister(report, index, op2);
       } else {
         int32_t op2 = LoadIntAddr(report, opcode);
         SetIntRegister(report, index, BinaryOpInt(opcode, op1, op2));
@@ -582,8 +582,6 @@ int32_t VM::GetIntRegister(USBReport01_t* report, int index)
 
 void VM::SetIntRegister(USBReport01_t* report, int index, int32_t value)
 {
-  value = CLAMPS16(value);
-
   switch (index) {
     case REGINDEX_LPADX:
     case REGINDEX_LPADY:
@@ -613,6 +611,7 @@ void VM::SetIntRegister(USBReport01_t* report, int index, int32_t value)
       value = CLAMPU1(value);
       break;
     default:
+      value = CLAMPS16(value);
       break;
   }
 
@@ -752,7 +751,7 @@ int32_t VM::BinaryOpInt(uint8_t opcode, int32_t op1, int32_t op2)
       break;
   }
 
-  return CLAMPS16(op1);
+  return op1;
 }
 
 float VM::BinaryOpFloat(uint8_t opcode, float op1, float op2)
