@@ -20,7 +20,7 @@ public:
     return m_Angles;
   }
 
-  int16_t Delta() const {
+  int32_t Delta() const {
     return m_LastDelta;
   }
 
@@ -36,7 +36,7 @@ private:
   bool m_FirstTimestamp;
   Vector3D m_Angles;
   Vector3D m_LastGyro;
-  int16_t m_LastDelta;
+  int32_t m_LastDelta;
 };
 
 #endif /* _IMUINTEGRATOR_H */

@@ -21,7 +21,7 @@ protected:
 
   int16_t m_SP;
   int16_t m_TH;
-  int16_t m_DELTA;
+  int32_t m_DELTA;
   float m_IMUX;
   float m_IMUY;
   float m_IMUZ;

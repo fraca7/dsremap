@@ -77,6 +77,10 @@ void IMUIntegrator::Update(const USBReport01_t* rep)
       delta = rep->timestamp - m_LastTimestamp;
     }
     delta = delta * 16 / 3;
+
+    if (delta == 0)
+      // Happens from time to time on Bluetooth...
+      return;
   }
 
   // NB: the first version used both the accelerometer & gyro
