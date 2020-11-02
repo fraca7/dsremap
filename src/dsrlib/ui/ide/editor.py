@@ -3,6 +3,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, Qsci
 
 from ptk.parser import ParseError
+from ptk.lexer import LexerError
 
 from dsrlib.settings import Settings
 from dsrlib.ui.utils import LayoutBuilder
@@ -75,8 +76,7 @@ class Editor(QtWidgets.QDialog):
 
         try:
             warnings, _ = generateBytecode(self.source())
-            # XXXTODO LexerError
-        except ParseError as exc:
+        except (LexerError, ParseError) as exc:
             self._addError(exc.position.line, str(exc))
             self._report.show()
             return
