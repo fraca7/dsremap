@@ -50,6 +50,7 @@ gboolean listening_socket_add(struct global_context_t* ctx, unsigned short psm)
   data->context = ctx;
   data->fd = fd;
   data->psm = psm;
+  data->channels = NULL;
   data->watch_id = g_unix_fd_add(fd, G_IO_IN, (GUnixFDSourceFunc)listening_socket_callback, (gpointer)data);
 
   ctx->listening = g_list_prepend(ctx->listening, data);
