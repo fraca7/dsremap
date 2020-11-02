@@ -100,6 +100,9 @@ class Opcodes:
     REGINDEX_IMUY = 0x19
     REGINDEX_IMUZ = 0x1A
     REGINDEX_DELTA = 0x1B
+    REGINDEX_ACCELX = 0x1C
+    REGINDEX_ACCELY = 0x1D
+    REGINDEX_ACCELZ = 0x1E
 
     @classmethod
     def _register_map(cls):

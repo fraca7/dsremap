@@ -25,6 +25,9 @@ protected:
   float m_IMUX;
   float m_IMUY;
   float m_IMUZ;
+  float m_AccelX;
+  float m_AccelY;
+  float m_AccelZ;
 
   uint16_t m_Offset;
   uint8_t* m_Stack;

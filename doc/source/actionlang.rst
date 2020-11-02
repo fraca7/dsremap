@@ -18,7 +18,8 @@ There are builtin global variables for the current input report's state. Boolean
   * `Hat`: DPad state. 8 means released; 0 means up, 1 up+right, 2 right, etc, in clockwise order
   * `Square`, `Cross`, `Circle`, `Triangle`, `L1`, `L2`, `L3`, `R1`, `R2`, `R3`, `Share`, `Options`, `TPad`, `PS` are the buttons states
   * `L2Value`, `R2Value` are the trigger values, 0..255
-  * `IMUX`, `IMUY`, `IMUZ` (read-only) are the Euler angles for the current pad orientation, in degrees.
+  * `IMUX`, `IMUY`, `IMUZ` (read-only) are the Euler angles for the current controller orientation, in degrees.
+  * `ACCELX`, `ACCELY`, `ACCELZ` (read-only) are the angular accelerations from the gyro, in degrees/second.
   * `DELTA` is the number of milliseconds elapsed since the last input report
 
 Structures

@@ -16,8 +16,12 @@ public:
   void SetCalibrationData(const CalibrationData_t*);
   void Update(const USBReport01_t*);
 
-  const Vector3D& Current() const {
+  const Vector3D& CurrentAngles() const {
     return m_Angles;
+  }
+
+  const Vector3D& CurrentAnglesAccel() const {
+    return m_LastGyro;
   }
 
   int32_t Delta() const {

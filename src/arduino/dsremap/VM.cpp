@@ -74,12 +74,17 @@ VM::~VM()
 void VM::Run(USBReport01_t* report, const IMUIntegrator* pIMU)
 {
   if (pIMU->Delta()) {
-    const Vector3D& angles = pIMU->Current();
-
     m_DELTA = pIMU->Delta();
+
+    const Vector3D& angles = pIMU->CurrentAngles();
     m_IMUX = angles.x;
     m_IMUY = angles.y;
     m_IMUZ = angles.z;
+
+    const Vector3D& accel = pIMU->CurrentAnglesAccel();
+    m_AccelX = accel.x;
+    m_AccelY = accel.y;
+    m_AccelZ = accel.z;
 
     while (!Step(report));
   }
@@ -320,6 +325,9 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
             case REGINDEX_IMUX:
             case REGINDEX_IMUY:
             case REGINDEX_IMUZ:
+            case REGINDEX_ACCELX:
+            case REGINDEX_ACCELY:
+            case REGINDEX_ACCELZ:
               PushF(GetFloatRegister(report, index));
               break;
             default:
@@ -412,6 +420,9 @@ bool VM::StepFlow(USBReport01_t* report, uint8_t opcode)
                 case REGINDEX_IMUX:
                 case REGINDEX_IMUY:
                 case REGINDEX_IMUZ:
+                case REGINDEX_ACCELX:
+                case REGINDEX_ACCELY:
+                case REGINDEX_ACCELZ:
                   jump = GetFloatRegister(report, index) == 0.0;
                   break;
                 default:
@@ -700,6 +711,12 @@ float VM::GetFloatRegister(USBReport01_t* report, int index)
       return m_IMUY;
     case REGINDEX_IMUZ:
       return m_IMUZ;
+    case REGINDEX_ACCELX:
+      return m_AccelX;
+    case REGINDEX_ACCELY:
+      return m_AccelY;
+    case REGINDEX_ACCELZ:
+      return m_AccelZ;
     default:
       break;
   }
