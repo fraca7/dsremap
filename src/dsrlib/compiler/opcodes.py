@@ -134,6 +134,9 @@ class Opcodes:
             cls.REGINDEX_IMUX: 'IMUX',
             cls.REGINDEX_IMUY: 'IMUY',
             cls.REGINDEX_IMUZ: 'IMUZ',
+            cls.REGINDEX_ACCELX: 'ACCELX',
+            cls.REGINDEX_ACCELY: 'ACCELY',
+            cls.REGINDEX_ACCELZ: 'ACCELZ',
             cls.REGINDEX_DELTA: 'DELTA',
             }
 
