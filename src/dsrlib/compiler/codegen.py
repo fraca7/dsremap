@@ -70,7 +70,7 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return node.symbols.size() + max(self.visit(node.init), self.visit(node.main))
 
     def visitIfNode(self, node):
-        return max(self.visit(node.yes), self.visit(node.no))
+        return self.visit(node.expr) + max(self.visit(node.yes), self.visit(node.no))
 
     def visitWhileNode(self, node):
         return self.visit(node.body)
