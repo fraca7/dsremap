@@ -49,6 +49,9 @@ class Const(Address):
     def __str__(self):
         return str(self.value)
 
+    def __eq__(self, other):
+        return isinstance(other, Const) and type(self.value) is type(other.value) and self.value == other.value
+
 
 class Retval(Address):
     def __init__(self, function):
