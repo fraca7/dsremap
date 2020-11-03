@@ -57,33 +57,33 @@ class ConfigurationSizeView(ConfigurationMixin, QtWidgets.QWidget):
         fgcolor, bgcolor = Meta.warningColors() if bsize > Meta.maxBytecodeSize() else Meta.standardColors()
         # For the purpose of displaying actions sizes, we remove the configuration size header
         bsize -= 2
-
-        rect = QtCore.QRectF(rect).adjusted(5, 5, -5, -5)
-        path = QtGui.QPainterPath()
-        path.addRect(rect)
-        painter.fillPath(path, bgcolor)
-        painter.strokePath(path, bgcolor.darker())
-        rect.adjust(1, 1, -1, -1)
-
-        y = 0
-        for index, action in enumerate(self.actions()):
-            if index == len(self.actions()) - 1:
-                h = rect.height() - y
-            else:
-                h = int(math.floor(action.size() / bsize * rect.height()))
-
-            bbox = QtCore.QRectF(rect.x(), rect.y() + y, rect.width(), h)
+        if bsize != 0:
+            rect = QtCore.QRectF(rect).adjusted(5, 5, -5, -5)
             path = QtGui.QPainterPath()
-            path.addRect(bbox)
-            color = fgcolor.darker() if action in selection else fgcolor
-            painter.fillPath(path, color)
-            painter.strokePath(path, color.darker())
+            path.addRect(rect)
+            painter.fillPath(path, bgcolor)
+            painter.strokePath(path, bgcolor.darker())
+            rect.adjust(1, 1, -1, -1)
 
-            text = action.label()
-            text = metrics.elidedText(text, QtCore.Qt.ElideMiddle, bbox.width() - 2, 0)
-            painter.drawText(bbox, QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
+            y = 0
+            for index, action in enumerate(self.actions()):
+                if index == len(self.actions()) - 1:
+                    h = rect.height() - y
+                else:
+                    h = int(math.floor(action.size() / bsize * rect.height()))
 
-            y += h
+                bbox = QtCore.QRectF(rect.x(), rect.y() + y, rect.width(), h)
+                path = QtGui.QPainterPath()
+                path.addRect(bbox)
+                color = fgcolor.darker() if action in selection else fgcolor
+                painter.fillPath(path, color)
+                painter.strokePath(path, color.darker())
+
+                text = action.label()
+                text = metrics.elidedText(text, QtCore.Qt.ElideMiddle, bbox.width() - 2, 0)
+                painter.drawText(bbox, QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
+
+                y += h
 
 
 class ThumbnailView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
