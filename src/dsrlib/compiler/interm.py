@@ -5,7 +5,8 @@ import collections
 
 from .mtypes import MethodType, VOID, FLOAT, INT
 from .ast.nodes import Variable, EmptyNode, StateNode, VariableNode, IdentifierNode, Callable, \
-     ASTScopedVisitorMixin, ASTLoopVisitorMixin, ASTStateVisitorMixin, ASTCallableVisitorMixin, ASTVisitor
+     ASTScopedVisitorMixin, ASTLoopVisitorMixin, ASTStateVisitorMixin, ASTCallableVisitorMixin, ASTVisitor, \
+     ArgumentNode
 
 
 class Address:
@@ -168,7 +169,7 @@ class Return:
         self.func = func
         self.var = var
 
-        assert isinstance(var, (Address, type(None)))
+        assert isinstance(var, (Address, ArgumentNode, type(None)))
 
     def __str__(self):
         return '\tret' if self.var is None else '\tret %s' % str(self.var)
