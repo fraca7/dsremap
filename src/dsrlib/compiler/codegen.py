@@ -55,7 +55,7 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return 0
 
     def visitVariableNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitMemberNode(self, node):
         return 0
