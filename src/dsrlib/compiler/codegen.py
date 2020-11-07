@@ -73,10 +73,10 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return self.visit(node.expr) + max(self.visit(node.yes), self.visit(node.no))
 
     def visitWhileNode(self, node):
-        return self.visit(node.body)
+        return self.visit(node.expr) + self.visit(node.body)
 
     def visitAssignmentNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitContinueNode(self, node):
         return 0
@@ -91,7 +91,7 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return 0
 
     def visitReturnNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitFunctionNode(self, node):
         return 0
