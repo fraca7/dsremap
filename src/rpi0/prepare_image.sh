@@ -16,7 +16,7 @@ case "$1" in
     setup)
 	# This is run in the chroot
 	apt update
-	apt -y install python3-aiohttp
+	apt -y install python3-aiohttp libbluetooth3
 
 	# Kernel configuration
 	echo "dtoverlay=dwc2" >> /boot/config.txt
