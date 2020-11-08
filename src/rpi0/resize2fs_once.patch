@@ -1,0 +1,24 @@
+--- resize2fs_once.original	2020-11-08 13:28:27.791133641 +0100
++++ resize2fs_once	2020-11-08 13:26:56.437835160 +0100
+@@ -1,9 +1,9 @@
+ #!/bin/sh
+ ### BEGIN INIT INFO
+ # Provides:          resize2fs_once
+-# Required-Start:
+-# Required-Stop:
++# Required-Start:    $remote_fs
++# Required-Stop:     $remote_fs
+ # Default-Start: 3
+ # Default-Stop:
+ # Short-Description: Resize the root filesystem to fill partition
+ # Description:
+@@ -11,8 +11,9 @@
+ . /lib/lsb/init-functions
+ case "$1" in
+   start)
+     log_daemon_msg "Starting resize2fs_once"
++    /usr/sbin/extractcreds > /var/log/wifilog 2>&1
+     ROOT_DEV=$(findmnt / -o source -n) &&
+     resize2fs $ROOT_DEV &&
+     update-rc.d resize2fs_once remove &&
+     rm /etc/init.d/resize2fs_once &&

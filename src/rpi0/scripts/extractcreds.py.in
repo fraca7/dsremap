@@ -1,0 +1,31 @@
+#!/usr/bin/env python3
+
+import io
+import struct
+import os
+import sys
+import subprocess
+
+SIZE=@IMGSIZE@ + 512
+
+with open('/dev/mmcblk0', 'rb') as fileobj:
+    fileobj.seek(SIZE - 2, io.SEEK_SET)
+    magic, = struct.unpack('<H', fileobj.read(2))
+    if magic != 0xCAFE:
+        print('Invalid magic')
+    else:
+        fileobj.seek(SIZE - 10, io.SEEK_SET)
+        pwdlen, ssidlen = struct.unpack('<II', fileobj.read(8))
+
+        fileobj.seek(SIZE -10 - ssidlen - pwdlen, io.SEEK_SET)
+        password = fileobj.read(pwdlen).decode('utf-8')
+        ssid = fileobj.read(ssidlen).decode('utf-8')
+
+        try:
+            proc = subprocess.run(['/usr/bin/raspi-config', 'nonint', 'do_wifi_ssid_passphrase', ssid, password], capture_output=True, check=True)
+        except subprocess.CalledProcessError as exc:
+            print('raspi-config failed with code %s' % exc.returncode)
+            print('Output:')
+            print(exc.output)
+            print('Errors:')
+            print(exc.stderr)
