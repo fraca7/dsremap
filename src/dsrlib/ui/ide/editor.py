@@ -32,10 +32,10 @@ class Editor(QtWidgets.QDialog):
         self._report.setHeaderHidden(True)
         self._report.itemClicked.connect(self._reportClicked)
 
-        self._error_mk = self._sci.markerDefine(self._sci.Background)
-        self._sci.setMarkerBackgroundColor(QtCore.Qt.red, self._error_mk)
-        self._warn_mk = self._sci.markerDefine(self._sci.Background)
-        self._sci.setMarkerBackgroundColor(QtCore.Qt.yellow, self._warn_mk)
+        self._errorMarker = self._sci.markerDefine(self._sci.Background)
+        self._sci.setMarkerBackgroundColor(QtCore.Qt.red, self._errorMarker)
+        self._warningMarker = self._sci.markerDefine(self._sci.Background)
+        self._sci.setMarkerBackgroundColor(QtCore.Qt.yellow, self._warningMarker)
 
         btnOK = QtWidgets.QPushButton(_('Done'), self)
         btnCancel = QtWidgets.QPushButton(_('Cancel'), self)
@@ -68,7 +68,7 @@ class Editor(QtWidgets.QDialog):
         self._timer.start(3000)
 
     def _tryCompile(self):
-        self._sci.markerDeleteAll(self._error_mk)
+        self._sci.markerDeleteAll(self._errorMarker)
         self._sci.clearAnnotations()
         self._report.hide()
         while self._report.topLevelItemCount():
@@ -95,18 +95,18 @@ class Editor(QtWidgets.QDialog):
         line = item.data(0, QtCore.Qt.UserRole)
         self._sci.ensureLineVisible(line)
 
-    def _addReport(self, line, msg, mk, icon):
-        self._sci.markerAdd(line - 1, mk)
+    def _addReport(self, line, msg, marker, icon):
+        self._sci.markerAdd(line - 1, marker)
         self._sci.annotate(line - 1, msg, 0) # XXXFIXME style
         item = QtWidgets.QTreeWidgetItem(self._report, ['%d' % line, msg])
         item.setIcon(1, QtGui.QIcon(':icons/%s.svg' % icon))
         item.setData(0, QtCore.Qt.UserRole, line)
 
     def _addError(self, line, msg):
-        self._addReport(line, msg, self._error_mk, 'error')
+        self._addReport(line, msg, self._errorMarker, 'error')
 
     def _addWarning(self, line, msg):
-        self._addReport(line, msg, self._warn_mk, 'warning')
+        self._addReport(line, msg, self._warningMarker, 'warning')
 
     def accept(self):
         with Settings().grouped('IDE') as settings:
