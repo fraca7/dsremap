@@ -50,19 +50,22 @@ case "$1" in
 	# Copy files before chrooting
 	cp scripts/dsremap.service /mnt/etc/avahi/services/dsremap.service
 	cp -a scripts/dsremap-initscript /mnt/etc/init.d/dsremap
-	IMGSIZE=`du -b "$1" | cut -d\  -f1`
+	IMGSIZE=`du -b "$1" | cut -f1`
 	sed -e "s/@IMGSIZE@/$IMGSIZE/g" scripts/extractcreds.py.in > /mnt/usr/sbin/extractcreds
 	chmod 755 /mnt/usr/sbin/extractcreds
 	patch -p0 /mnt/etc/init.d/resize2fs_once < resize2fs_once.patch
 
 	pushd ../pairing && make clean all && popd
+	pushd ../proxy && make clean all && popd
 
 	mkdir /mnt/opt/dsremap
 	cp -a ../pairing/pairing /mnt/opt/dsremap/pairing
+	cp -a ../proxy/proxy /mnt/opt/dsremap/proxy
 	cp -a server/dsremap_serve.py /mnt/opt/dsremap/server
 
 	# Clean obj files owned by root
 	pushd ../pairing && make clean && popd
+	pushd ../proxy && make clean && popd
 
 	# Copy self to root, relaunch in chroot
 	name=`basename "$0"`
