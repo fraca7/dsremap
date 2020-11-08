@@ -58,7 +58,7 @@ class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
             self.addAction(self._dummy)
 
     def onNetworkDeviceAdded(self, device):
-        self._addAction(device, NetworkDeviceMenu(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow()))
+        self._addAction(device, NetworkDeviceMenu(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow(), workspace=self.workspace()))
 
     def onArduinoAdded(self, device):
         if Meta.firmwareVersion() != device.fwVersion:

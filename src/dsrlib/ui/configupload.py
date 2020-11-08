@@ -3,14 +3,15 @@
 import zlib
 import struct
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtWidgets, QtNetwork
 
 from dsrlib.domain.mixins import WorkspaceMixin
+from dsrlib.ui.mixins import MainWindowMixin
 
 from .utils import LayoutBuilder
 
 
-class ConfigurationUploader(WorkspaceMixin, QtWidgets.QDialog):
+class ConfigurationHIDUploader(WorkspaceMixin, QtWidgets.QDialog):
     def __init__(self, parent, *, device, **kwargs):
         super().__init__(parent, **kwargs)
         self._progress = QtWidgets.QProgressBar(self)
@@ -64,3 +65,28 @@ class ConfigurationUploader(WorkspaceMixin, QtWidgets.QDialog):
             QtWidgets.QMessageBox.warning(self, _('Warning'), _('The CRC check failed. You will probably want to retry.'))
             self.reject()
         self._worker.cancel()
+
+
+class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QDialog):
+    def __init__(self, parent, *, device, **kwargs):
+        super().__init__(parent, **kwargs)
+
+        bld = LayoutBuilder(self)
+        with bld.vbox() as layout:
+            layout.addWidget(QtWidgets.QLabel(_('Uploading to {name}...').format(name=device.name), self))
+
+        req = QtNetwork.QNetworkRequest(QtCore.QUrl('http://%s:%d/set_config' % (device.addr, device.port)))
+        req.setHeader(req.ContentTypeHeader, 'application/octet-stream')
+        self._reply = self.mainWindow().manager().post(req, self.workspace().bytecode())
+        self._reply.finished.connect(self._onQueryResponse)
+
+    def _onQueryResponse(self):
+        status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
+        if status is None:
+            QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Cannot connect to device.'))
+            self.reject()
+        elif status != 200:
+            QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Device returned HTTP status {code}').format(code=status))
+            self.reject()
+        else:
+            self.accept()

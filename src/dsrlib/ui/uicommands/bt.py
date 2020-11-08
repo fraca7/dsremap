@@ -2,10 +2,12 @@
 
 from PyQt5 import QtCore, QtWidgets, QtNetwork
 
+from dsrlib.domain.mixins import WorkspaceMixin
 from dsrlib.ui.pairer import PairingWizard
 from dsrlib.ui.mixins import MainWindowMixin
 
 from .base import UICommand
+from .hid import UploadConfigurationsUICommand
 
 
 class PairUICommand(UICommand):
@@ -39,11 +41,12 @@ class HaltDeviceUICommand(UICommand):
         self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
 
 
-class NetworkDeviceMenu(MainWindowMixin, QtWidgets.QAction):
+class NetworkDeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QAction):
     def __init__(self, parent, *, device, enumerator, **kwargs):
         super().__init__(device.name, parent, **kwargs)
 
         menu = QtWidgets.QMenu(self.mainWindow())
+        menu.addAction(UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
         menu.addAction(PairUICommand(self, mainWindow=self.mainWindow(), device=device, enumerator=enumerator))
         menu.addAction(RebootDeviceUICommand(self, mainWindow=self.mainWindow(), device=device))
         menu.addAction(HaltDeviceUICommand(self, mainWindow=self.mainWindow(), device=device))

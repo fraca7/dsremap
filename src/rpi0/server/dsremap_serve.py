@@ -18,6 +18,7 @@ class DSRemapServer:
         self.app = web.Application()
         self.app.add_routes([
             web.get('/info', self.handle_info),
+            web.post('/set_config', self.handle_configuration),
             web.get('/setup_ds4', self.handle_setup_ds4),
             web.get('/setup_ps4', self.handle_setup_ps4),
             web.get('/reboot', self.handle_reboot),
@@ -85,11 +86,12 @@ class DSRemapServer:
         if proc.returncode:
             self.logger.warning('Cannot reconfigure interface')
 
+        args = ['-h', info['ps4']['addr'], '-d', info['ds4']['addr'], '-s', info['ps4']['dongle']]
+        if os.path.exists('/opt/dsremap/config.bin'):
+            args.extend(['-b', '/opt/dsremap/config.bin'])
+
         self.logger.info('Starting proxy')
-        self.proxy = await asyncio.create_subprocess_exec('/opt/dsremap/proxy',
-                                                          '-h', info['ps4']['addr'],
-                                                          '-d', info['ds4']['addr'],
-                                                          '-s', info['ps4']['dongle'])
+        self.proxy = await asyncio.create_subprocess_exec('/opt/dsremap/proxy', *args)
 
     async def stop_proxy(self):
         if self.proxy is None:
@@ -108,6 +110,27 @@ class DSRemapServer:
         info['current_pairing'] = self.current_pairing() or None
 
         return web.json_response(info)
+
+    async def handle_configuration(self, request):
+        src = '/opt/dsremap/config.part'
+        if os.path.exists(src):
+            os.remove(src)
+
+        with open(src, 'wb') as fileobj:
+            data = await request.content.read(4096)
+            while data:
+                fileobj.write(data)
+                data = await request.content.read(4096)
+
+        dst = '/opt/dsremap/config.bin'
+        if os.path.exists(dst):
+            os.remove(dst)
+        os.rename(src, dst)
+
+        await self.stop_proxy()
+        await self.start_proxy()
+
+        return web.json_response({'status': 'ok'})
 
     async def handle_setup_ds4(self, request):
         dongle = request.query['interface']
