@@ -51,7 +51,7 @@ case "$1" in
 	cp ../server/dsremap.service /mnt/etc/avahi/services/dsremap.service
 	cp -a ../server/dsremap-initscript /mnt/etc/init.d/dsremap
 	IMGSIZE=`du -b "$1" | cut -f1`
-	sed -e "s/@IMGSIZE@/$IMGSIZE/g" scripts/extractcreds.py.in > /mnt/usr/sbin/extractcreds
+	sed -e "s/@IMGSIZE@/$IMGSIZE/g" extractcreds.py.in > /mnt/usr/sbin/extractcreds
 	chmod 755 /mnt/usr/sbin/extractcreds
 	patch -p0 /mnt/etc/init.d/resize2fs_once < resize2fs_once.patch
 
