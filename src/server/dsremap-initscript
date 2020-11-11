@@ -13,11 +13,30 @@ set -e
 
 . /lib/lsb/init-functions
 
-# XXXTODO: stop/restart...
-
 case "$1" in
     start)
-	nohup /usr/bin/python3 /opt/dsremap/dsremap_serve > /dev/null 2>&1 &
+	if [ ! -e /var/run/dsremap.pid ]; then
+	    /opt/dsremap/dsremap_serve -d
+	    for idx in 0 1 2 3 4 5 6 7 8 9; do
+		if [ -e /var/run/dsremap.pid ]; then
+		    break
+		fi
+	    done
+	fi
+	;;
+    stop)
+	if [ -e /var/run/dsremap.pid ]; then
+	    kill `cat /var/run/dsremap.pid`
+	    for idx in 0 1 2 3 4 5 6 7 8 9; do
+		if [ ! -e /var/run/dsremap.pid ]; then
+		    break
+		fi
+	    done
+	fi
+	;;
+    restart)
+	$0 stop
+	$0 start
 	;;
     *)
 	;;

@@ -1,17 +1,29 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import asyncio
 import subprocess
 import codecs
 import json
 import signal
 import logging
+import getopt
 
+import daemon
+import daemon.pidfile
 from aiohttp import web
 
 VERSION = '1.0.0'
 API_LEVEL = 1
+
+# Ugly hack, but iterating over ALL possible FDs takes up to 70s without this, and about 12ms with it.
+# See https://pagure.io/python-daemon/issue/40
+def monkey_patch_daemon(exclude):
+    return {int(name) for name in os.listdir('/proc/self/fd') if name.isdigit()}.difference(exclude)
+import daemon.daemon
+daemon.daemon._get_candidate_file_descriptors = monkey_patch_daemon
+
 
 class DSRemapServer:
     logger = logging.getLogger('dsremap.server')
@@ -192,5 +204,23 @@ def main():
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO, format='%(asctime)-15s %(levelname)-8s %(name)-15s %(message)s')
-    main()
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 'd', ['daemon'])
+    except getopt.GetoptError as exc:
+        print(exc)
+        sys.exit(1)
+
+    detach = False
+
+    for opt, val in opts:
+        if opt in ('-d', '--daemon'):
+            detach = True
+
+    logopt = dict(level=logging.INFO, format='%(asctime)-15s %(levelname)-8s %(name)-15s %(message)s')
+    if detach:
+        with daemon.DaemonContext(pidfile=daemon.pidfile.PIDLockFile('/var/run/dsremap.pid')):
+            logging.basicConfig(**logopt, filename='/var/log/dsremap.log')
+            main()
+    else:
+        logging.basicConfig(**logopt)
+        main()
