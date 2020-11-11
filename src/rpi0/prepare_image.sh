@@ -48,8 +48,8 @@ case "$1" in
 	mount --bind /sys /mnt/sys
 
 	# Copy files before chrooting
-	cp scripts/dsremap.service /mnt/etc/avahi/services/dsremap.service
-	cp -a scripts/dsremap-initscript /mnt/etc/init.d/dsremap
+	cp ../server/dsremap.service /mnt/etc/avahi/services/dsremap.service
+	cp -a ../server/dsremap-initscript /mnt/etc/init.d/dsremap
 	IMGSIZE=`du -b "$1" | cut -f1`
 	sed -e "s/@IMGSIZE@/$IMGSIZE/g" scripts/extractcreds.py.in > /mnt/usr/sbin/extractcreds
 	chmod 755 /mnt/usr/sbin/extractcreds
