@@ -10,6 +10,8 @@ import logging
 
 from aiohttp import web
 
+VERSION = '1.0.0'
+API_LEVEL = 1
 
 class DSRemapServer:
     logger = logging.getLogger('dsremap.server')
@@ -103,7 +105,7 @@ class DSRemapServer:
         self.proxy = None
 
     async def handle_info(self, request):
-        info = {'type': 'rpi0w'} # May be more later
+        info = {'version': VERSION, 'api_level': API_LEVEL, 'type': 'rpi0w'} # May be more later
         info['bt_interfaces'] = []
         for name in os.listdir('/var/lib/bluetooth'):
             info['bt_interfaces'].append(name)

@@ -1,3 +1,6 @@
+src/proxy/launch.sh
+src/proxy/test.bin
+
 .DS_Store
 build
 dist
@@ -26,3 +29,5 @@ src/pairing/pairing
 src/proxy/*.o
 src/proxy/proxy
 src/proxy/cpp/*.o
+src/server/dsremap-service-*.sh
+src/server/dsremap-service-*.tgz
