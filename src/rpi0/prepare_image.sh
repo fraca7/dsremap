@@ -61,7 +61,7 @@ case "$1" in
 	mkdir /mnt/opt/dsremap
 	cp -a ../pairing/pairing /mnt/opt/dsremap/pairing
 	cp -a ../proxy/proxy /mnt/opt/dsremap/proxy
-	cp -a server/dsremap_serve.py /mnt/opt/dsremap/server
+	cp -a ../server/dsremap_serve.py /mnt/opt/dsremap/dsremap_serve
 
 	# Clean obj files owned by root
 	pushd ../pairing && make clean && popd
