@@ -165,6 +165,7 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
         return [item.data(0, QtCore.Qt.UserRole) for item in self._tree.selectedItems()]
 
     def _addRows(self, parent, first, last): # pylint: disable=W0613
+        hasSelection = len(self._tree.selectedItems()) != 0
         for index, configuration in enumerate(self.configurations().items()[first:last+1]):
             item = QtWidgets.QTreeWidgetItem()
             item.setData(0, QtCore.Qt.UserRole, configuration)
@@ -177,10 +178,9 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
             widget = ConfigurationView(self, mainWindow=self.mainWindow(), configuration=configuration)
             self._properties.insertWidget(first + index + 1, widget)
 
-        # Select last added
-        for other in self._tree.selectedItems():
-            other.setSelected(False)
-        item.setSelected(True)
+            if configuration.enabled() and not hasSelection:
+                item.setSelected(True)
+                hasSelection = True
 
     def _removeRows(self, parent, first, last): # pylint: disable=W0613
         for _ in range(last - first + 1):
