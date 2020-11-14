@@ -4,3 +4,4 @@ from .base import Action, ActionVisitor
 from .axis import Axis, InvertPadAxisAction, SwapAxisAction
 from .gyro import GyroAction
 from .custom import CustomAction
+from .buttons import DisableButtonAction

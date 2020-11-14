@@ -45,11 +45,11 @@ class Application(QtWidgets.QApplication):
         self.setWindowIcon(QtGui.QIcon(':icons/gamepad.svg'))
 
         try:
-            opts, args = getopt.getopt(sys.argv[1:], 'hn', ['help', 'nuke'])
+            opts, _ = getopt.getopt(argv, 'hn', ['help', 'nuke'])
         except getopt.GetoptError as exc:
             usage(str(exc))
 
-        for opt, val in opts:
+        for opt, _ in opts:
             if opt in ('-h', '--help'):
                 usage(code=0)
             if opt in ('-n', '--nuke'):

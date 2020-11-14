@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-10-10 14:52+0200\n"
-"PO-Revision-Date: 2020-10-10 14:53+0200\n"
+"POT-Creation-Date: 2020-11-14 15:21+0100\n"
+"PO-Revision-Date: 2020-11-14 15:23+0100\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.0.5\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/dsrlib/domain/actions/axis.py:25
@@ -64,6 +64,10 @@ msgstr "valeur de R2"
 #: src/dsrlib/domain/actions/axis.py:109
 msgid "Swap {axis1} and {axis2}"
 msgstr "Échanger {axis1} et {axis2}"
+
+#: src/dsrlib/domain/actions/buttons.py:14
+msgid "Disable {button}"
+msgstr "Désactiver {button}"
 
 #: src/dsrlib/domain/actions/custom.py:13
 msgid "Custom action: {line}"
@@ -153,12 +157,12 @@ msgstr "Nouvelle configuration"
 msgid "{appname} v{appversion}"
 msgstr "{appname} v{appversion}"
 
-#: src/dsrlib/ui/about.py:27 src/dsrlib/ui/ide/editor.py:26
+#: src/dsrlib/ui/about.py:27 src/dsrlib/ui/ide/editor.py:40
 #: src/dsrlib/ui/settings.py:136
 msgid "Done"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:67
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:89
 msgid "Edit"
 msgstr "Édition"
 
@@ -166,25 +170,37 @@ msgstr "Édition"
 msgid "New release available"
 msgstr "Une nouvelle version est disponible"
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:221
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:247
 msgid "OK"
 msgstr "OK"
 
-#: src/dsrlib/ui/configupload.py:28
+#: src/dsrlib/ui/configupload.py:29 src/dsrlib/ui/configupload.py:76
 msgid "Uploading to {name}..."
 msgstr "Téléversement vers {name}…"
 
-#: src/dsrlib/ui/configupload.py:56
+#: src/dsrlib/ui/configupload.py:57
 msgid "CRC check..."
 msgstr "Vérification du CRC…"
 
-#: src/dsrlib/ui/configupload.py:64
+#: src/dsrlib/ui/configupload.py:65
 msgid "The CRC check failed. You will probably want to retry."
 msgstr "Le CRC a échoué. Vous voudrez probablement réessayer."
 
-#: src/dsrlib/ui/configupload.py:64
+#: src/dsrlib/ui/configupload.py:65
 msgid "Warning"
 msgstr "Avertissement"
+
+#: src/dsrlib/ui/configupload.py:86
+msgid "Cannot connect to device."
+msgstr "Impossible de se connecter au périphérique."
+
+#: src/dsrlib/ui/configupload.py:86 src/dsrlib/ui/configupload.py:89
+msgid "Upload error"
+msgstr "Erreur de téléversement"
+
+#: src/dsrlib/ui/configupload.py:89
+msgid "Device returned HTTP status {code}"
+msgstr "Le périphérique a retourné un code HTTP {code}"
 
 #: src/dsrlib/ui/configuration.py:38 src/dsrlib/ui/workspace.py:70
 msgid "{count} bytes"
@@ -255,7 +271,7 @@ msgstr ""
 "\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
 
 #: src/dsrlib/ui/hexuploader.py:70 src/dsrlib/ui/hexuploader.py:107
-#: src/dsrlib/ui/ide/editor.py:27 src/dsrlib/ui/main.py:218
+#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:244
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr "Annuler"
@@ -345,27 +361,27 @@ msgstr ""
 msgid "Skip"
 msgstr "Passer"
 
-#: src/dsrlib/ui/main.py:57
+#: src/dsrlib/ui/main.py:80
 msgid "{appName} v{appVersion}"
 msgstr "{appName} v{appVersion}"
 
-#: src/dsrlib/ui/main.py:60
+#: src/dsrlib/ui/main.py:83
 msgid "File"
 msgstr "Fichier"
 
-#: src/dsrlib/ui/main.py:76
+#: src/dsrlib/ui/main.py:98
 msgid "Help"
 msgstr "Aide"
 
-#: src/dsrlib/ui/main.py:132
+#: src/dsrlib/ui/main.py:158
 msgid "<i>groups</i> exited with code {code}"
 msgstr "<b>avrdude</b> s’est terminé avec le code {code}."
 
-#: src/dsrlib/ui/main.py:135
+#: src/dsrlib/ui/main.py:161
 msgid "Cannot find groups"
 msgstr "Impossible de déterminer les groupes"
 
-#: src/dsrlib/ui/main.py:135
+#: src/dsrlib/ui/main.py:161
 msgid ""
 "Unable to find out which groups you belong to:<p />{error}<p />For this "
 "program to work correctly, you must belong to the <i>plugdev</i> group."
@@ -374,22 +390,22 @@ msgstr ""
 ">Pour que ce programme fonctionne correctement, vous devez appartenir au "
 "groupe <i>plugdev</i>."
 
-#: src/dsrlib/ui/main.py:145
+#: src/dsrlib/ui/main.py:171
 msgid ""
 "The following operations must be done before this program can work correctly:"
 msgstr ""
 "Les opérations suivantes doivent être exécutées pour que ce programme "
 "fonctionne correctement:"
 
-#: src/dsrlib/ui/main.py:147
+#: src/dsrlib/ui/main.py:173
 msgid "Install udev rules to allow HID communication"
 msgstr "Installation des règles udev pour les communications HID"
 
-#: src/dsrlib/ui/main.py:149
+#: src/dsrlib/ui/main.py:175
 msgid "Add you to the <i>plugdev</i> group"
 msgstr "Vous ajouter au groupe <i>plugdev</i>"
 
-#: src/dsrlib/ui/main.py:152
+#: src/dsrlib/ui/main.py:178
 msgid ""
 "You may have to logout and login again, or even reboot, and unplug/replug "
 "the Arduino for those changes to apply."
@@ -397,41 +413,41 @@ msgstr ""
 "Vous aurez peut-être à vous déconnecter, voire redémarrer, et débrancher/"
 "rebrancher l'Arduino pour que ces modifications soient effectives."
 
-#: src/dsrlib/ui/main.py:154
+#: src/dsrlib/ui/main.py:180
 msgid "You may be prompted for your password."
 msgstr "Vous aurez peut-être à fournir votre mot de passe."
 
-#: src/dsrlib/ui/main.py:156
+#: src/dsrlib/ui/main.py:182
 msgid "System setup"
 msgstr "Configuration du système"
 
-#: src/dsrlib/ui/main.py:166
+#: src/dsrlib/ui/main.py:192
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
 
-#: src/dsrlib/ui/main.py:166 src/dsrlib/ui/main.py:168
+#: src/dsrlib/ui/main.py:192 src/dsrlib/ui/main.py:194
 msgid "Error"
 msgstr "Erreur"
 
-#: src/dsrlib/ui/main.py:168
+#: src/dsrlib/ui/main.py:194
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr "La commande a échoué avec le code de retour {code}.<p />{stderr}"
 
-#: src/dsrlib/ui/main.py:206
+#: src/dsrlib/ui/main.py:232
 msgid "Password needed"
 msgstr "Mot de passe nécessaire"
 
-#: src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:240
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
 "règles udev."
 
-#: src/dsrlib/ui/pairer.py:16
+#: src/dsrlib/ui/pairer.py:17
 msgid "Preparing to pair the PS4"
 msgstr "Préparation de l'appairement de la PS4"
 
-#: src/dsrlib/ui/pairer.py:17
+#: src/dsrlib/ui/pairer.py:18
 msgid ""
 "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when "
 "done."
@@ -439,11 +455,11 @@ msgstr ""
 "Tout d'abord, allumez votre PS4 et branchez-y le Raspberry Pi. Cliquez sur "
 "Continuer lorsque c'est fait."
 
-#: src/dsrlib/ui/pairer.py:35
+#: src/dsrlib/ui/pairer.py:36
 msgid "Pairing PS4"
 msgstr "Appairement de la PS4"
 
-#: src/dsrlib/ui/pairer.py:48
+#: src/dsrlib/ui/pairer.py:49
 msgid "Connecting..."
 msgstr "Connexion en cours..."
 
@@ -483,23 +499,23 @@ msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
 msgid "Obtaining MAC address..."
 msgstr "Obtention de l'adresse MAC..."
 
-#: src/dsrlib/ui/pairer.py:204
+#: src/dsrlib/ui/pairer.py:203
 msgid "Uploading pairing info..."
 msgstr "Téléversement des informations d'appairement..."
 
-#: src/dsrlib/ui/pairer.py:219
+#: src/dsrlib/ui/pairer.py:218
 msgid "Error contacting the device: {status}"
 msgstr "Erreur du périphérique: {status}"
 
-#: src/dsrlib/ui/pairer.py:227
+#: src/dsrlib/ui/pairer.py:226
 msgid "Pairing the controller..."
 msgstr "Appairement du contrôleur..."
 
-#: src/dsrlib/ui/pairer.py:241
+#: src/dsrlib/ui/pairer.py:240
 msgid "Finished"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/pairer.py:242
+#: src/dsrlib/ui/pairer.py:241
 msgid ""
 "Done. You can unplug the DualShock and press PS to start using it through "
 "the proxy."
@@ -539,51 +555,71 @@ msgstr "Refaire"
 msgid "Redo last undone action"
 msgstr "Refaire la dernière action défaite"
 
-#: src/dsrlib/ui/uicommands/bt.py:10
+#: src/dsrlib/ui/uicommands/bt.py:15
 msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
 msgstr "Appairer une Dualshock 4 et une PS4 à ce périphérique DSRemap"
 
+#: src/dsrlib/ui/uicommands/bt.py:15
+msgid "Pair to PS4 and Dualshock"
+msgstr "Appariement avec la PS4 et la Dualshock"
+
+#: src/dsrlib/ui/uicommands/bt.py:26
+msgid "Reboot"
+msgstr "Redémarrer"
+
+#: src/dsrlib/ui/uicommands/bt.py:36
+msgid "Halt"
+msgstr "Arrêter"
+
 #: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Add an action to disable a button"
+msgstr "Ajouter une action pour désactiver un bouton"
+
+#: src/dsrlib/ui/uicommands/configuration.py:16
+msgid "Disable button"
+msgstr "Désactiver un bouton"
+
+#: src/dsrlib/ui/uicommands/configuration.py:25
 msgid "Add an action to invert an axis"
 msgstr "Ajouter une action pour inverser un axe"
 
-#: src/dsrlib/ui/uicommands/configuration.py:16
+#: src/dsrlib/ui/uicommands/configuration.py:25
 msgid "Invert pad axis"
 msgstr "Inverser l’axe d’un pad"
 
-#: src/dsrlib/ui/uicommands/configuration.py:25
+#: src/dsrlib/ui/uicommands/configuration.py:34
 msgid "Add an action to swap two axis"
 msgstr "Ajouter une action pour échanger deux axes"
 
-#: src/dsrlib/ui/uicommands/configuration.py:25
+#: src/dsrlib/ui/uicommands/configuration.py:34
 msgid "Swap axis"
 msgstr "Échanger les axes"
 
-#: src/dsrlib/ui/uicommands/configuration.py:34
+#: src/dsrlib/ui/uicommands/configuration.py:43
 msgid "Add an action to implement gyro aiming"
 msgstr "Ajouter une action pour implémenter la visée gyroscopique"
 
-#: src/dsrlib/ui/uicommands/configuration.py:34
+#: src/dsrlib/ui/uicommands/configuration.py:43
 msgid "Gyro aiming"
 msgstr "Visée gyroscopique"
 
-#: src/dsrlib/ui/uicommands/configuration.py:43
+#: src/dsrlib/ui/uicommands/configuration.py:52
 msgid "Add a custom action and open the code editor"
 msgstr "Ajouter une action personnalisée et ouvrir l’éditeur de code"
 
-#: src/dsrlib/ui/uicommands/configuration.py:43
+#: src/dsrlib/ui/uicommands/configuration.py:52
 msgid "Custom action"
 msgstr "Action personnalisée"
 
-#: src/dsrlib/ui/uicommands/configuration.py:61
+#: src/dsrlib/ui/uicommands/configuration.py:70
 msgid "Add a remapping action"
 msgstr "Ajouter une action de réécriture"
 
-#: src/dsrlib/ui/uicommands/configuration.py:77
+#: src/dsrlib/ui/uicommands/configuration.py:87
 msgid "Delete the selected action"
 msgstr "Supprimer l’action sélectionnée"
 
-#: src/dsrlib/ui/uicommands/configuration.py:94
+#: src/dsrlib/ui/uicommands/configuration.py:104
 msgid "Convert the selected action to a custom one and open the code editor"
 msgstr ""
 "Convertir l’action sélectionnée en action personnalisée et ouvrir l’éditeur "
@@ -613,9 +649,13 @@ msgstr ""
 "application (v{version2}). Veuillez mettre à jour le microcode via le menu "
 "Téléverser, puis débrancher et rebrancher le périphérique."
 
-#: src/dsrlib/ui/uicommands/hid.py:12
-msgid "Send enabled configurations to EEPROM of device {name}"
-msgstr "Envoyer les configurations activées à l’EEPROM du périphérique {name}"
+#: src/dsrlib/ui/uicommands/hid.py:13
+msgid "Send enabled configurations to device {name}"
+msgstr "Envoyer les configurations activées au périphérique {name}"
+
+#: src/dsrlib/ui/uicommands/hid.py:13
+msgid "Upload to {name}"
+msgstr "Téléversement vers {name}"
 
 #: src/dsrlib/ui/uicommands/io.py:18
 msgid "Export selected configuration"

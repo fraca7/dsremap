@@ -7,7 +7,7 @@ import uuid
 from dsrlib.meta import Meta
 
 from .actions import Axis, ActionVisitor, InvertPadAxisAction, SwapAxisAction, \
-     GyroAction, CustomAction
+     GyroAction, CustomAction, DisableButtonAction
 from .buttons import Buttons
 from .configuration import Configuration
 
@@ -29,6 +29,9 @@ class BaseJSONWriter(ActionVisitor):
 
     def encodeAction(self, action):
         return self.visit(action)
+
+    def _acceptDisableButtonAction(self, action):
+        return {'type': 'disable_button', 'button': action.button().name}
 
     def _acceptInvertPadAxisAction(self, action):
         return {'type': 'invert_pad', 'pad': action.pad(), 'axis': action.axis()}
@@ -95,6 +98,9 @@ class BaseJSONReader:
         return configuration
 
     def decodeAction(self, data):
+        if data['type'] == 'disable_button':
+            action = DisableButtonAction()
+            action.setButton(Buttons[data['button']])
         if data['type'] == 'invert_pad':
             action = InvertPadAxisAction()
             action.setPad(data['pad'])

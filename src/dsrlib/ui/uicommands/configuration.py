@@ -4,11 +4,20 @@ from PyQt5 import QtGui, QtWidgets
 from pyqtcmd import NeedsSelectionUICommandMixin
 
 from dsrlib.domain import commands, ConfigurationMixin
-from dsrlib.domain.actions import InvertPadAxisAction, SwapAxisAction, GyroAction, CustomAction
+from dsrlib.domain.actions import InvertPadAxisAction, SwapAxisAction, GyroAction, CustomAction, DisableButtonAction
 from dsrlib.ui.mixins import MainWindowMixin, DeveloperModeItemMixin
 from dsrlib.ui.ide import Editor
 
 from .base import UICommand
+
+
+class AddDisableButtonActionUICommand(ConfigurationMixin, UICommand):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, text=_('Disable button'), tip=_('Add an action to disable a button'), **kwargs)
+
+    def do(self):
+        cmd = commands.AddActionCommand(configuration=self.configuration(), action=DisableButtonAction())
+        self.history().run(cmd)
 
 
 class AddInvertPadAxisActionUICommand(ConfigurationMixin, UICommand):
@@ -65,6 +74,7 @@ class AddActionButton(MainWindowMixin, ConfigurationMixin, QtWidgets.QPushButton
         self.setFixedWidth(32)
 
         menu = QtWidgets.QMenu(self)
+        menu.addAction(AddDisableButtonActionUICommand(self, configuration=self.configuration(), mainWindow=self.mainWindow()))
         menu.addAction(AddInvertPadAxisActionUICommand(self, configuration=self.configuration(), mainWindow=self.mainWindow()))
         menu.addAction(AddSwapAxisActionUICommand(self, configuration=self.configuration(), mainWindow=self.mainWindow()))
         menu.addAction(AddGyroActionUICommand(self, configuration=self.configuration(), mainWindow=self.mainWindow()))
