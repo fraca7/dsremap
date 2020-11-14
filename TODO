@@ -8,11 +8,10 @@ General:
 * Debug info in separate file
 * IDE
 * Codesign mac OS binary
-* Common subexpr elimination
 * Optimization pass
+* First launch wizard: rpi0/leonardo choice
 
 Bluetooth:
 
 * Support multiple interfaces
 * Better defaults
-
