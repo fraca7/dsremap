@@ -9,6 +9,7 @@ import platform
 import subprocess
 import glob
 import zipfile
+import getopt
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 
@@ -25,13 +26,35 @@ from dsrlib.ui import uicommands
 from dsrlib.ui.workspace import WorkspaceView
 
 
+def usage(msg=None, code=1):
+    if msg:
+        print(msg)
+    print('Usage: %s [options]' % sys.argv[0])
+    print('Options:')
+    print('-h, --help         Display this')
+    print('-n, --nuke         Erase configuration before starting up')
+    sys.exit(code)
+
+
 class Application(QtWidgets.QApplication):
     def __init__(self, argv):
-        super().__init__(argv)
+        super().__init__([])
         self.setApplicationName(Meta.appName())
         self.setApplicationVersion(str(Meta.appVersion()))
         self.setOrganizationDomain(Meta.appDomain())
         self.setWindowIcon(QtGui.QIcon(':icons/gamepad.svg'))
+
+        try:
+            opts, args = getopt.getopt(sys.argv[1:], 'hn', ['help', 'nuke'])
+        except getopt.GetoptError as exc:
+            usage(str(exc))
+
+        for opt, val in opts:
+            if opt in ('-h', '--help'):
+                usage(code=0)
+            if opt in ('-n', '--nuke'):
+                settings = QtCore.QSettings()
+                settings.clear()
 
         # Builtin messages.
         trans = QtCore.QTranslator(self)
@@ -256,7 +279,7 @@ def setup():
 
 
 def uimain():
-    app = Application(sys.argv)
+    app = Application(sys.argv[1:])
     win = MainWindow() # pylint: disable=W0612
     app.exec_()
 
