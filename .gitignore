@@ -2,6 +2,7 @@ src/proxy/launch.sh
 src/proxy/test.bin
 
 .DS_Store
+*~
 build
 dist
 *.dmg
