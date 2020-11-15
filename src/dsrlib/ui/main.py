@@ -21,6 +21,7 @@ from dsrlib.ui.hexuploader import FirstLaunchWizard
 from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
 
+from dsrlib.domain.downloader import StringDownloader, AbortedError, SSLError, DownloadError
 from dsrlib.domain.sudo import sudoLaunch, SudoNotFound, SudoError
 from dsrlib.ui import uicommands
 from dsrlib.ui.workspace import WorkspaceView
@@ -67,7 +68,9 @@ class Application(QtWidgets.QApplication):
 class MainWindow(QtWidgets.QMainWindow):
     settingsChanged = QtCore.pyqtSignal()
 
-    def __init__(self):
+    logger = logging.getLogger('dsremap')
+
+    def __init__(self): # pylint: disable=R0915
         super().__init__()
 
         self._manager = QtNetwork.QNetworkAccessManager(self)
@@ -116,8 +119,25 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.check()
 
-        self._changelogReply = self._manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
-        self._changelogReply.finished.connect(self._onChangelogReply)
+        def gotChangelog(downloader):
+            self._changelogDl = None
+            try:
+                _unused, text = downloader.result()
+            except AbortedError:
+                self.logger.info('Changelog download aborted')
+                return
+            except (DownloadError, SSLError) as exc:
+                self.logger.exception('Cannot download changelog: %s', exc)
+                return
+
+            changelog = Changelog(text)
+            if changelog.changesSince(Meta.appVersion()):
+                win = ChangelogView(self, changelog)
+                win.show()
+                win.raise_()
+
+        self._changelogDl = StringDownloader(self, self.manager(), callback=gotChangelog)
+        self._changelogDl.get(Meta.changelogUrl())
 
     def history(self):
         return self._workspace.history()
@@ -130,8 +150,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._workspace.cleanup()
         self._devenum.stop()
 
-        if self._changelogReply:
-            self._changelogReply.abort()
+        if self._changelogDl:
+            self._changelogDl.abort()
 
         with Settings().grouped('UIState') as settings:
             settings.setValue('WindowGeometry', self.saveGeometry())
@@ -207,23 +227,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if not Settings().firmwareUploaded():
             wizard = FirstLaunchWizard(self)
             wizard.exec_()
-
-    def _onChangelogReply(self):
-        reply, self._changelogReply = self._changelogReply, None
-        try:
-            logger = logging.getLogger('dsremap')
-            status = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if status != 200:
-                logger.warning('Got status %s while downloading changelog', status)
-                return
-            changelog = Changelog(bytes(reply.readAll()).decode('utf-8'))
-
-            if changelog.changesSince(Meta.appVersion()):
-                win = ChangelogView(self, changelog)
-                win.show()
-                win.raise_()
-        except: # pylint: disable=W0702
-            logger.exception('Cannot download changelog')
 
 
 class PasswordDialog(QtWidgets.QDialog):

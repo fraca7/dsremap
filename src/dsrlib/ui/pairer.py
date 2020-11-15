@@ -3,11 +3,12 @@
 import binascii
 import json
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from dsrlib.ui.mixins import MainWindowMixin
 from dsrlib.ui.utils import LayoutBuilder
 from dsrlib.domain.device import DeviceVisitor
+from dsrlib.domain.downloader import StringDownloader, DownloadError, DownloadNetworkError, DownloadHTTPError, AbortedError
 
 
 class PairHostWaitPage(QtWidgets.QWizardPage):
@@ -29,7 +30,8 @@ class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
     STATE_CONTACTING = 0
     STATE_WAITING = 1
     STATE_PAIRING = 2
-    STATE_DONE = 3
+    STATE_ERROR = 3
+    STATE_DONE = 4
 
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
@@ -42,13 +44,25 @@ class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
             layout.addWidget(self._message)
 
     def isComplete(self):
-        return self._state == self.STATE_DONE
+        return self._state in (self.STATE_DONE, self.STATE_ERROR)
+
+    def nextId(self):
+        # Without this the Next button is still shown and enabled even after calling setFinalPage(True)
+        if self._state == self.STATE_ERROR:
+            return -1
+        return super().nextId()
+
+    def _setState(self, state):
+        self._state = state
+        self.completeChanged.emit()
+        self.setFinalPage(state == self.STATE_ERROR)
+        if state == self.STATE_DONE:
+            self.wizard().button(self.wizard().NextButton).click()
 
     def initializePage(self):
-        self._state = self.STATE_CONTACTING
-        self.setSubTitle(_('Connecting...'))
+        self._setState(self.STATE_CONTACTING)
         self._message.hide()
-        self._reply = None
+        self._downloader = None
         self._retryCount = 0
         self._timer = QtCore.QTimer(self)
         self._timer.setSingleShot(True)
@@ -56,63 +70,78 @@ class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
         self._getInfo()
 
     def cleanupPage(self):
-        if self._reply is not None:
-            self._reply.abort()
-            self._reply = None
+        if self._downloader is not None:
+            self._downloader.abort()
         if self._state == self.STATE_WAITING:
             self._timer.stop()
 
     def _getInfo(self):
-        self._state = self.STATE_CONTACTING
+        self._setState(self.STATE_CONTACTING)
+        self.setSubTitle(_('Getting device information...'))
+
+        def gotInfo(downloader):
+            self._downloader = None
+            try:
+                _unused, text = downloader.result()
+            except AbortedError:
+                self._setState(self.STATE_ERROR)
+                return
+            except DownloadNetworkError as exc:
+                self._retryCount += 1
+                if self._retryCount == 10:
+                    self.setSubTitle(_('Error connecting to the device: {error}').format(error=str(exc)))
+                    self._setState(self.STATE_ERROR)
+                    return
+
+                self._setState(self.STATE_WAITING)
+                self._timer.start(5000)
+                return
+            except DownloadHTTPError as exc:
+                self.setSubTitle(_('Error getting info from device: {error}').format(error=str(exc)))
+                self._setState(self.STATE_ERROR)
+                return
+
+            data = json.loads(text)
+            self.wizard().setDongle(data['bt_interfaces'][0])
+            self._pair()
+
         dev = self.wizard().device()
-        url = QtCore.QUrl('http://%s:%d/info' % (dev.addr, dev.port))
-        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
-        self._reply.finished.connect(self._onQueryResponse)
+        self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=gotInfo)
+        self._downloader.get('http://%s:%d/info' % (dev.addr, dev.port))
 
     def _pair(self):
-        self._state = self.STATE_PAIRING
+        self._setState(self.STATE_PAIRING)
+        self.setSubTitle(_('Waiting for the PS4...'))
+
+        def pairingDone(downloader):
+            self._downloader = None
+            try:
+                _unused, text = downloader.result()
+            except AbortedError:
+                return
+            except DownloadError as exc:
+                self.setSubTitle(_('Error while pairing the PS4: {code}').format(code=str(exc)))
+                self._setState(self.STATE_ERROR)
+                return
+
+            data = json.loads(text)
+            if data['status'] == 'ko':
+                self.setSubTitle(_('Error while pairing the PS4'))
+                self._message.setPlainText(data['stderr'])
+                self._setState(self.STATE_ERROR)
+                return
+
+            self.wizard().setLinkKey(data['key'])
+            self._setState(self.STATE_DONE)
+
         dev = self.wizard().device()
+
         url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.addr, dev.port))
         query = QtCore.QUrlQuery()
         query.addQueryItem('interface', self.wizard().dongle())
         url.setQuery(query)
-        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
-        self._reply.finished.connect(self._onQueryResponse)
-
-    def _onQueryResponse(self):
-        if self._state == self.STATE_CONTACTING:
-            status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if status == 200:
-                data = json.loads(bytes(self._reply.readAll()).decode('utf-8'))
-                self.wizard().setDongle(data['bt_interfaces'][0])
-                self._pair()
-            else:
-                self._retryCount += 1
-                if self._retryCount == 10:
-                    self.setSubTitle(_('Something went wrong (cannot connect to the Pi).'))
-                    self._state = self.STATE_DONE
-                    self.completeChanged.emit()
-                    return
-                self._reply = None
-                self._state = self.STATE_WAITING
-                self._timer.start(5000)
-        elif self._state == self.STATE_PAIRING:
-            status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if status == 200:
-                data = json.loads(bytes(self._reply.readAll()).decode('utf-8'))
-                if data['status'] == 'ko':
-                    self.setSubTitle(_('An error occured while pairing the PS4.'))
-                    self._message.setPlainText(data['stderr'])
-                else:
-                    self._state = self.STATE_DONE
-                    self.wizard().setLinkKey(data['key'])
-                    self.completeChanged.emit()
-                    self.wizard().button(self.wizard().NextButton).click()
-            else:
-                self.setSubTitle(_('Cannot connect to the Raspberry Pi.'))
-
-            self._state = self.STATE_DONE
-            self.completeChanged.emit()
+        self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=pairingDone)
+        self._downloader.get(url)
 
 
 class WaitDualshockPage(QtWidgets.QWizardPage):
@@ -171,7 +200,7 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
     STATE_NETWORK = 1
     STATE_PAIR = 2
     STATE_ERROR = 3
-    STATE_OK = 4
+    STATE_DONE = 4
 
     def __init__(self, parent, **kwargs):
         super().__init__(parent, **kwargs)
@@ -179,12 +208,24 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
         self.setTitle(_('Pairing controller'))
         self.setSubTitle(_('Pairing the controller, please wait...'))
 
+    def _setState(self, state):
+        self._state = state
+        self.completeChanged.emit()
+        self.setFinalPage(state == self.STATE_ERROR)
+        if state == self.STATE_DONE:
+            self.wizard().button(self.wizard().NextButton).click()
+
     def isComplete(self):
-        return self._state in (self.STATE_OK, self.STATE_ERROR)
+        return self._state in (self.STATE_DONE, self.STATE_ERROR)
+
+    def nextId(self):
+        if self._state == self.STATE_ERROR:
+            return -1
+        return super().nextId()
 
     def initializePage(self):
-        self._state = self.STATE_REPORT
-        self._reply = None
+        self._setState(self.STATE_REPORT)
+        self._downloader = None
 
         self.setSubTitle(_('Obtaining MAC address...'))
         self._worker = self.wizard().dualshock().worker()
@@ -193,14 +234,40 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
         self._worker.getReport(0x81, 64)
 
     def cleanupPage(self):
-        if self._reply is not None:
-            self._reply.abort()
+        if self._downloader is not None:
+            self._downloader.abort()
 
     def _onReport(self, data):
         macaddr = ':'.join(['%02X' % val for val in reversed(data[1:])])
 
-        self._state = self.STATE_NETWORK
+        self._setState(self.STATE_NETWORK)
         self.setSubTitle(_('Uploading pairing info...'))
+
+        def gotResponse(downloader):
+            self._downloader = None
+            try:
+                _unused, text = downloader.result()
+            except AbortedError:
+                self._setState(self.STATE_ERROR)
+                return
+            except DownloadNetworkError as exc:
+                self.setSubTitle(_('Error connecting to the device: {error}').format(error=str(exc)))
+                self._setState(self.STATE_ERROR)
+                return
+            except DownloadHTTPError as exc:
+                self.setSubTitle(_('Error uploading pairing info: {error}').format(error=str(exc)))
+                self._setState(self.STATE_ERROR)
+                return
+
+            data = json.loads(text)
+            self.setSubTitle(_('Pairing the controller...'))
+            self._setState(self.STATE_PAIR)
+
+            report = b'\x13' + bytes(reversed(binascii.unhexlify(data['interface'].replace(':', '')))) + binascii.unhexlify(data['link_key'])
+            self._worker.write(report)
+            self._worker.cancel() # Actually this is blocking but shouldn't take long...
+
+            self._setState(self.STATE_DONE)
 
         dev = self.wizard().device()
         url = QtCore.QUrl('http://%s:%d/setup_ds4' % (dev.addr, dev.port))
@@ -209,29 +276,8 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
         query.addQueryItem('ds4', macaddr)
         query.addQueryItem('link_key', self.wizard().linkKey())
         url.setQuery(query)
-        self._reply = self.mainWindow().manager().get(QtNetwork.QNetworkRequest(url))
-        self._reply.finished.connect(self._onQueryResponse)
-
-    def _onQueryResponse(self):
-        status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-        if status != 200:
-            self.setSubTitle(_('Error contacting the device: {status}').format(status=status))
-            self._state = self.STATE_ERROR
-            self.setFinalPage(True)
-            self.completeChanged.emit()
-            return
-
-        data = json.loads(bytes(self._reply.readAll()).decode('utf-8'))
-
-        self.setSubTitle(_('Pairing the controller...'))
-        self._state = self.STATE_PAIR
-        report = b'\x13' + bytes(reversed(binascii.unhexlify(data['interface'].replace(':', '')))) + binascii.unhexlify(data['link_key'])
-        self._worker.write(report)
-        self._worker.cancel() # Actually this is blocking but shouldn't take long...
-
-        self._state = self.STATE_OK
-        self.completeChanged.emit()
-        self.wizard().button(self.wizard().NextButton).click()
+        self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=gotResponse)
+        self._downloader.get(url)
 
 
 class FinalPage(QtWidgets.QWizardPage):

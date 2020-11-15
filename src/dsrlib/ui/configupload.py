@@ -6,6 +6,7 @@ import struct
 from PyQt5 import QtCore, QtWidgets, QtNetwork
 
 from dsrlib.domain.mixins import WorkspaceMixin
+from dsrlib.domain.downloader import Downloader, DownloadNetworkError, DownloadHTTPError, AbortedError
 from dsrlib.ui.mixins import MainWindowMixin
 
 from .utils import LayoutBuilder
@@ -71,22 +72,45 @@ class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QD
     def __init__(self, parent, *, device, **kwargs):
         super().__init__(parent, **kwargs)
 
+        self._progress = QtWidgets.QProgressBar(self)
+
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             layout.addWidget(QtWidgets.QLabel(_('Uploading to {name}...').format(name=device.name), self))
+            layout.addWidget(self._progress)
 
+        def gotResponse(downloader):
+            self._downloader = None
+            try:
+                _unused = downloader.result()
+            except DownloadNetworkError as exc:
+                QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Cannot connect to device: {error}').format(error=str(exc)))
+                self.reject()
+                return
+            except DownloadHTTPError as exc:
+                QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Error uploading to device: {error}').format(error=str(exc)))
+                self.reject()
+                return
+            except AbortedError:
+                return
+
+            self.accept()
+
+        self._downloader = Downloader(self, self.mainWindow().manager(), callback=gotResponse)
         req = QtNetwork.QNetworkRequest(QtCore.QUrl('http://%s:%d/set_config' % (device.addr, device.port)))
         req.setHeader(req.ContentTypeHeader, 'application/octet-stream')
-        self._reply = self.mainWindow().manager().post(req, self.workspace().bytecode())
-        self._reply.finished.connect(self._onQueryResponse)
+        self._downloader.postBytes(req, self.workspace().bytecode())
+        self._downloader.uploadSize.connect(self._onUploadSize)
+        self._downloader.uploadProgress.connect(self._onUploadProgress)
 
-    def _onQueryResponse(self):
-        status = self._reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-        if status is None:
-            QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Cannot connect to device.'))
-            self.reject()
-        elif status != 200:
-            QtWidgets.QMessageBox.critical(self, _('Upload error'), _('Device returned HTTP status {code}').format(code=status))
-            self.reject()
-        else:
-            self.accept()
+    def reject(self):
+        if self._downloader is not None:
+            self._downloader.abort()
+        return super().reject()
+
+    def _onUploadSize(self, size):
+        self._progress.setMinimum(0)
+        self._progress.setMaximum(size)
+
+    def _onUploadProgress(self, done):
+        self._progress.setValue(done)
