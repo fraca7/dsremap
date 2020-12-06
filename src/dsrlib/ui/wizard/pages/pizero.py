@@ -19,15 +19,16 @@ class PiZeroPlugPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setTitle(_('Preparing to pair the PS4'))
-        self.setSubTitle(_('First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done.'))
-
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             img = QtWidgets.QLabel(self)
             img.setPixmap(QtGui.QPixmap(':images/rpi_ps4.jpg'))
             img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
             layout.addWidget(img)
+
+    def initializePage(self):
+        self.setTitle(_('Preparing to pair the PS4'))
+        self.setSubTitle(_('First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done.'))
 
     def nextId(self):
         return PiZeroPairHostPage.ID
@@ -44,7 +45,6 @@ class PiZeroPairHostPage(Page):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setTitle(_('Pairing PS4'))
 
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
@@ -69,6 +69,8 @@ class PiZeroPairHostPage(Page):
             self.wizard().button(self.wizard().NextButton).click()
 
     def initializePage(self):
+        self.setTitle(_('Pairing PS4'))
+
         self._setState(self.STATE_CONTACTING)
         self._message.hide()
         self._downloader = None
@@ -160,9 +162,6 @@ class PiZeroWaitDSPage(Page):
         super().__init__(*args, **kwargs)
         self._enumerator = enumerator
 
-        self.setTitle(_('Waiting for Dualshock'))
-        self.setSubTitle(_('You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC.'))
-
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             img = QtWidgets.QLabel(self)
@@ -171,6 +170,9 @@ class PiZeroWaitDSPage(Page):
             layout.addWidget(img)
 
     def initializePage(self):
+        self.setTitle(_('Waiting for Dualshock'))
+        self.setSubTitle(_('You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC.'))
+
         self._found = False
         self._enumerator.connect(self)
 
@@ -218,13 +220,10 @@ class PiZeroPairDSPage(Page):
     STATE_ERROR = 3
     STATE_DONE = 4
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
+    def initializePage(self):
         self.setTitle(_('Pairing controller'))
         self.setSubTitle(_('Pairing the controller, please wait...'))
 
-    def initializePage(self):
         self._setState(self.STATE_REPORT)
         self._downloader = None
 
@@ -299,7 +298,6 @@ class PiZeroPairDSPage(Page):
 class PiZeroFinalPage(Page):
     ID = PageId.PiZeroFinal
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def initializePage(self):
         self.setTitle(_('Finished'))
         self.setSubTitle(_('Done. You can unplug the DualShock and press PS to start using it through the proxy.'))

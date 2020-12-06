@@ -21,12 +21,13 @@ class ArduinoWelcomePage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setTitle(_('Firmware upload'))
-        self.setSubTitle(_('Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Devices menu in the menu bar.'))
-
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             layout.addStretch(1)
+
+    def initializePage(self):
+        self.setTitle(_('Firmware upload'))
+        self.setSubTitle(_('Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Devices menu in the menu bar.'))
 
     def nextId(self):
         settings = Settings()
@@ -40,9 +41,6 @@ class ArduinoAvrdudePage(Page):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        self.setTitle(_('Install avrdude'))
-        self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
 
         btnTry = QtWidgets.QPushButton(_('Try to detect avrdude again'), self)
         btnBrowse = QtWidgets.QPushButton(_('Browse'), self)
@@ -70,6 +68,9 @@ class ArduinoAvrdudePage(Page):
         btnBrowse.clicked.connect(self._browse)
 
     def initializePage(self):
+        self.setTitle(_('Install avrdude'))
+        self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
+
         self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
 
     def isComplete(self):
@@ -103,10 +104,10 @@ class ArduinoResetPage(Page):
             img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
             layout.addWidget(img)
 
+    def initializePage(self):
         self.setTitle(_('Firmware upload'))
         self.setSubTitle(_('Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it.'))
 
-    def initializePage(self):
         self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
 
     def nextId(self):
@@ -121,8 +122,6 @@ class ArduinoFindSerialPage(Page):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.setTitle(_('Looking for Leonardo'))
-
         self._timer = QtCore.QTimer(self)
         self._timer.timeout.connect(self._tick)
 
@@ -132,7 +131,9 @@ class ArduinoFindSerialPage(Page):
             layout.addStretch(1)
 
     def initializePage(self):
+        self.setTitle(_('Looking for Leonardo'))
         self.setSubTitle(_('Release the <b>reset</b> button now.'))
+
         self._state = 0
         self._finished = False
         self._devices = Meta.listSerials()
