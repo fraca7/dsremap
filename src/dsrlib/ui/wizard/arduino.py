@@ -28,8 +28,7 @@ class HexUploader(Wizard):
 
 class HexUploaderWizard(HexUploader):
     def setupPages(self):
-        if Settings().avrdude() is None:
-            self.addPage(ArduinoAvrdudePage(self, mainWindow=self.mainWindow()))
+        self.addPage(ArduinoAvrdudePage(self, mainWindow=self.mainWindow()))
         self.addPage(ArduinoResetPage(self, mainWindow=self.mainWindow()))
         self.addPage(ArduinoFindSerialPage(self, mainWindow=self.mainWindow()))
 

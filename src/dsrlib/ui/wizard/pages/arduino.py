@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import platform
 import logging
 import time
@@ -72,6 +73,10 @@ class ArduinoAvrdudePage(Page):
         self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
 
         self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
+
+        path = Settings().avrdude()
+        if path is not None and os.path.exists(path):
+            QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
 
     def isComplete(self):
         return Settings().avrdude() is not None

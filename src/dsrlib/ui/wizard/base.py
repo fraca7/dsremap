@@ -25,6 +25,9 @@ class Wizard(MainWindowMixin, QtWidgets.QWizard):
             page = self.page(pageId)
             page.setFixedSize(QtCore.QSize(maxW, maxH))
 
+        # What. The. Fuck. First page too small on Linux.
+        QtCore.QTimer.singleShot(0, self.adjustSize)
+
     def addPage(self, page):
         self.setPage(page.ID, page)
 
