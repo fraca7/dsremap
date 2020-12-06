@@ -5,4 +5,4 @@ from .configuration import AddActionButton, DeleteActionsButton, ConvertToCustom
 from .workspace import AddConfigurationButton, DeleteConfigurationsButton
 from .misc import UpdateHexUICommand, ShowAboutDialogUICommand, ShowSettingsDialogUICommand, OpenDocsUICommand
 from .io import ExportConfigurationUICommand, ImportConfigurationUICommand, ExportBytecodeUICommand
-from .device import DeviceMenu
+from .device import DeviceMenu, UploadMenu

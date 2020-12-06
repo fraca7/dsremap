@@ -98,6 +98,9 @@ class MainWindow(QtWidgets.QMainWindow):
         devmenu = uicommands.DeviceMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
         self.menuBar().addMenu(devmenu)
 
+        uploadmenu = uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
+        self.menuBar().addMenu(uploadmenu)
+
         helpmenu = QtWidgets.QMenu(_('Help'), self)
         helpmenu.addAction(uicommands.ShowAboutDialogUICommand(self, mainWindow=self))
         helpmenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))

@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-12-06 15:03+0100\n"
-"PO-Revision-Date: 2020-12-06 15:06+0100\n"
+"POT-Creation-Date: 2020-12-06 15:43+0100\n"
+"PO-Revision-Date: 2020-12-06 15:44+0100\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -170,7 +170,7 @@ msgstr "Édition"
 msgid "New release available"
 msgstr "Une nouvelle version est disponible"
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:250
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:253
 msgid "OK"
 msgstr "OK"
 
@@ -210,7 +210,7 @@ msgstr "{count} octets"
 msgid "Drop an image here"
 msgstr "Déposez une image ici"
 
-#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:247
+#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:250
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr "Annuler"
@@ -223,19 +223,19 @@ msgstr "{appName} v{appVersion}"
 msgid "File"
 msgstr "Fichier"
 
-#: src/dsrlib/ui/main.py:101
+#: src/dsrlib/ui/main.py:104
 msgid "Help"
 msgstr "Aide"
 
-#: src/dsrlib/ui/main.py:178
+#: src/dsrlib/ui/main.py:181
 msgid "<i>groups</i> exited with code {code}"
 msgstr "<b>avrdude</b> s’est terminé avec le code {code}."
 
-#: src/dsrlib/ui/main.py:181
+#: src/dsrlib/ui/main.py:184
 msgid "Cannot find groups"
 msgstr "Impossible de déterminer les groupes"
 
-#: src/dsrlib/ui/main.py:181
+#: src/dsrlib/ui/main.py:184
 msgid ""
 "Unable to find out which groups you belong to:<p />{error}<p />For this "
 "program to work correctly, you must belong to the <i>plugdev</i> group."
@@ -244,22 +244,22 @@ msgstr ""
 ">Pour que ce programme fonctionne correctement, vous devez appartenir au "
 "groupe <i>plugdev</i>."
 
-#: src/dsrlib/ui/main.py:191
+#: src/dsrlib/ui/main.py:194
 msgid ""
 "The following operations must be done before this program can work correctly:"
 msgstr ""
 "Les opérations suivantes doivent être exécutées pour que ce programme "
 "fonctionne correctement:"
 
-#: src/dsrlib/ui/main.py:193
+#: src/dsrlib/ui/main.py:196
 msgid "Install udev rules to allow HID communication"
 msgstr "Installation des règles udev pour les communications HID"
 
-#: src/dsrlib/ui/main.py:195
+#: src/dsrlib/ui/main.py:198
 msgid "Add you to the <i>plugdev</i> group"
 msgstr "Vous ajouter au groupe <i>plugdev</i>"
 
-#: src/dsrlib/ui/main.py:198
+#: src/dsrlib/ui/main.py:201
 msgid ""
 "You may have to logout and login again, or even reboot, and unplug/replug "
 "the Arduino for those changes to apply."
@@ -267,31 +267,31 @@ msgstr ""
 "Vous aurez peut-être à vous déconnecter, voire redémarrer, et débrancher/"
 "rebrancher l'Arduino pour que ces modifications soient effectives."
 
-#: src/dsrlib/ui/main.py:200
+#: src/dsrlib/ui/main.py:203
 msgid "You may be prompted for your password."
 msgstr "Vous aurez peut-être à fournir votre mot de passe."
 
-#: src/dsrlib/ui/main.py:202
+#: src/dsrlib/ui/main.py:205
 msgid "System setup"
 msgstr "Configuration du système"
 
-#: src/dsrlib/ui/main.py:212
+#: src/dsrlib/ui/main.py:215
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
 
-#: src/dsrlib/ui/main.py:212 src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
 msgid "Error"
 msgstr "Erreur"
 
-#: src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:217
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr "La commande a échoué avec le code de retour {code}.<p />{stderr}"
 
-#: src/dsrlib/ui/main.py:235
+#: src/dsrlib/ui/main.py:238
 msgid "Password needed"
 msgstr "Mot de passe nécessaire"
 
-#: src/dsrlib/ui/main.py:243
+#: src/dsrlib/ui/main.py:246
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
@@ -333,19 +333,19 @@ msgstr "Refaire"
 msgid "Redo last undone action"
 msgstr "Refaire la dernière action défaite"
 
-#: src/dsrlib/ui/uicommands/bt.py:15
+#: src/dsrlib/ui/uicommands/bt.py:14
 msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
 msgstr "Appairer une Dualshock 4 et une PS4 à ce périphérique DSRemap"
 
-#: src/dsrlib/ui/uicommands/bt.py:15
+#: src/dsrlib/ui/uicommands/bt.py:14
 msgid "Pair to PS4 and Dualshock"
 msgstr "Appariement avec la PS4 et la Dualshock"
 
-#: src/dsrlib/ui/uicommands/bt.py:26
+#: src/dsrlib/ui/uicommands/bt.py:25
 msgid "Reboot"
 msgstr "Redémarrer"
 
-#: src/dsrlib/ui/uicommands/bt.py:36
+#: src/dsrlib/ui/uicommands/bt.py:35
 msgid "Halt"
 msgstr "Arrêter"
 
@@ -403,19 +403,23 @@ msgstr ""
 "Convertir l’action sélectionnée en action personnalisée et ouvrir l’éditeur "
 "de code"
 
-#: src/dsrlib/ui/uicommands/device.py:17
-msgid "Devices"
-msgstr "Périphériques"
-
-#: src/dsrlib/ui/uicommands/device.py:22
+#: src/dsrlib/ui/uicommands/device.py:23
 msgid "No device detected"
 msgstr "Aucun périphérique détecté"
 
-#: src/dsrlib/ui/uicommands/device.py:66
+#: src/dsrlib/ui/uicommands/device.py:70
+msgid "Devices"
+msgstr "Périphériques"
+
+#: src/dsrlib/ui/uicommands/device.py:85
+msgid "Upload"
+msgstr "Téléverser"
+
+#: src/dsrlib/ui/uicommands/device.py:94
 msgid "Firmware version mismatch"
 msgstr "Différence de version du microcode"
 
-#: src/dsrlib/ui/uicommands/device.py:67
+#: src/dsrlib/ui/uicommands/device.py:95
 msgid ""
 "A {appname}-enabled device was plugged, but the firmware version v{version1} "
 "does not match the one supported by this application (v{version2}). Please "
@@ -430,10 +434,6 @@ msgstr ""
 #: src/dsrlib/ui/uicommands/hid.py:13
 msgid "Send enabled configurations to device {name}"
 msgstr "Envoyer les configurations activées au périphérique {name}"
-
-#: src/dsrlib/ui/uicommands/hid.py:13
-msgid "Upload to {name}"
-msgstr "Téléversement vers {name}"
 
 #: src/dsrlib/ui/uicommands/io.py:18
 msgid "Export selected configuration"
@@ -792,6 +792,9 @@ msgstr ""
 msgid "Select a configuration"
 msgstr "Sélectionnez une configuration"
 
+#~ msgid "Upload to {name}"
+#~ msgstr "Téléversement vers {name}"
+
 #~ msgid ""
 #~ "Welcome. The first thing to do is to program your Leonardo board. If you "
 #~ "choose to skip this step, you can do it whenever using the Devices menu "
@@ -815,9 +818,6 @@ msgstr "Sélectionnez une configuration"
 
 #~ msgid "Error contacting the device: {status}"
 #~ msgstr "Erreur du périphérique: {status}"
-
-#~ msgid "Upload"
-#~ msgstr "Téléverser"
 
 #~ msgid "Pair"
 #~ msgstr "Appairement"

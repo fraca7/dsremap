@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-12-06 15:03+0100\n"
+"POT-Creation-Date: 2020-12-06 15:43+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,7 +168,7 @@ msgstr ""
 msgid "New release available"
 msgstr ""
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:250
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:253
 msgid "OK"
 msgstr ""
 
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Drop an image here"
 msgstr ""
 
-#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:247
+#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:250
 #: src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr ""
@@ -221,63 +221,63 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:101
+#: src/dsrlib/ui/main.py:104
 msgid "Help"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:178
+#: src/dsrlib/ui/main.py:181
 msgid "<i>groups</i> exited with code {code}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:181
+#: src/dsrlib/ui/main.py:184
 msgid "Cannot find groups"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:181
+#: src/dsrlib/ui/main.py:184
 msgid "Unable to find out which groups you belong to:<p />{error}<p />For this program to work correctly, you must belong to the <i>plugdev</i> group."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:191
+#: src/dsrlib/ui/main.py:194
 msgid "The following operations must be done before this program can work correctly:"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:193
+#: src/dsrlib/ui/main.py:196
 msgid "Install udev rules to allow HID communication"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:195
+#: src/dsrlib/ui/main.py:198
 msgid "Add you to the <i>plugdev</i> group"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:198
+#: src/dsrlib/ui/main.py:201
 msgid "You may have to logout and login again, or even reboot, and unplug/replug the Arduino for those changes to apply."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:200
+#: src/dsrlib/ui/main.py:203
 msgid "You may be prompted for your password."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:202
+#: src/dsrlib/ui/main.py:205
 msgid "System setup"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:212
+#: src/dsrlib/ui/main.py:215
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr ""
 
-#: src/dsrlib/ui/main.py:212 src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
 msgid "Error"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:214
+#: src/dsrlib/ui/main.py:217
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:235
+#: src/dsrlib/ui/main.py:238
 msgid "Password needed"
 msgstr ""
 
-#: src/dsrlib/ui/main.py:243
+#: src/dsrlib/ui/main.py:246
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 
@@ -317,19 +317,19 @@ msgstr ""
 msgid "Redo last undone action"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/bt.py:15
+#: src/dsrlib/ui/uicommands/bt.py:14
 msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/bt.py:15
+#: src/dsrlib/ui/uicommands/bt.py:14
 msgid "Pair to PS4 and Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/bt.py:26
+#: src/dsrlib/ui/uicommands/bt.py:25
 msgid "Reboot"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/bt.py:36
+#: src/dsrlib/ui/uicommands/bt.py:35
 msgid "Halt"
 msgstr ""
 
@@ -385,28 +385,28 @@ msgstr ""
 msgid "Convert the selected action to a custom one and open the code editor"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:17
-msgid "Devices"
-msgstr ""
-
-#: src/dsrlib/ui/uicommands/device.py:22
+#: src/dsrlib/ui/uicommands/device.py:23
 msgid "No device detected"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:66
+#: src/dsrlib/ui/uicommands/device.py:70
+msgid "Devices"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/device.py:85
+msgid "Upload"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/device.py:94
 msgid "Firmware version mismatch"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:67
+#: src/dsrlib/ui/uicommands/device.py:95
 msgid "A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device."
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/hid.py:13
 msgid "Send enabled configurations to device {name}"
-msgstr ""
-
-#: src/dsrlib/ui/uicommands/hid.py:13
-msgid "Upload to {name}"
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/io.py:18

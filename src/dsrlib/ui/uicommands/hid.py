@@ -10,7 +10,7 @@ from .base import UICommand
 
 class UploadConfigurationsUICommand(WorkspaceMixin, UICommand):
     def __init__(self, parent, *, device, **kwargs):
-        super().__init__(parent, text=_('Upload to {name}').format(name=device.name), tip=_('Send enabled configurations to device {name}').format(name=device.name), **kwargs)
+        super().__init__(parent, text=device.name, tip=_('Send enabled configurations to device {name}').format(name=device.name), **kwargs)
         self._device = device
 
         self.add_signal_check(self.workspace().configurations().dataChanged)

@@ -7,7 +7,6 @@ from dsrlib.ui.wizard import PairingWizard
 from dsrlib.ui.mixins import MainWindowMixin
 
 from .base import UICommand
-from .hid import UploadConfigurationsUICommand
 
 
 class PairUICommand(UICommand):
@@ -46,7 +45,6 @@ class NetworkDeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QAction):
         super().__init__(device.name, parent, **kwargs)
 
         menu = QtWidgets.QMenu(self.mainWindow())
-        menu.addAction(UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
         menu.addAction(PairUICommand(self, mainWindow=self.mainWindow(), device=device, enumerator=enumerator))
         menu.addAction(RebootDeviceUICommand(self, mainWindow=self.mainWindow(), device=device))
         menu.addAction(HaltDeviceUICommand(self, mainWindow=self.mainWindow(), device=device))

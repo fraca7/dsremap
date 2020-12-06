@@ -12,18 +12,17 @@ from .hid import UploadConfigurationsUICommand
 from .bt import NetworkDeviceMenu
 
 
-class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
-    def __init__(self, parent, *, enumerator, **kwargs):
-        super().__init__(_('Devices'), parent, **kwargs)
+class DeviceMenuBase(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
+    def __init__(self, text, parent, *, enumerator, **kwargs):
+        super().__init__(text, parent, **kwargs)
         self._enumerator = enumerator
+        self._dummy = None
+        self._devices = []
 
-        self.addAction(UpdateHexUICommand(self, mainWindow=self.mainWindow()))
-        self.addSeparator()
+    def start(self):
         self._dummy = self.addAction(_('No device detected'))
         self._dummy.setEnabled(False)
-
-        self._devices = []
-        enumerator.connect(self)
+        self._enumerator.connect(self)
 
     def onDeviceAdded(self, device):
         class Visitor(DeviceVisitor):
@@ -42,23 +41,52 @@ class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
         Visitor(self).visit(device)
 
     def onDeviceRemoved(self, device):
-        for index, other in enumerate(self._devices):
+        for index, (other, action) in enumerate(self._devices):
             if device == other:
                 break
         else:
             return
 
         del self._devices[index] # pylint: disable=W0631
-        for idx, action in enumerate(self.actions()[2:]):
-            if idx == index: # pylint: disable=W0631
-                self.removeAction(action)
-                break
-
+        self.removeAction(action) # pylint: disable=W0631
         if not self._devices:
             self.addAction(self._dummy)
 
     def onNetworkDeviceAdded(self, device):
-        self._addAction(device, NetworkDeviceMenu(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow(), workspace=self.workspace()))
+        raise NotImplementedError
+
+    def onArduinoAdded(self, device):
+        raise NotImplementedError
+
+    def addDeviceAction(self, device, action):
+        if not self._devices:
+            self.removeAction(self._dummy)
+        self._devices.append((device, action))
+        self.addAction(action)
+
+
+class DeviceMenu(DeviceMenuBase):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(_('Devices'), parent, *args, **kwargs)
+
+        self.addAction(UpdateHexUICommand(self, mainWindow=self.mainWindow()))
+        self.addSeparator()
+        self.start()
+
+    def onNetworkDeviceAdded(self, device):
+        self.addDeviceAction(device, NetworkDeviceMenu(self, device=device, enumerator=self._enumerator, mainWindow=self.mainWindow(), workspace=self.workspace()))
+
+    def onArduinoAdded(self, device):
+        pass
+
+
+class UploadMenu(DeviceMenuBase):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(_('Upload'), parent, *args, **kwargs)
+        self.start()
+
+    def onNetworkDeviceAdded(self, device):
+        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
 
     def onArduinoAdded(self, device):
         if Meta.firmwareVersion() != device.fwVersion:
@@ -67,10 +95,4 @@ class DeviceMenu(MainWindowMixin, WorkspaceMixin, QtWidgets.QMenu):
                                           _('A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device.').format(appname=Meta.appName(), version1=str(device.fwVersion), version2=str(Meta.firmwareVersion())))
             return
 
-        self._addAction(device, UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
-
-    def _addAction(self, device, action):
-        if not self._devices:
-            self.removeAction(self._dummy)
-        self._devices.append(device)
-        self.addAction(action)
+        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
