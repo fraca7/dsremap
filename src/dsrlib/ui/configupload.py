@@ -76,7 +76,9 @@ class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QD
 
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
-            layout.addWidget(QtWidgets.QLabel(_('Uploading to {name}...').format(name=device.name), self))
+            self._label = QtWidgets.QLabel(_('Uploading to {name}...').format(name=device.name), self)
+            self._label.setAlignment(QtCore.Qt.AlignHCenter)
+            layout.addWidget(self._label)
             layout.addWidget(self._progress)
             layout.setContentsMargins(5, 5, 5, 5)
 
@@ -115,3 +117,6 @@ class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QD
 
     def _onUploadProgress(self, done):
         self._progress.setValue(done)
+        if done and done == self._progress.maximum():
+            self._label.setText(_('Restarting proxy...'))
+            self._progress.hide()
