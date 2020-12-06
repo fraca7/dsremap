@@ -2,7 +2,7 @@
 
 from PyQt5 import QtCore, QtGui
 
-from dsrlib.ui.hexuploader import HexUploaderWizard
+from dsrlib.ui.wizard import HexUploaderWizard
 from dsrlib.ui.about import AboutDialog
 from dsrlib.ui.settings import SettingsDialog
 from dsrlib.meta import Meta

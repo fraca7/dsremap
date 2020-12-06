@@ -3,7 +3,7 @@
 from PyQt5 import QtCore, QtWidgets, QtNetwork
 
 from dsrlib.domain.mixins import WorkspaceMixin
-from dsrlib.ui.pairer import PairingWizard
+from dsrlib.ui.wizard import PairingWizard
 from dsrlib.ui.mixins import MainWindowMixin
 
 from .base import UICommand

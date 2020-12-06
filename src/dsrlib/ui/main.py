@@ -17,7 +17,7 @@ from dsrlib import resources # pylint: disable=W0611
 from dsrlib.meta import Meta
 from dsrlib.settings import Settings
 from dsrlib.domain import Workspace, DeviceEnumerator, JSONImporter, Changelog
-from dsrlib.ui.hexuploader import FirstLaunchWizard
+from dsrlib.ui.wizard import FirstLaunchWizard
 from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
 
