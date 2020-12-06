@@ -2,6 +2,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from dsrlib.settings import Settings
 from dsrlib.ui.mixins import MainWindowMixin
 
 
@@ -32,4 +33,7 @@ class Wizard(MainWindowMixin, QtWidgets.QWizard):
         self.setPage(page.ID, page)
 
     def setupPages(self):
-        raise NotImplementedError
+        pass
+
+    def onSuccess(self):
+        Settings().setFirmwareUploaded()

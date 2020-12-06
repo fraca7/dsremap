@@ -13,6 +13,64 @@ from .pageids import PageId
 from .base import Page
 
 
+class PiZeroFindPage(Page):
+    ID = PageId.PiZeroFind
+
+    def __init__(self, *args, enumerator, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._enumerator = enumerator
+        self._complete = False
+        self._connected = False
+
+    def initializePage(self):
+        if self.wizard().device() is not None:
+            self._complete = True
+            self.completeChanged.emit()
+            QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
+            return
+
+        self.setTitle(_('Device lookup'))
+        self.setSubTitle(_('Looking for a configured RPi Zero W on your network...'))
+        self._connected = True
+        self._enumerator.connect(self)
+
+    def cleanupPage(self):
+        if self._connected:
+            self._enumerator.disconnect(self)
+            self._connected = False
+
+    def nextId(self):
+        return PiZeroPlugPage.ID
+
+    def isComplete(self):
+        return self._complete
+
+    def onDeviceAdded(self, dev):
+        class Sorter(DeviceVisitor):
+            def __init__(self, page):
+                self._page = page
+
+            def acceptNetworkDevice(self, dev):
+                self._page.onNetworkDevice(dev)
+
+            def acceptDualshock(self, dev):
+                pass
+
+            def acceptArduino(self, dev):
+                pass
+        Sorter(self).visit(dev)
+
+    def onDeviceRemoved(self, _):
+        pass
+
+    def onNetworkDevice(self, device):
+        if self.wizard().device() is None:
+            self.wizard().setDevice(device)
+            self._complete = True
+            self.completeChanged.emit()
+            self.wizard().button(self.wizard().NextButton).click()
+
+
 class PiZeroPlugPage(Page):
     ID = PageId.PiZeroPlug
 
@@ -301,3 +359,4 @@ class PiZeroFinalPage(Page):
     def initializePage(self):
         self.setTitle(_('Finished'))
         self.setSubTitle(_('Done. You can unplug the DualShock and press PS to start using it through the proxy.'))
+        self.wizard().onSuccess()

@@ -225,7 +225,7 @@ class MainWindow(QtWidgets.QMainWindow):
             settings.setValue('Imported', ','.join(imported))
 
         if not Settings().firmwareUploaded():
-            wizard = FirstLaunchWizard(self, mainWindow=self)
+            wizard = FirstLaunchWizard(self, enumerator=self._devenum, mainWindow=self)
             wizard.exec_()
 
 

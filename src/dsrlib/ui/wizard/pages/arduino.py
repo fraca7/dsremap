@@ -16,27 +16,6 @@ from .pageids import PageId
 from .base import Page
 
 
-class ArduinoWelcomePage(Page):
-    ID = PageId.ArduinoWelcome
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        bld = LayoutBuilder(self)
-        with bld.vbox() as layout:
-            layout.addStretch(1)
-
-    def initializePage(self):
-        self.setTitle(_('Firmware upload'))
-        self.setSubTitle(_('Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Devices menu in the menu bar.'))
-
-    def nextId(self):
-        settings = Settings()
-        if settings.avrdude() is None:
-            return ArduinoAvrdudePage.ID
-        return ArduinoResetPage.ID
-
-
 class ArduinoAvrdudePage(Page):
     ID = PageId.ArduinoAvrdude
 
@@ -71,8 +50,6 @@ class ArduinoAvrdudePage(Page):
     def initializePage(self):
         self.setTitle(_('Install avrdude'))
         self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
-
-        self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
 
         path = Settings().avrdude()
         if path is not None and os.path.exists(path):
@@ -113,8 +90,6 @@ class ArduinoResetPage(Page):
         self.setTitle(_('Firmware upload'))
         self.setSubTitle(_('Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it.'))
 
-        self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
-
     def nextId(self):
         return ArduinoFindSerialPage.ID
 
@@ -154,6 +129,9 @@ class ArduinoFindSerialPage(Page):
     def isComplete(self):
         return self._finished
 
+    def nextId(self):
+        return -1
+
     def _tick(self):
         if self._state == 0:
             newDevs = Meta.listSerials() - self._devices
@@ -191,7 +169,7 @@ class ArduinoFindSerialPage(Page):
         self.setTitle(_('Updating'))
         self.setSubTitle(_('Update in progress...'))
 
-        self.wizard().button(self.wizard().CustomButton1).setEnabled(False)
+        self.wizard().button(self.wizard().CancelButton).setEnabled(False)
         self.wizard().button(self.wizard().BackButton).setEnabled(False)
 
         self._process = QtCore.QProcess(self)
