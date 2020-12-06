@@ -78,6 +78,7 @@ class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QD
         with bld.vbox() as layout:
             layout.addWidget(QtWidgets.QLabel(_('Uploading to {name}...').format(name=device.name), self))
             layout.addWidget(self._progress)
+            layout.setContentsMargins(5, 5, 5, 5)
 
         def gotResponse(downloader):
             self._downloader = None
