@@ -1,25 +1,28 @@
 #!/usr/bin/env python3
 
-import logging
 import platform
+import logging
 import time
 
 import serial
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtCore, QtWidgets
 
-from dsrlib.ui.utils import LayoutBuilder
-from dsrlib.meta import Meta
 from dsrlib.settings import Settings
+from dsrlib.meta import Meta
+from dsrlib.ui.utils import LayoutBuilder
+
+from .pageids import PageId
+from .base import Page
 
 
-class WelcomePage(QtWidgets.QWizardPage):
-    ID = 1
+class ArduinoWelcomePage(Page):
+    ID = PageId.ArduinoWelcome
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setTitle(_('Firmware upload'))
-        self.setSubTitle(_('Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Upload menu in the menu bar.'))
+        self.setSubTitle(_('Welcome. The first thing to do is to program your Leonardo board. If you choose to skip this step, you can do it whenever using the Devices menu in the menu bar.'))
 
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
@@ -28,15 +31,15 @@ class WelcomePage(QtWidgets.QWizardPage):
     def nextId(self):
         settings = Settings()
         if settings.avrdude() is None:
-            return AvrdudePage.ID
-        return HexUploaderResetPage.ID
+            return ArduinoAvrdudePage.ID
+        return ArduinoResetPage.ID
 
 
-class AvrdudePage(QtWidgets.QWizardPage):
-    ID = 2
+class ArduinoAvrdudePage(Page):
+    ID = PageId.ArduinoAvrdude
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setTitle(_('Install avrdude'))
         self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
@@ -73,7 +76,7 @@ class AvrdudePage(QtWidgets.QWizardPage):
         return Settings().avrdude() is not None
 
     def nextId(self):
-        return HexUploaderResetPage.ID
+        return ArduinoResetPage.ID
 
     def _tryAgain(self):
         self._msg.setText(_('avrdude found') if self.isComplete() else _('Cannot find avrdude'))
@@ -87,11 +90,11 @@ class AvrdudePage(QtWidgets.QWizardPage):
             self.completeChanged.emit()
 
 
-class HexUploaderResetPage(QtWidgets.QWizardPage):
-    ID = 3
+class ArduinoResetPage(Page):
+    ID = PageId.ArduinoReset
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
@@ -107,16 +110,16 @@ class HexUploaderResetPage(QtWidgets.QWizardPage):
         self.wizard().setButtonText(self.wizard().CustomButton1, _('Cancel'))
 
     def nextId(self):
-        return HexUploaderFindSerialUploadPage.ID
+        return ArduinoFindSerialPage.ID
 
 
-class HexUploaderFindSerialUploadPage(QtWidgets.QWizardPage):
-    ID = 4
+class ArduinoFindSerialPage(Page):
+    ID = PageId.ArduinoFindSerial
 
     logger = logging.getLogger('avrdude')
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setTitle(_('Looking for Leonardo'))
 
@@ -240,54 +243,3 @@ class HexUploaderFindSerialUploadPage(QtWidgets.QWizardPage):
     def _onStdout(self):
         text = Meta.decodePlatformString(self._process.readAllStandardOutput())
         self.logger.info('O: %s', text.strip())
-
-
-class HexUploader(QtWidgets.QWizard):
-    def __init__(self, parent):
-        super().__init__(parent)
-
-        self.setWizardStyle(self.MacStyle)
-        self.setOption(self.NoCancelButton)
-
-        btn = QtWidgets.QPushButton(_('Skip'), self)
-        self.setButton(self.CustomButton1, btn)
-        self.setOption(self.HaveCustomButton1)
-        btn.clicked.connect(self.reject)
-
-        self.setupPages()
-
-        icon = QtGui.QIcon(':icons/gamepad.svg')
-        self.setPixmap(self.BackgroundPixmap, icon.pixmap(256, 256))
-
-        maxW, maxH = 0, 0
-        for pageId in self.pageIds():
-            page = self.page(pageId)
-            size = page.sizeHint()
-            maxW = max(maxW, size.width())
-            maxH = max(maxH, size.height())
-        for pageId in self.pageIds():
-            page = self.page(pageId)
-            page.setFixedSize(QtCore.QSize(maxW, maxH))
-
-    def onSuccess(self):
-        Settings().setFirmwareUploaded()
-
-    def setupPages(self):
-        pass
-
-    def addPage(self, page):
-        self.setPage(page.ID, page)
-
-
-class HexUploaderWizard(HexUploader):
-    def setupPages(self):
-        if Settings().avrdude() is None:
-            self.addPage(AvrdudePage(self))
-        self.addPage(HexUploaderResetPage(self))
-        self.addPage(HexUploaderFindSerialUploadPage(self))
-
-
-class FirstLaunchWizard(HexUploaderWizard):
-    def setupPages(self):
-        self.addPage(WelcomePage(self))
-        super().setupPages()

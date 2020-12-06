@@ -1,19 +1,23 @@
 #!/usr/bin/env python3
 
-import binascii
 import json
+import binascii
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from dsrlib.ui.mixins import MainWindowMixin
-from dsrlib.ui.utils import LayoutBuilder
-from dsrlib.domain.device import DeviceVisitor
 from dsrlib.domain.downloader import StringDownloader, DownloadError, DownloadNetworkError, DownloadHTTPError, AbortedError
+from dsrlib.domain.device import DeviceVisitor
+from dsrlib.ui.utils import LayoutBuilder
+
+from .pageids import PageId
+from .base import Page
 
 
-class PairHostWaitPage(QtWidgets.QWizardPage):
-    def __init__(self, parent):
-        super().__init__(parent)
+class PiZeroPlugPage(Page):
+    ID = PageId.PiZeroPlug
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setTitle(_('Preparing to pair the PS4'))
         self.setSubTitle(_('First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done.'))
@@ -25,16 +29,21 @@ class PairHostWaitPage(QtWidgets.QWizardPage):
             img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
             layout.addWidget(img)
 
+    def nextId(self):
+        return PiZeroPairHostPage.ID
 
-class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
+
+class PiZeroPairHostPage(Page):
+    ID = PageId.PiZeroPairHost
+
     STATE_CONTACTING = 0
     STATE_WAITING = 1
     STATE_PAIRING = 2
     STATE_ERROR = 3
     STATE_DONE = 4
 
-    def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.setTitle(_('Pairing PS4'))
 
         bld = LayoutBuilder(self)
@@ -50,7 +59,7 @@ class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
         # Without this the Next button is still shown and enabled even after calling setFinalPage(True)
         if self._state == self.STATE_ERROR:
             return -1
-        return super().nextId()
+        return PiZeroWaitDSPage.ID
 
     def _setState(self, state):
         self._state = state
@@ -144,9 +153,11 @@ class PairHostPage(MainWindowMixin, QtWidgets.QWizardPage):
         self._downloader.get(url)
 
 
-class WaitDualshockPage(QtWidgets.QWizardPage):
-    def __init__(self, parent, enumerator):
-        super().__init__(parent)
+class PiZeroWaitDSPage(Page):
+    ID = PageId.PiZeroWaitDS
+
+    def __init__(self, *args, enumerator, **kwargs):
+        super().__init__(*args, **kwargs)
         self._enumerator = enumerator
 
         self.setTitle(_('Waiting for Dualshock'))
@@ -165,6 +176,12 @@ class WaitDualshockPage(QtWidgets.QWizardPage):
 
     def cleanupPage(self):
         self._enumerator.disconnect(self)
+
+    def isComplete(self):
+        return self._found
+
+    def nextId(self):
+        return PiZeroPairDSPage.ID
 
     def onDeviceAdded(self, device):
         class Visitor(DeviceVisitor):
@@ -191,37 +208,21 @@ class WaitDualshockPage(QtWidgets.QWizardPage):
     def onDeviceRemoved(self, dev):
         pass
 
-    def isComplete(self):
-        return self._found
 
+class PiZeroPairDSPage(Page):
+    ID = PageId.PiZeroPairDS
 
-class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
     STATE_REPORT = 0
     STATE_NETWORK = 1
     STATE_PAIR = 2
     STATE_ERROR = 3
     STATE_DONE = 4
 
-    def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.setTitle(_('Pairing controller'))
         self.setSubTitle(_('Pairing the controller, please wait...'))
-
-    def _setState(self, state):
-        self._state = state
-        self.completeChanged.emit()
-        self.setFinalPage(state == self.STATE_ERROR)
-        if state == self.STATE_DONE:
-            self.wizard().button(self.wizard().NextButton).click()
-
-    def isComplete(self):
-        return self._state in (self.STATE_DONE, self.STATE_ERROR)
-
-    def nextId(self):
-        if self._state == self.STATE_ERROR:
-            return -1
-        return super().nextId()
 
     def initializePage(self):
         self._setState(self.STATE_REPORT)
@@ -236,6 +237,21 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
     def cleanupPage(self):
         if self._downloader is not None:
             self._downloader.abort()
+
+    def isComplete(self):
+        return self._state in (self.STATE_DONE, self.STATE_ERROR)
+
+    def nextId(self):
+        if self._state == self.STATE_ERROR:
+            return -1
+        return PiZeroFinalPage.ID
+
+    def _setState(self, state):
+        self._state = state
+        self.completeChanged.emit()
+        self.setFinalPage(state == self.STATE_ERROR)
+        if state == self.STATE_DONE:
+            self.wizard().button(self.wizard().NextButton).click()
 
     def _onReport(self, data):
         macaddr = ':'.join(['%02X' % val for val in reversed(data[1:])])
@@ -280,59 +296,10 @@ class PairControllerPage(MainWindowMixin, QtWidgets.QWizardPage):
         self._downloader.get(url)
 
 
-class FinalPage(QtWidgets.QWizardPage):
-    def __init__(self, parent):
-        super().__init__(parent)
+class PiZeroFinalPage(Page):
+    ID = PageId.PiZeroFinal
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.setTitle(_('Finished'))
         self.setSubTitle(_('Done. You can unplug the DualShock and press PS to start using it through the proxy.'))
-
-
-class PairingWizard(MainWindowMixin, QtWidgets.QWizard):
-    def __init__(self, parent, device, enumerator, **kwargs):
-        super().__init__(parent, **kwargs)
-        self._device = device
-        self._dualshock = None
-        self._linkkey = None
-        self._dongle = None
-
-        self.setWizardStyle(self.MacStyle)
-
-        self.addPage(PairHostWaitPage(self))
-        self.addPage(PairHostPage(self, mainWindow=self.mainWindow()))
-        self.addPage(WaitDualshockPage(self, enumerator))
-        self.addPage(PairControllerPage(self, mainWindow=self.mainWindow()))
-        self.addPage(FinalPage(self))
-
-        icon = QtGui.QIcon(':icons/gamepad.svg')
-        self.setPixmap(self.BackgroundPixmap, icon.pixmap(256, 256))
-
-        maxW, maxH = 0, 0
-        for pageId in self.pageIds():
-            page = self.page(pageId)
-            size = page.sizeHint()
-            maxW = max(maxW, size.width())
-            maxH = max(maxH, size.height())
-        for pageId in self.pageIds():
-            page = self.page(pageId)
-            page.setFixedSize(QtCore.QSize(maxW, maxH))
-
-    def device(self):
-        return self._device
-
-    def setDualshock(self, dev):
-        self._dualshock = dev
-
-    def dualshock(self):
-        return self._dualshock
-
-    def setLinkKey(self, key):
-        self._linkkey = key
-
-    def linkKey(self):
-        return self._linkkey
-
-    def setDongle(self, addr):
-        self._dongle = addr
-
-    def dongle(self):
-        return self._dongle

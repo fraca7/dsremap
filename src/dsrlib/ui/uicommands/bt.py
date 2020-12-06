@@ -17,7 +17,7 @@ class PairUICommand(UICommand):
         self._enumerator = enumerator
 
     def do(self):
-        wizard = PairingWizard(self.mainWindow(), self._device, self._enumerator, mainWindow=self.mainWindow())
+        wizard = PairingWizard(self.mainWindow(), device=self._device, enumerator=self._enumerator, mainWindow=self.mainWindow())
         wizard.exec_()
 
 

@@ -15,7 +15,7 @@ class UpdateHexUICommand(UICommand):
         super().__init__(*args, text=_('Update Arduino firmware'), tip=_('Program the microcontroller with DSRemap firmware (if you use an Arduino)'), **kwargs)
 
     def do(self):
-        wizard = HexUploaderWizard(self.mainWindow())
+        wizard = HexUploaderWizard(self.mainWindow(), mainWindow=self.mainWindow())
         wizard.exec_()
 
 

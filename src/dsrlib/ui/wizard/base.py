@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from dsrlib.ui.mixins import MainWindowMixin
+
+
+class Wizard(MainWindowMixin, QtWidgets.QWizard):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.setWizardStyle(self.MacStyle)
+        self.setupPages()
+
+        icon = QtGui.QIcon(':icons/gamepad.svg')
+        self.setPixmap(self.BackgroundPixmap, icon.pixmap(256, 256))
+
+        maxW, maxH = 0, 0
+        for pageId in self.pageIds():
+            page = self.page(pageId)
+            size = page.sizeHint()
+            maxW = max(maxW, size.width())
+            maxH = max(maxH, size.height())
+        for pageId in self.pageIds():
+            page = self.page(pageId)
+            page.setFixedSize(QtCore.QSize(maxW, maxH))
+
+    def addPage(self, page):
+        self.setPage(page.ID, page)
+
+    def setupPages(self):
+        raise NotImplementedError
