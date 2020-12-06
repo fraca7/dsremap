@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from dsrlib.settings import Settings
-
 from .pages.arduino import ArduinoAvrdudePage, ArduinoResetPage, ArduinoFindSerialPage
 from .base import Wizard
 
