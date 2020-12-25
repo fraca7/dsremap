@@ -6,6 +6,8 @@ import collections
 import platform
 import glob
 import tempfile
+import codecs
+import json
 
 from PyQt5 import QtCore, QtGui
 
@@ -51,6 +53,24 @@ class Meta:
     @staticmethod
     def releasesUrl():
         return 'https://github.com/fraca7/dsremap/releases'
+
+    @staticmethod
+    def imagesUrl():
+        return 'https://jeromelaheurte.net/dsremap/{filename}'
+
+    @staticmethod
+    def manifest():
+        filename = os.path.join(Meta.dataPath('images'), 'manifest.json')
+        if not os.path.exists(filename):
+            return {}
+        with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
+            return json.load(fileobj)
+
+    @staticmethod
+    def updateManifest(manifest):
+        filename = os.path.join(Meta.dataPath('images'), 'manifest.json')
+        with codecs.getwriter('utf-8')(open(filename, 'wb')) as fileobj:
+            json.dump(manifest, fileobj)
 
     @staticmethod
     def dataPath(*args):
@@ -108,18 +128,6 @@ class Meta:
                 return os.path.normpath(os.path.join(os.path.dirname(sys.executable), 'resources', 'avrdude.conf'))
             raise RuntimeError('Unsupported platform')
         return os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..', 'res', 'avrdude.conf'))
-
-    @staticmethod
-    def firmware():
-        if Meta.isFrozen():
-            if platform.system() == 'Darwin':
-                return os.path.normpath(os.path.join(os.path.dirname(sys.executable), '..', 'Resources', 'dsremap.ino.hex'))
-            if platform.system() == 'Linux':
-                return os.path.join(os.environ['APPDIR'], 'data', 'dsremap.ino.hex')
-            if platform.system() == 'Windows':
-                return os.path.normpath(os.path.join(os.path.dirname(sys.executable), 'resources', 'dsremap.ino.hex'))
-            raise RuntimeError('Unsupported platform')
-        return os.path.normpath(os.path.join(os.path.dirname(__file__), '..', '..', 'arduino-build', 'dsremap.ino.hex'))
 
     @staticmethod
     def defaultConfigurations():

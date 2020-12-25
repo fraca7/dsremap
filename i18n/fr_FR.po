@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-12-06 15:43+0100\n"
-"PO-Revision-Date: 2020-12-06 15:44+0100\n"
+"POT-Creation-Date: 2020-12-25 15:25+0100\n"
+"PO-Revision-Date: 2020-12-25 15:27+0100\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -190,17 +190,21 @@ msgstr "Le CRC a échoué. Vous voudrez probablement réessayer."
 msgid "Warning"
 msgstr "Avertissement"
 
-#: src/dsrlib/ui/configupload.py:87
+#: src/dsrlib/ui/configupload.py:90
 msgid "Cannot connect to device: {error}"
 msgstr "Impossible de se connecter au périphérique: {error}"
 
-#: src/dsrlib/ui/configupload.py:87 src/dsrlib/ui/configupload.py:91
+#: src/dsrlib/ui/configupload.py:90 src/dsrlib/ui/configupload.py:94
 msgid "Upload error"
 msgstr "Erreur de téléversement"
 
-#: src/dsrlib/ui/configupload.py:91
+#: src/dsrlib/ui/configupload.py:94
 msgid "Error uploading to device: {error}"
 msgstr "Erreur lors du téléversement vers le périphérique: {error}"
+
+#: src/dsrlib/ui/configupload.py:121
+msgid "Restarting proxy..."
+msgstr "Redémarrage du mandataire..."
 
 #: src/dsrlib/ui/configuration.py:38 src/dsrlib/ui/workspace.py:70
 msgid "{count} bytes"
@@ -297,7 +301,7 @@ msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
 "règles udev."
 
-#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:26
+#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:30
 msgid "Browse"
 msgstr "Parcourir"
 
@@ -532,11 +536,11 @@ msgstr "Ce fichier existe déjà. L’écraser ?"
 msgid "Open file"
 msgstr "Ouvrir un fichier"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:25
+#: src/dsrlib/ui/wizard/pages/arduino.py:29
 msgid "Try to detect avrdude again"
 msgstr "Réessayer de détecter avrdude"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:30
+#: src/dsrlib/ui/wizard/pages/arduino.py:34
 msgid ""
 "You can install <b>avrdude</b> on mac OS using <a href=\"https://brew.sh"
 "\">Homebrew</a>. After installing brew, launch a terminal and type<br /"
@@ -546,7 +550,7 @@ msgstr ""
 "\">Homebrew</a>. Après avoir installé brew, lancez un terminal et tapez<br /"
 "><pre>brew install avrdude</pre>"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:32
+#: src/dsrlib/ui/wizard/pages/arduino.py:36
 msgid ""
 "You can install <b>avrdude</b> on Linux using your regular package manager, "
 "for instance<br /><pre>apt-get install avrdude</pre>"
@@ -554,7 +558,7 @@ msgstr ""
 "Vous pouvez installer <b>avrdude</b> sur Linux grâce à votre gestionnaire de "
 "paquets habituel, par exemple<br /><pre>apt-get install avrdude</pre>"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:34
+#: src/dsrlib/ui/wizard/pages/arduino.py:38
 msgid ""
 "You can install <b>avrdude</b> on Windows using <a href=\"https://"
 "sourceforge.net/projects/winavr/\">WinAVR</a>"
@@ -562,11 +566,11 @@ msgstr ""
 "Vous pouvez installer <b>avrdude</b> sous Windows en installant <a href="
 "\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:51
+#: src/dsrlib/ui/wizard/pages/arduino.py:55
 msgid "Install avrdude"
 msgstr "Installer avrdude"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:52
+#: src/dsrlib/ui/wizard/pages/arduino.py:56
 msgid ""
 "The <b>avrdude</b> program could not be found on the path. Please install it "
 "or manually specify its path here."
@@ -574,23 +578,51 @@ msgstr ""
 "Le programme <b>avrdude</b> n’a pas été trouvé. Veuillez l’installer ou "
 "spécifier son chemin ici."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:65
+#: src/dsrlib/ui/wizard/pages/arduino.py:69
 msgid "Cannot find avrdude"
 msgstr "Impossible de trouver avrdude"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:65
+#: src/dsrlib/ui/wizard/pages/arduino.py:69
 msgid "avrdude found"
 msgstr "avrdude trouvé"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:70
+#: src/dsrlib/ui/wizard/pages/arduino.py:74
 msgid "Browse for avrdude"
 msgstr "Parcourir vers avrdude"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:90
+#: src/dsrlib/ui/wizard/pages/arduino.py:102
+msgid "Image download"
+msgstr "Téléchargement de l'image"
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:132
+msgid "Downloading manifest..."
+msgstr "Téléversement du manifeste..."
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:147
+msgid "Unable to download manifest: {error}"
+msgstr "Impossible de télécharger le manifeste: {error}"
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:150
+msgid "Error downloading manifest: {error}"
+msgstr "Erreur lors du téléchargement du manifeste: {error}"
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:172
+msgid "Downloading firmware..."
+msgstr "Téléchargement du microcode..."
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:188
+msgid "Unable to download firmware: {error}"
+msgstr "Impossible de télécharger le microcode: {error}"
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:191
+msgid "Error downloading firmware: {error}"
+msgstr "Erreur lors du téléchargement du microcode: {error}"
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:235
 msgid "Firmware upload"
 msgstr "Mise à jour du microcode"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:91
+#: src/dsrlib/ui/wizard/pages/arduino.py:236
 msgid ""
 "Please plug the Leonardo to this computer and press the <b>reset</b> button. "
 "Click Continue while holding it."
@@ -598,63 +630,63 @@ msgstr ""
 "Veuillez brancher le Leonardo à cet ordinateur et appuyer sur le bouton "
 "<b>reset</b>. Cliquez sur Continuer en le maintenant enfoncé."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:114
+#: src/dsrlib/ui/wizard/pages/arduino.py:259
 msgid "Looking for Leonardo"
 msgstr "Recherche du Leonardo"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:115
+#: src/dsrlib/ui/wizard/pages/arduino.py:260
 msgid "Release the <b>reset</b> button now."
 msgstr "Relâchez le bouton <b>reset</b> maintenant."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:141
+#: src/dsrlib/ui/wizard/pages/arduino.py:286
 msgid "Found Leonardo at {path}."
 msgstr "Leonardo trouvé sur {path}."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:157
+#: src/dsrlib/ui/wizard/pages/arduino.py:302
 msgid "Error resetting the device: {error}"
 msgstr "Erreur lors de la réinitialisation du périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:169
+#: src/dsrlib/ui/wizard/pages/arduino.py:314
 msgid "Updating"
 msgstr "Mise  jour"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:170
+#: src/dsrlib/ui/wizard/pages/arduino.py:315
 msgid "Update in progress..."
 msgstr "Mise à jour en cours..."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:197
+#: src/dsrlib/ui/wizard/pages/arduino.py:345
 msgid "Process failed to start"
 msgstr "Le processus n’a pas pu démarrer"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:198
+#: src/dsrlib/ui/wizard/pages/arduino.py:346
 msgid "Process crashed"
 msgstr "Le processus s’est vautré"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:199
+#: src/dsrlib/ui/wizard/pages/arduino.py:347
 msgid "Timeout"
 msgstr "Dépassement de délai"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:200
+#: src/dsrlib/ui/wizard/pages/arduino.py:348
 msgid "Write error"
 msgstr "Erreur d’écriture"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:201
+#: src/dsrlib/ui/wizard/pages/arduino.py:349
 msgid "Read error"
 msgstr "Erreur de lecture"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:202
+#: src/dsrlib/ui/wizard/pages/arduino.py:350
 msgid "Unknown error"
 msgstr "Erreur inconnue"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:205
+#: src/dsrlib/ui/wizard/pages/arduino.py:353
 msgid "Error launching avrdude: {error}"
 msgstr "Erreur au lancement de avrdude: {error}"
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:214
+#: src/dsrlib/ui/wizard/pages/arduino.py:362
 msgid "Done."
 msgstr "Terminé."
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:217
+#: src/dsrlib/ui/wizard/pages/arduino.py:365
 msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
 msgstr ""
 "<b>avrdude</b> s’est terminé avec le code {code}. Quelque chose a foiré."

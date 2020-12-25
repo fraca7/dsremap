@@ -14,7 +14,6 @@ script:
   - (cd AppDir/usr/lib/x86_64-linux-gnu; ln -s ../libqscintilla2_qt5.so.15 .)
   - mkdir -p AppDir/data
   - cp res/avrdude.conf AppDir/data/
-  - cp arduino-build/dsremap.ino.hex AppDir/data/
   - cp -r res/configurations AppDir/data/
   - cp -r i18n AppDir/data/
 
