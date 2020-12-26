@@ -37,3 +37,15 @@ class Wizard(MainWindowMixin, QtWidgets.QWizard):
 
     def onSuccess(self):
         Settings().setFirmwareUploaded()
+
+
+class ManifestWizardMixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._manifest = {}
+
+    def setManifest(self, manifest):
+        self._manifest = manifest
+
+    def manifest(self):
+        return self._manifest

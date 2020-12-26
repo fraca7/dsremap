@@ -7,6 +7,7 @@ class PageId(enum.IntEnum):
     DeviceType = enum.auto()
     DeviceNotConfigured = enum.auto()
     ArduinoAvrdude = enum.auto()
+    ArduinoManifestDownload = enum.auto()
     ArduinoDownload = enum.auto()
     ArduinoReset = enum.auto()
     ArduinoFindSerial = enum.auto()

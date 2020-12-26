@@ -62,7 +62,10 @@ class Meta:
     def manifest():
         filename = os.path.join(Meta.dataPath('images'), 'manifest.json')
         if not os.path.exists(filename):
-            return {}
+            return {
+                'leonardo': { 'firmware': { 'current': { 'version': 0 } } },
+                'rpi0w': { 'image': { 'current': { 'version': 0 } }, 'server': { 'current': { 'version': 0 } } },
+                }
         with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
             return json.load(fileobj)
 
@@ -70,7 +73,7 @@ class Meta:
     def updateManifest(manifest):
         filename = os.path.join(Meta.dataPath('images'), 'manifest.json')
         with codecs.getwriter('utf-8')(open(filename, 'wb')) as fileobj:
-            json.dump(manifest, fileobj)
+            json.dump(manifest, fileobj, indent=2)
 
     @staticmethod
     def dataPath(*args):

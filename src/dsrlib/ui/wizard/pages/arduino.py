@@ -4,7 +4,6 @@ import os
 import platform
 import logging
 import time
-import tempfile
 import codecs
 import json
 
@@ -13,11 +12,11 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 
 from dsrlib.settings import Settings
 from dsrlib.meta import Meta
-from dsrlib.domain.downloader import FileDownloader, DownloadNetworkError, DownloadHTTPError, AbortedError
 from dsrlib.ui.utils import LayoutBuilder
 
 from .pageids import PageId
 from .base import Page
+from .common import ManifestDownloadPage, DownloadFilePage
 
 
 class ArduinoAvrdudePage(Page):
@@ -63,7 +62,7 @@ class ArduinoAvrdudePage(Page):
         return Settings().avrdude() is not None
 
     def nextId(self):
-        return ArduinoDownloadPage.ID
+        return ArduinoManifestDownloadPage.ID
 
     def _tryAgain(self):
         self._msg.setText(_('avrdude found') if self.isComplete() else _('Cannot find avrdude'))
@@ -77,145 +76,76 @@ class ArduinoAvrdudePage(Page):
             self.completeChanged.emit()
 
 
-class ArduinoDownloadPage(Page):
-    ID = PageId.ArduinoDownload
-
-    STATE_DL_MANIFEST = 0
-    STATE_DL_FIRMWARE = 1
-    STATE_FINISHED = 2
-    STATE_ERROR = 3
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        bld = LayoutBuilder(self)
-        with bld.vbox() as layout:
-            self._progress = QtWidgets.QProgressBar(self)
-            layout.addStretch(1)
-            layout.addWidget(self._progress)
-            layout.addStretch(1)
-        self._state = self.STATE_DL_MANIFEST
-        self._downloader = None
-        self._newManifest = None
+class ArduinoManifestDownloadPage(ManifestDownloadPage):
+    ID = PageId.ArduinoManifestDownload
 
     def initializePage(self):
-        self.setTitle(_('Image download'))
-        self._progress.show()
+        manifest = Meta.manifest()
+        self._exists = manifest['leonardo']['firmware']['current']['version'] != 0
+        super().initializePage()
 
-        self._manifest = Meta.manifest()
-        self._version = self._manifest.get('leonardo', {}).get('firmware', {}).get('current', 0)
-        self._exists = self._manifest.get('leonardo', {}).get('firmware', {}).get('name', None) is not None
-        self._download()
+    def nextId(self):
+        return ArduinoDownloadPage.ID
 
-    def cleanupPage(self):
-        if self._downloader is not None:
-            self._downloader.abort()
-            self._downloader = None
+    def onNetworkError(self, exc):
+        super().onNetworkError(exc)
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
 
-    def isComplete(self):
-        return self._state == self.STATE_FINISHED
+    def onDownloadError(self, exc):
+        super().onDownloadError(exc)
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
+
+    def onDownloadFinished(self, filename):
+        with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
+            manifest = json.load(fileobj)
+
+        existing = Meta.manifest()
+        existing['leonardo']['firmware']['latest'] = manifest['leonardo']['firmware']['latest']
+        existing['rpi0w']['image']['latest'] = manifest['rpi0w']['image']['latest']
+        existing['rpi0w']['server']['latest'] = manifest['rpi0w']['server']['latest']
+        Meta.updateManifest(existing)
+
+        self.setState(self.STATE_FINISHED)
+
+
+class ArduinoDownloadPage(DownloadFilePage):
+    ID = PageId.ArduinoDownload
+
+    def initializePage(self):
+        self.setTitle(_('Firmware download'))
+        manifest = Meta.manifest()
+        self._exists = manifest['leonardo']['firmware']['current']['version'] != 0
+        super().initializePage()
 
     def nextId(self):
         return ArduinoResetPage.ID
 
-    def _setState(self, state):
-        self._state = state
-        if state == self.STATE_ERROR:
-            self._progress.hide()
-            self.setFinalPage(True)
-        if state == self.STATE_FINISHED:
-            self.completeChanged.emit()
-            self.wizard().button(self.wizard().NextButton).click()
+    def url(self):
+        manifest = Meta.manifest()
+        return Meta.imagesUrl().format(filename=manifest['leonardo']['firmware']['latest']['name'])
 
-    def _download(self): # pylint: disable=R0915
-        if self._state == self.STATE_DL_MANIFEST:
-            self.setSubTitle(_('Downloading manifest...'))
+    def tempfile(self, **kwargs):
+        # Same dir for rename()
+        kwargs['dir'] = Meta.dataPath('images')
+        return super().tempfile(**kwargs)
 
-            handle, tempname = tempfile.mkstemp()
-            os.close(handle)
+    def onNetworkError(self, exc):
+        self.setSubTitle(_('Unable to download firmware: {error}').format(error=str(exc)))
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
 
-            def gotManifest(downloader):
-                self._downloader.downloadSize.disconnect(self._gotSize)
-                self._downloader.downloadProgress.disconnect(self._gotProgress)
-                self._downloader = None
+    def onDownloadError(self, exc):
+        self.setSubTitle(_('Error downloading firmware: {error}').format(error=str(exc)))
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
 
-                try:
-                    downloader.result()
-                except AbortedError:
-                    self._setState(self.STATE_FINISHED)
-                except DownloadNetworkError as exc:
-                    self.setSubTitle(_('Unable to download manifest: {error}').format(error=str(exc)))
-                    self._setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
-                except DownloadHTTPError as exc:
-                    self.setSubTitle(_('Error downloading manifest: {error}').format(error=str(exc)))
-                    self._setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
-                else:
-                    with codecs.getreader('utf-8')(open(tempname, 'rb')) as fileobj:
-                        manifest = json.load(fileobj)
-
-                    if manifest['leonardo']['firmware']['latest'] > self._version:
-                        self._setState(self.STATE_DL_FIRMWARE)
-                        self._newManifest = manifest
-                        self._download()
-                    else:
-                        self._setState(self.STATE_FINISHED)
-                finally:
-                    os.remove(tempname)
-
-            self._downloader = FileDownloader(self.wizard(), self.mainWindow().manager(), tempname, callback=gotManifest)
-            self._downloader.downloadSize.connect(self._gotSize)
-            self._downloader.downloadProgress.connect(self._gotProgress)
-            self._downloader.get(Meta.imagesUrl().format(filename='manifest.json'))
-            return
-
-        if self._state == self.STATE_DL_FIRMWARE:
-            self.setSubTitle(_('Downloading firmware...'))
-
-            # Same directory so rename() doesn't fail if /tmp is not on the same FS
-            handle, tempname = tempfile.mkstemp(dir=Meta.dataPath('images'))
-            os.close(handle)
-
-            def gotFirmware(downloader):
-                self._downloader.downloadSize.disconnect(self._gotSize)
-                self._downloader.downloadProgress.disconnect(self._gotProgress)
-                self._downloader = None
-
-                try:
-                    downloader.result()
-                except AbortedError:
-                    self._setState(self.STATE_FINISHED)
-                except DownloadNetworkError as exc:
-                    self.setSubTitle(_('Unable to download firmware: {error}').format(error=str(exc)))
-                    self._setState(self.STATE_ERROR)
-                except DownloadHTTPError as exc:
-                    self.setSubTitle(_('Error downloading firmware: {error}').format(error=str(exc)))
-                    self._setState(self.STATE_ERROR)
-                else:
-                    filename = os.path.join(Meta.dataPath('images'), self._newManifest['leonardo']['firmware']['name'])
-                    if os.path.exists(filename):
-                        os.remove(filename)
-                    os.rename(tempname, filename)
-                    self._manifest.setdefault('leonardo', {}).setdefault('firmware', {})['current'] = self._newManifest['leonardo']['firmware']['latest']
-                    self._manifest['leonardo']['firmware']['name'] = self._newManifest['leonardo']['firmware']['name']
-                    Meta.updateManifest(self._manifest)
-                    self._setState(self.STATE_FINISHED)
-                finally:
-                    if os.path.exists(tempname):
-                        os.remove(tempname)
-
-            self._downloader = FileDownloader(self.wizard(), self.mainWindow().manager(), tempname, callback=gotFirmware)
-            self._downloader.downloadSize.connect(self._gotSize)
-            self._downloader.downloadProgress.connect(self._gotProgress)
-            self._downloader.get(Meta.imagesUrl().format(filename=self._newManifest['leonardo']['firmware']['name']))
-            return
-
-
-    def _gotSize(self, size):
-        self._progress.setMaximum(size)
-        self._progress.setValue(0)
-
-    def _gotProgress(self, progress):
-        self._progress.setValue(progress)
+    def onDownloadFinished(self, filename):
+        manifest = Meta.manifest()
+        dstname = os.path.join(Meta.dataPath('images'), manifest['leonardo']['firmware']['latest']['name'])
+        if os.path.exists(dstname):
+            os.remove(dstname)
+        os.rename(filename, dstname)
+        manifest['leonardo']['firmware']['current'] = manifest['leonardo']['firmware']['latest']
+        Meta.updateManifest(manifest)
+        self.setState(self.STATE_FINISHED)
 
 
 class ArduinoResetPage(Page):
@@ -324,7 +254,7 @@ class ArduinoFindSerialPage(Page):
         self._process.readyReadStandardOutput.connect(self._onStdout)
 
         manifest = Meta.manifest()
-        filename = os.path.join(Meta.dataPath('images'), manifest['leonardo']['firmware']['name'])
+        filename = os.path.join(Meta.dataPath('images'), manifest['leonardo']['firmware']['current']['name'])
 
         args = [
             '-patmega32u4',
