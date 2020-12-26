@@ -7,7 +7,6 @@ bundle:
 	rm -rf build
 	mkdir -p build/dist/opt/dsremap
 	mkdir -p build/dist/etc/init.d
-	mkdir -p build/dist/etc/avahi/services
 
 	cd ../pairing && make clean all
 	cp -a ../pairing/pairing build/dist/opt/dsremap/pairing
@@ -16,7 +15,6 @@ bundle:
 
 	cp -a dsremap_serve.py build/dist/opt/dsremap/dsremap_serve
 	cp -a dsremap-initscript build/dist/etc/init.d/dsremap
-	cp -a dsremap.service build/dist/etc/avahi/services/dsremap.service
 
 	if [ -e pre.sh ]; then cp -a pre.sh build/pre.sh; fi
 	if [ -e post.sh ]; then cp -a post.sh build/post.sh; fi

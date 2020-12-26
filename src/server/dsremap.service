@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
-<service-group>
-  <name replace-wildcards="yes">DSRemap BT on %h</name>
-  <service>
-    <type>_http._tcp</type>
-    <port>8080</port>
-  </service>
-</service-group>

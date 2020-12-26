@@ -13,6 +13,7 @@ import getopt
 import daemon
 import daemon.pidfile
 from aiohttp import web
+import zeroconf
 
 VERSION = '1.0.0'
 API_LEVEL = 1
@@ -39,6 +40,8 @@ class DSRemapServer:
             web.get('/halt', self.handle_halt),
             ])
         self.proxy = None
+        self.zeroconf = zeroconf.Zeroconf()
+        self.svc_info = zeroconf.ServiceInfo('_http._tcp.local.', 'DSRemap server._http._tcp.local.', port=8080)
 
         self.app.on_startup.append(self.on_startup)
         self.app.on_shutdown.append(self.on_shutdown)
@@ -78,8 +81,12 @@ class DSRemapServer:
 
         await self.start_proxy()
 
+        self.zeroconf.register_service(self.svc_info)
+
     async def on_shutdown(self, app):
         await self.stop_proxy()
+        self.zeroconf.unregister_service(self.svc_info)
+        self.zeroconf.close()
 
     async def start_proxy(self):
         info = self.current_pairing()
