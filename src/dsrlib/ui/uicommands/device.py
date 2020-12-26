@@ -7,7 +7,7 @@ from dsrlib.ui.mixins import MainWindowMixin
 from dsrlib.domain.mixins import WorkspaceMixin
 from dsrlib.domain.device import DeviceVisitor
 
-from .misc import UpdateHexUICommand
+from .misc import UpdateHexUICommand, SetupSDCardUICommand
 from .hid import UploadConfigurationsUICommand
 from .bt import NetworkDeviceMenu
 
@@ -70,6 +70,7 @@ class DeviceMenu(DeviceMenuBase):
         super().__init__(_('Devices'), parent, *args, **kwargs)
 
         self.addAction(UpdateHexUICommand(self, mainWindow=self.mainWindow()))
+        self.addAction(SetupSDCardUICommand(self, mainWindow=self.mainWindow()))
         self.addSeparator()
         self.start()
 

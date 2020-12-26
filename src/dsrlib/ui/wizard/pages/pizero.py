@@ -165,11 +165,6 @@ class PiZeroCopyPage(Page):
         self._finished = False
         self._thread = None
 
-        manifest = Meta.manifest()
-        name = manifest['rpi0w']['image']['current']['name']
-        self._src = os.path.join(Meta.dataPath('images'), name)
-        self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), name)
-
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             layout.addStretch(1)
@@ -180,6 +175,12 @@ class PiZeroCopyPage(Page):
     def initializePage(self):
         self.setTitle(_('Image copy'))
         self.setSubTitle(_('Copying image file'))
+
+        manifest = Meta.manifest()
+        name = manifest['rpi0w']['image']['current']['name']
+        self._src = os.path.join(Meta.dataPath('images'), name)
+        self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), name)
+
         ssid, password = self.wizard().wifi()
         self._thread = ImageCopyThread(self._src, self._dst, ssid, password)
         self._thread.progress.connect(self._onProgress)
@@ -222,18 +223,23 @@ class PiZeroBurnPage(Page):
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             layout.addStretch(1)
-            msg = QtWidgets.QLabel(_('The image file has been copied to your Downloads folder.\nYou can now use the <a href="https://www.raspberrypi.org/software/">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\nThen use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time.'), self)
+            msg = QtWidgets.QLabel(_('The image file has been copied to your Downloads folder.\nYou can now use the <a href="https://www.raspberrypi.org/software/">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\nThen use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time.'), self) # pylint: disable=C0301
             msg.setWordWrap(True)
             msg.setTextFormat(QtCore.Qt.RichText)
             msg.setOpenExternalLinks(True)
             layout.addWidget(msg)
             layout.addStretch(1)
 
+        self._nextId = PiZeroFindPage.ID
+
     def initializePage(self):
         self.setTitle(_('Create SD card'))
+        if self.wizard().page(self.nextId()) is None:
+            self._nextId = -1
+            self.setFinalPage(True)
 
     def nextId(self):
-        return PiZeroFindPage.ID
+        return self._nextId
 
 
 class PiZeroFindPage(Page):
