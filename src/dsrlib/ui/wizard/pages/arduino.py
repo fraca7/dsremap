@@ -4,8 +4,6 @@ import os
 import platform
 import logging
 import time
-import codecs
-import json
 
 import serial
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -79,33 +77,11 @@ class ArduinoAvrdudePage(Page):
 class ArduinoManifestDownloadPage(ManifestDownloadPage):
     ID = PageId.ArduinoManifestDownload
 
-    def initializePage(self):
-        manifest = Meta.manifest()
-        self._exists = manifest['leonardo']['firmware']['current']['version'] != 0
-        super().initializePage()
+    def currentVersion(self, manifest):
+        return manifest['leonardo']['firmware']['current']['version']
 
     def nextId(self):
         return ArduinoDownloadPage.ID
-
-    def onNetworkError(self, exc):
-        super().onNetworkError(exc)
-        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
-
-    def onDownloadError(self, exc):
-        super().onDownloadError(exc)
-        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
-
-    def onDownloadFinished(self, filename):
-        with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
-            manifest = json.load(fileobj)
-
-        existing = Meta.manifest()
-        existing['leonardo']['firmware']['latest'] = manifest['leonardo']['firmware']['latest']
-        existing['rpi0w']['image']['latest'] = manifest['rpi0w']['image']['latest']
-        existing['rpi0w']['server']['latest'] = manifest['rpi0w']['server']['latest']
-        Meta.updateManifest(existing)
-
-        self.setState(self.STATE_FINISHED)
 
 
 class ArduinoDownloadPage(DownloadFilePage):

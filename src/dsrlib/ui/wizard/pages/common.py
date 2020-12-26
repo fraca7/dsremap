@@ -2,6 +2,8 @@
 
 import os
 import tempfile
+import codecs
+import json
 
 from PyQt5 import QtWidgets
 
@@ -156,15 +158,30 @@ class ManifestDownloadPage(DownloadFilePage):
     def url(self):
         return Meta.imagesUrl().format(filename='manifest.json')
 
+    def currentVersion(self, manifest):
+        raise NotImplementedError
+
     def onNetworkError(self, exc):
         self.setSubTitle(_('Unable to download manifest: {error}').format(error=str(exc)))
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
 
     def onDownloadError(self, exc):
         self.setSubTitle(_('Error downloading manifest: {error}').format(error=str(exc)))
+        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
 
     def onDownloadFinished(self, filename):
-        raise NotImplementedError
+        with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
+            manifest = json.load(fileobj)
+
+        existing = Meta.manifest()
+        existing['leonardo']['firmware']['latest'] = manifest['leonardo']['firmware']['latest']
+        existing['rpi0w']['image']['latest'] = manifest['rpi0w']['image']['latest']
+        existing['rpi0w']['server']['latest'] = manifest['rpi0w']['server']['latest']
+        Meta.updateManifest(existing)
+
+        self.setState(self.STATE_FINISHED)
 
     def initializePage(self):
         self.setSubTitle(_('Downloading manifest...'))
+        self._exists = self.currentVersion(Meta.manifest()) != 0
         super().initializePage()
