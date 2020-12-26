@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-12-26 13:50+0100\n"
-"PO-Revision-Date: 2020-12-26 13:55+0100\n"
+"POT-Creation-Date: 2020-12-26 17:14+0100\n"
+"PO-Revision-Date: 2020-12-26 17:15+0100\n"
 "Last-Translator: Jérôme Laheurte <fraca7@free.fr>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -284,7 +284,7 @@ msgid "Unable to find <i>sudo</i> on the path."
 msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
 
 #: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
-#: src/dsrlib/ui/wizard/pages/pizero.py:210
+#: src/dsrlib/ui/wizard/pages/pizero.py:211
 msgid "Error"
 msgstr "Erreur"
 
@@ -416,15 +416,15 @@ msgstr "Aucun périphérique détecté"
 msgid "Devices"
 msgstr "Périphériques"
 
-#: src/dsrlib/ui/uicommands/device.py:85
+#: src/dsrlib/ui/uicommands/device.py:86
 msgid "Upload"
 msgstr "Téléverser"
 
-#: src/dsrlib/ui/uicommands/device.py:94
+#: src/dsrlib/ui/uicommands/device.py:95
 msgid "Firmware version mismatch"
 msgstr "Différence de version du microcode"
 
-#: src/dsrlib/ui/uicommands/device.py:95
+#: src/dsrlib/ui/uicommands/device.py:96
 msgid ""
 "A {appname}-enabled device was plugged, but the firmware version v{version1} "
 "does not match the one supported by this application (v{version2}). Please "
@@ -502,14 +502,22 @@ msgid "Update Arduino firmware"
 msgstr "Mise à jour du microcode de l'Arduino"
 
 #: src/dsrlib/ui/uicommands/misc.py:24
+msgid "Create an image file for the Raspberry Pi Zero W"
+msgstr "Création d'un fichier image pour le Raspberry Pi Zero W"
+
+#: src/dsrlib/ui/uicommands/misc.py:24
+msgid "Setup a new SD card for the RPi0 W"
+msgstr "Préparer une nouvelle carte SD pour le RPi0 W"
+
+#: src/dsrlib/ui/uicommands/misc.py:33
 msgid "About {appname}..."
 msgstr "À propos de {appname}..."
 
-#: src/dsrlib/ui/uicommands/misc.py:34
+#: src/dsrlib/ui/uicommands/misc.py:43
 msgid "Settings..."
 msgstr "Préférences..."
 
-#: src/dsrlib/ui/uicommands/misc.py:45
+#: src/dsrlib/ui/uicommands/misc.py:54
 msgid "Open documentation"
 msgstr "Ouvrir la documentation"
 
@@ -760,19 +768,19 @@ msgstr "Confirmer le mot de passe"
 msgid "Wifi configuration"
 msgstr "Configuration Wifi"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:181
+#: src/dsrlib/ui/wizard/pages/pizero.py:176
 msgid "Image copy"
 msgstr "Copie de l'image"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:182
+#: src/dsrlib/ui/wizard/pages/pizero.py:177
 msgid "Copying image file"
 msgstr "Copie du fichier image"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:210
+#: src/dsrlib/ui/wizard/pages/pizero.py:211
 msgid "Error copying file: {error}"
 msgstr "Erreur de copie du fichier: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:225
+#: src/dsrlib/ui/wizard/pages/pizero.py:226
 msgid ""
 "The image file has been copied to your Downloads folder.\n"
 "You can now use the <a href=\"https://www.raspberrypi.org/software/"
@@ -791,23 +799,23 @@ msgstr ""
 "du processus d'appariement. Le premier démarrage peut prendre un certain "
 "temps."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:233
+#: src/dsrlib/ui/wizard/pages/pizero.py:236
 msgid "Create SD card"
 msgstr "Création de la carte SD"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:255
+#: src/dsrlib/ui/wizard/pages/pizero.py:261
 msgid "Device lookup"
 msgstr "Recherche du périphérique"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:256
+#: src/dsrlib/ui/wizard/pages/pizero.py:262
 msgid "Looking for a configured RPi Zero W on your network..."
 msgstr "Recherche d'un RPi Zero W configuré sur votre réseau..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:311
+#: src/dsrlib/ui/wizard/pages/pizero.py:317
 msgid "Preparing to pair the PS4"
 msgstr "Préparation de l'appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:312
+#: src/dsrlib/ui/wizard/pages/pizero.py:318
 msgid ""
 "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when "
 "done."
@@ -815,40 +823,40 @@ msgstr ""
 "Tout d'abord, allumez votre PS4 et branchez-y le Raspberry Pi. Cliquez sur "
 "Continuer lorsque c'est fait."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:353
+#: src/dsrlib/ui/wizard/pages/pizero.py:359
 msgid "Pairing PS4"
 msgstr "Appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:372
+#: src/dsrlib/ui/wizard/pages/pizero.py:378
 msgid "Getting device information..."
 msgstr "Obtention des informations du périphérique..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:384
-#: src/dsrlib/ui/wizard/pages/pizero.py:550
+#: src/dsrlib/ui/wizard/pages/pizero.py:390
+#: src/dsrlib/ui/wizard/pages/pizero.py:556
 msgid "Error connecting to the device: {error}"
 msgstr "Erreur de connexion au périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:392
+#: src/dsrlib/ui/wizard/pages/pizero.py:398
 msgid "Error getting info from device: {error}"
 msgstr "Erreur lors de l'obtention des informations du périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:406
+#: src/dsrlib/ui/wizard/pages/pizero.py:412
 msgid "Waiting for the PS4..."
 msgstr "En attente de la PS4..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:415
+#: src/dsrlib/ui/wizard/pages/pizero.py:421
 msgid "Error while pairing the PS4: {code}"
 msgstr "Erreur lors de l'appairement de la PS4: {code}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:421
+#: src/dsrlib/ui/wizard/pages/pizero.py:427
 msgid "Error while pairing the PS4"
 msgstr "Une erreur lors de l'appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:454
+#: src/dsrlib/ui/wizard/pages/pizero.py:460
 msgid "Waiting for Dualshock"
 msgstr "En attente de la Dualshock"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:455
+#: src/dsrlib/ui/wizard/pages/pizero.py:461
 msgid ""
 "You can now unplug the Raspberry Pi from the PS4, but leave it powered. "
 "Please plug your DualShock controller to this PC."
@@ -856,35 +864,35 @@ msgstr ""
 "Vous pouvez maintenant débrancher le Raspberry Pi de la PS4, en le laissant "
 "allumé. Veuillez brancher votre contrôleur DualShock à ce PC."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:505
+#: src/dsrlib/ui/wizard/pages/pizero.py:511
 msgid "Pairing controller"
 msgstr "Appairement du contrôleur"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:506
+#: src/dsrlib/ui/wizard/pages/pizero.py:512
 msgid "Pairing the controller, please wait..."
 msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:511
+#: src/dsrlib/ui/wizard/pages/pizero.py:517
 msgid "Obtaining MAC address..."
 msgstr "Obtention de l'adresse MAC..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:540
+#: src/dsrlib/ui/wizard/pages/pizero.py:546
 msgid "Uploading pairing info..."
 msgstr "Téléversement des informations d'appairement..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:554
+#: src/dsrlib/ui/wizard/pages/pizero.py:560
 msgid "Error uploading pairing info: {error}"
 msgstr "Erreur lors du téléversement des informations d'appairement: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:559
+#: src/dsrlib/ui/wizard/pages/pizero.py:565
 msgid "Pairing the controller..."
 msgstr "Appairement du contrôleur..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:583
+#: src/dsrlib/ui/wizard/pages/pizero.py:589
 msgid "Finished"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:584
+#: src/dsrlib/ui/wizard/pages/pizero.py:590
 msgid ""
 "Done. You can unplug the DualShock and press PS to start using it through "
 "the proxy."
@@ -919,9 +927,6 @@ msgstr "Sélectionnez une configuration"
 
 #~ msgid "Something went wrong (cannot connect to the Pi)."
 #~ msgstr "Quelque chose s'est mal passé (impossible de se connecter au Pi)"
-
-#~ msgid "Cannot connect to the Raspberry Pi."
-#~ msgstr "Impossible de se connecter au Raspberry Pi."
 
 #~ msgid "Error contacting the device: {status}"
 #~ msgstr "Erreur du périphérique: {status}"

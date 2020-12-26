@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-12-26 13:50+0100\n"
+"POT-Creation-Date: 2020-12-26 17:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -270,7 +270,7 @@ msgid "Unable to find <i>sudo</i> on the path."
 msgstr ""
 
 #: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
-#: src/dsrlib/ui/wizard/pages/pizero.py:210
+#: src/dsrlib/ui/wizard/pages/pizero.py:211
 msgid "Error"
 msgstr ""
 
@@ -398,15 +398,15 @@ msgstr ""
 msgid "Devices"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:85
+#: src/dsrlib/ui/uicommands/device.py:86
 msgid "Upload"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:94
+#: src/dsrlib/ui/uicommands/device.py:95
 msgid "Firmware version mismatch"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/device.py:95
+#: src/dsrlib/ui/uicommands/device.py:96
 msgid "A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device."
 msgstr ""
 
@@ -473,14 +473,22 @@ msgid "Update Arduino firmware"
 msgstr ""
 
 #: src/dsrlib/ui/uicommands/misc.py:24
+msgid "Create an image file for the Raspberry Pi Zero W"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:24
+msgid "Setup a new SD card for the RPi0 W"
+msgstr ""
+
+#: src/dsrlib/ui/uicommands/misc.py:33
 msgid "About {appname}..."
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:34
+#: src/dsrlib/ui/uicommands/misc.py:43
 msgid "Settings..."
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:45
+#: src/dsrlib/ui/uicommands/misc.py:54
 msgid "Open documentation"
 msgstr ""
 
@@ -699,111 +707,111 @@ msgstr ""
 msgid "Wifi configuration"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:181
+#: src/dsrlib/ui/wizard/pages/pizero.py:176
 msgid "Image copy"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:182
+#: src/dsrlib/ui/wizard/pages/pizero.py:177
 msgid "Copying image file"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:210
+#: src/dsrlib/ui/wizard/pages/pizero.py:211
 msgid "Error copying file: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:225
+#: src/dsrlib/ui/wizard/pages/pizero.py:226
 msgid ""
 "The image file has been copied to your Downloads folder.\n"
 "You can now use the <a href=\"https://www.raspberrypi.org/software/\">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\n"
 "Then use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:233
+#: src/dsrlib/ui/wizard/pages/pizero.py:236
 msgid "Create SD card"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:255
+#: src/dsrlib/ui/wizard/pages/pizero.py:261
 msgid "Device lookup"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:256
+#: src/dsrlib/ui/wizard/pages/pizero.py:262
 msgid "Looking for a configured RPi Zero W on your network..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:311
+#: src/dsrlib/ui/wizard/pages/pizero.py:317
 msgid "Preparing to pair the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:312
+#: src/dsrlib/ui/wizard/pages/pizero.py:318
 msgid "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:353
+#: src/dsrlib/ui/wizard/pages/pizero.py:359
 msgid "Pairing PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:372
+#: src/dsrlib/ui/wizard/pages/pizero.py:378
 msgid "Getting device information..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:384
-#: src/dsrlib/ui/wizard/pages/pizero.py:550
+#: src/dsrlib/ui/wizard/pages/pizero.py:390
+#: src/dsrlib/ui/wizard/pages/pizero.py:556
 msgid "Error connecting to the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:392
+#: src/dsrlib/ui/wizard/pages/pizero.py:398
 msgid "Error getting info from device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:406
+#: src/dsrlib/ui/wizard/pages/pizero.py:412
 msgid "Waiting for the PS4..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:415
+#: src/dsrlib/ui/wizard/pages/pizero.py:421
 msgid "Error while pairing the PS4: {code}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:421
+#: src/dsrlib/ui/wizard/pages/pizero.py:427
 msgid "Error while pairing the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:454
+#: src/dsrlib/ui/wizard/pages/pizero.py:460
 msgid "Waiting for Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:455
+#: src/dsrlib/ui/wizard/pages/pizero.py:461
 msgid "You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:505
+#: src/dsrlib/ui/wizard/pages/pizero.py:511
 msgid "Pairing controller"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:506
+#: src/dsrlib/ui/wizard/pages/pizero.py:512
 msgid "Pairing the controller, please wait..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:511
+#: src/dsrlib/ui/wizard/pages/pizero.py:517
 msgid "Obtaining MAC address..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:540
+#: src/dsrlib/ui/wizard/pages/pizero.py:546
 msgid "Uploading pairing info..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:554
+#: src/dsrlib/ui/wizard/pages/pizero.py:560
 msgid "Error uploading pairing info: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:559
+#: src/dsrlib/ui/wizard/pages/pizero.py:565
 msgid "Pairing the controller..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:583
+#: src/dsrlib/ui/wizard/pages/pizero.py:589
 msgid "Finished"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:584
+#: src/dsrlib/ui/wizard/pages/pizero.py:590
 msgid "Done. You can unplug the DualShock and press PS to start using it through the proxy."
 msgstr ""
 
