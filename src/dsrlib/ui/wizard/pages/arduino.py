@@ -4,6 +4,7 @@ import os
 import platform
 import logging
 import time
+import functools
 
 import serial
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -90,8 +91,11 @@ class ArduinoDownloadPage(DownloadFilePage):
     def initializePage(self):
         self.setTitle(_('Firmware download'))
         manifest = Meta.manifest()
-        self._exists = manifest['leonardo']['firmware']['current']['version'] != 0
-        super().initializePage()
+        self._version = manifest['leonardo']['firmware']['current']['version']
+        if self._version < manifest['leonardo']['firmware']['latest']['version']:
+            super().initializePage()
+        else:
+            QtCore.QTimer.singleShot(0, functools.partial(self.setState, self.STATE_FINISHED))
 
     def nextId(self):
         return ArduinoResetPage.ID
@@ -107,11 +111,11 @@ class ArduinoDownloadPage(DownloadFilePage):
 
     def onNetworkError(self, exc):
         self.setSubTitle(_('Unable to download firmware: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
+        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
 
     def onDownloadError(self, exc):
         self.setSubTitle(_('Error downloading firmware: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._exists else self.STATE_ERROR)
+        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
 
     def onDownloadFinished(self, filename):
         manifest = Meta.manifest()

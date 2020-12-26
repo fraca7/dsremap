@@ -26,7 +26,7 @@ class DeviceChoicePage(Page):
         with bld.vbox() as layout:
             layout.addStretch(1)
             self._addButton(layout, _('Arduino Leonardo'), PageId.ArduinoAvrdude, True)
-            self._addButton(layout, _('Raspberry Pi Zero W'), PageId.PiZeroFind)
+            self._addButton(layout, _('Raspberry Pi Zero W'), PageId.PiZeroManifestDownload)
             self._addButton(layout, _('Do that later'), DeviceNotConfiguredPage.ID)
             layout.addStretch(1)
 
@@ -46,7 +46,7 @@ class DeviceChoicePage(Page):
         self.setSubTitle(_('Choose what kind of device you want to configure'))
 
     def nextId(self):
-        return DeviceNotConfiguredPage.ID
+        return self._nextId
 
 
 class DeviceNotConfiguredPage(Page):

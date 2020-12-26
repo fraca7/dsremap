@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from .pages.pizero import PiZeroFindPage, PiZeroPlugPage, PiZeroPairHostPage, PiZeroWaitDSPage, PiZeroPairDSPage, PiZeroFinalPage
+from .pages.pizero import PiZeroManifestDownloadPage, PiZeroImageDownloadPage, PiZeroWifiPage, PiZeroCopyPage, PiZeroBurnPage, PiZeroFindPage, PiZeroPlugPage, \
+     PiZeroPairHostPage, PiZeroWaitDSPage, PiZeroPairDSPage, PiZeroFinalPage
 from .base import Wizard
 
 
@@ -47,5 +48,29 @@ class PairingWizardMixin:
         return self._dongle
 
 
+class SetupSDWizardMixin:
+    def __init__(self, *args, **kwargs):
+        self._wifi = (None, None)
+        super().__init__(*args, **kwargs)
+
+    def setupPages(self):
+        self.addPage(PiZeroManifestDownloadPage(self, mainWindow=self.mainWindow()))
+        self.addPage(PiZeroImageDownloadPage(self, mainWindow=self.mainWindow()))
+        self.addPage(PiZeroWifiPage(self, mainWindow=self.mainWindow()))
+        self.addPage(PiZeroCopyPage(self, mainWindow=self.mainWindow()))
+        self.addPage(PiZeroBurnPage(self, mainWindow=self.mainWindow()))
+        super().setupPages()
+
+    def wifi(self):
+        return self._wifi
+
+    def setWifi(self, ssid, password):
+        self._wifi = (ssid, password)
+
+
 class PairingWizard(PairingWizardMixin, Wizard):
+    pass
+
+
+class SetupSDWizard(SetupSDWizardMixin, Wizard):
     pass
