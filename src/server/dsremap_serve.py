@@ -9,11 +9,13 @@ import json
 import signal
 import logging
 import getopt
+import socket
 
 import daemon
 import daemon.pidfile
 from aiohttp import web
 import zeroconf
+import ifaddr
 
 VERSION = '1.0.0'
 API_LEVEL = 1
@@ -41,7 +43,12 @@ class DSRemapServer:
             ])
         self.proxy = None
         self.zeroconf = zeroconf.Zeroconf()
-        self.svc_info = zeroconf.ServiceInfo('_http._tcp.local.', 'DSRemap server._http._tcp.local.', port=8080)
+        addrs = []
+        for adapter in ifaddr.get_adapters():
+            for ip in adapter.ips:
+                if isinstance(ip.ip, str):
+                    addrs.append(socket.inet_aton(ip.ip))
+        self.svc_info = zeroconf.ServiceInfo('_http._tcp.local.', 'DSRemap server._http._tcp.local.', port=8080, addresses=addrs, server='%s.local.' % socket.gethostname())
 
         self.app.on_startup.append(self.on_startup)
         self.app.on_shutdown.append(self.on_shutdown)
