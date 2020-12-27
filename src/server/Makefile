@@ -13,7 +13,9 @@ bundle:
 	cd ../proxy && make clean all
 	cp -a ../proxy/proxy build/dist/opt/dsremap/proxy
 
-	cp -a dsremap_serve.py build/dist/opt/dsremap/dsremap_serve
+	cp -a dsremap_serve.py build/dist/opt/dsremap/dsremap_serve.py
+	cp -a dsremap_serve.sh build/dist/opt/dsremap/dsremap_serve
+	cp -a requirements.txt build/dist/opt/dsremap/requirements.txt
 	cp -a dsremap-initscript build/dist/etc/init.d/dsremap
 
 	if [ -e pre.sh ]; then cp -a pre.sh build/pre.sh; fi
