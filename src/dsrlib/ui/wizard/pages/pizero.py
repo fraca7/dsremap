@@ -5,6 +5,7 @@ import json
 import binascii
 import functools
 import struct
+import zipfile
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -131,30 +132,32 @@ class ImageCopyThread(QtCore.QThread):
         super().__init__()
 
     def run(self):
-        size = os.stat(self._src).st_size
-        done = 0
-        self.progress.emit(done, size)
+        with zipfile.ZipFile(self._src) as zipobj:
+            info = zipobj.getinfo(os.path.basename(self._dst))
+            size = info.file_size
+            done = 0
+            self.progress.emit(done, size)
 
-        try:
-            with open(self._src, 'rb') as src:
-                with open(self._dst, 'wb') as dst:
-                    data = src.read(4096)
-                    while data:
-                        done += len(data)
-                        self.progress.emit(done, size)
-                        dst.write(data)
+            try:
+                with zipobj.open(info) as src:
+                    with open(self._dst, 'wb') as dst:
                         data = src.read(4096)
-                    self.progress.emit(size, size)
+                        while data:
+                            done += len(data)
+                            self.progress.emit(done, size)
+                            dst.write(data)
+                            data = src.read(4096)
+                        self.progress.emit(size, size)
 
-                    if self._ssid is not None and self._password is not None:
-                        dst.write(b'\x00' * (512 - len(self._password) - len(self._ssid) - 10))
-                        dst.write(self._password)
-                        dst.write(self._ssid)
-                        dst.write(struct.pack('<IIH', len(self._password), len(self._ssid), 0xCAFE))
-        except Exception as exc: # pylint: disable=W0703
-            self.error.emit(exc)
-        else:
-            self.finished.emit()
+                        if self._ssid is not None and self._password is not None:
+                            dst.write(b'\x00' * (512 - len(self._password) - len(self._ssid) - 10))
+                            dst.write(self._password)
+                            dst.write(self._ssid)
+                            dst.write(struct.pack('<IIH', len(self._password), len(self._ssid), 0xCAFE))
+            except Exception as exc: # pylint: disable=W0703
+                self.error.emit(exc)
+            else:
+                self.finished.emit()
 
 
 class PiZeroCopyPage(Page):
@@ -179,7 +182,7 @@ class PiZeroCopyPage(Page):
         manifest = Meta.manifest()
         name = manifest['rpi0w']['image']['current']['name']
         self._src = os.path.join(Meta.dataPath('images'), name)
-        self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), name)
+        self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), '%s.img' % os.path.splitext(name)[0])
 
         ssid, password = self.wizard().wifi()
         self._thread = ImageCopyThread(self._src, self._dst, ssid, password)
