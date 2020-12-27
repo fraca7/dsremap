@@ -11,6 +11,7 @@ General:
 * Optimization pass
 * Refactor wizards (back button does unexpected things)
 * __TARGET__ preprocessing definition for device-targeted code
+* Zip rpi image
 
 Bluetooth:
 
