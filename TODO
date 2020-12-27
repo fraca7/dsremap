@@ -9,7 +9,8 @@ General:
 * IDE
 * Codesign mac OS binary
 * Optimization pass
-* First launch wizard: rpi0/leonardo choice
+* Refactor wizards (back button does unexpected things)
+* __TARGET__ preprocessing definition for device-targeted code
 
 Bluetooth:
 
