@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import socket
 
 from PyQt5 import QtCore
 import zeroconf
@@ -50,7 +51,7 @@ class ZeroconfEnumerator(QtCore.QObject):
     def _onAdded(self, info):
         if not info.name.startswith('DSRemap'):
             return
-        dev = NetworkDevice(info.name, info.server, info.port)
+        dev = NetworkDevice(info.name, socket.inet_ntoa(info.addresses[0]), info.port)
         self._items.append(dev)
         self.deviceAdded.emit(dev)
 
