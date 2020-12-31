@@ -2,7 +2,6 @@
 
 import os
 import shutil
-import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -13,77 +12,6 @@ from .actions import ActionWidgetBuilder
 from .mixins import MainWindowMixin
 from .utils import LayoutBuilder
 from .uicommands import AddActionButton, DeleteActionsButton, ConvertToCustomActionButton
-
-
-class ConfigurationSizeView(ConfigurationMixin, QtWidgets.QWidget):
-    def __init__(self, parent, *, container, **kwargs):
-        super().__init__(parent, **kwargs)
-        self._container = container
-        self.actions().rowsInserted.connect(self._onModelChange)
-        self.actions().rowsRemoved.connect(self._onModelChange)
-        self.actions().dataChanged.connect(self._onModelChange)
-        self.setFixedWidth(200)
-
-        self._container.selectionChanged.connect(self.update)
-
-    def _onModelChange(self, *args): # pylint: disable=W0613
-        self.update()
-
-    def paintEvent(self, event): # pylint: disable=R0914,W0613
-        painter = QtGui.QPainter(self)
-        painter.setRenderHint(painter.Antialiasing, True)
-        selection = set(self._container.selection())
-
-        bsize = self.configuration().bytecodeSize()
-        text = _('{count} bytes').format(count=bsize)
-
-        font = painter.font()
-        font.setPointSize(16)
-        metrics = QtGui.QFontMetrics(font)
-        textrc = metrics.boundingRect(text).adjusted(0, -5, 0, 5)
-        height = textrc.height()
-
-        rect = self.rect()
-        painter.setFont(font)
-        painter.setBackground(QtCore.Qt.white)
-        painter.eraseRect(rect)
-        painter.drawText(QtCore.QRect(0, 0, self.width(), height), QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
-        rect.setTopLeft(QtCore.QPoint(0, height))
-
-        font.setPointSize(8)
-        painter.setFont(font)
-        metrics = QtGui.QFontMetrics(font)
-
-        fgcolor, bgcolor = Meta.warningColors() if bsize > Meta.maxBytecodeSize() else Meta.standardColors()
-        # For the purpose of displaying actions sizes, we remove the configuration size header
-        bsize -= 2
-        if bsize != 0:
-            rect = QtCore.QRectF(rect).adjusted(5, 5, -5, -5)
-            path = QtGui.QPainterPath()
-            path.addRect(rect)
-            painter.fillPath(path, bgcolor)
-            painter.strokePath(path, bgcolor.darker())
-            rect.adjust(1, 1, -1, -1)
-
-            y = 0
-            for index, action in enumerate(self.actions()):
-                if index == len(self.actions()) - 1:
-                    h = rect.height() - y
-                else:
-                    h = int(math.floor(action.size() / bsize * rect.height()))
-
-                bbox = QtCore.QRectF(rect.x(), rect.y() + y, rect.width(), h)
-                path = QtGui.QPainterPath()
-                path.addRect(bbox)
-                color = fgcolor.darker() if action in selection else fgcolor
-                painter.fillPath(path, color)
-                painter.strokePath(path, color.darker())
-
-                text = action.label()
-                text = metrics.elidedText(text, QtCore.Qt.ElideMiddle, bbox.width() - 2, 0)
-                painter.drawText(bbox, QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
-
-                y += h
 
 
 class ThumbnailView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
@@ -165,8 +93,6 @@ class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
         self._tree.itemSelectionChanged.connect(self.selectionChanged)
         self._tree.setAlternatingRowColors(True)
 
-        self._size = ConfigurationSizeView(self, container=self, configuration=self.configuration())
-
         btnAdd = AddActionButton(self, configuration=self.configuration(), mainWindow=self.mainWindow())
         btnDel = DeleteActionsButton(self, configuration=self.configuration(), container=self, mainWindow=self.mainWindow())
         btnConv = ConvertToCustomActionButton(self, configuration=self.configuration(), container=self, mainWindow=self.mainWindow())
@@ -181,7 +107,6 @@ class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
             with bld.hbox() as content:
                 content.addWidget(self._thumbnail)
                 content.addWidget(self._tree, stretch=1)
-                content.addWidget(self._size)
 
         self.configuration().changed.connect(self._updateValues)
 

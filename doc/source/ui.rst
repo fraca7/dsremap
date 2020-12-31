@@ -5,26 +5,25 @@ Configurations
 Main UI
 -------
 
-The main window is split horizontally in three main areas.
+The main window is split horizontally in two main areas.
 
-The leftmost area shows how the total size in bytes for all of the currently selected configurations. The Arduino can only hold 1024 bytes at most.
-
-.. image:: ../images/ui_panel1.png
-   :align: center
-
-The center area is a list of available configurations. The two buttons above can be used to delete the selected configuration, or add a new one.
+The left area is a list of available configurations. The two buttons
+above can be used to delete the selected configuration, or add a new
+one.
 
 .. image:: ../images/ui_panel2.png
    :align: center
 
-.. note:: Almost everything you do in the UI can be undone using Edit -> Undo or Ctrl-Z (Cmd-Z on mac OS).
+.. note:: Almost everything you do in the UI can be undone using Edit
+          -> Undo or Ctrl-Z (Cmd-Z on mac OS).
 
-And the rightmost area holds the details of the currently selected configuration. You can change its name, change the thumbnail by dropping an image on the current one, and add or remove so-called "actions", which are rules for altering the Dual Shock inputs.
+And the right area holds the details of the currently selected
+configuration. You can change its name, change the thumbnail by
+dropping an image on the current one, and add or remove so-called
+"actions", which are rules for altering the Dual Shock inputs.
 
 .. image:: ../images/ui_panel3.png
    :align: center
-
-On the right you can see the size of the currently selected configurations.
 
 Uploading configurations
 ------------------------

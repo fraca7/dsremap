@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 
-import math
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from dsrlib.domain import commands, WorkspaceMixin, ConfigurationMixin
-from dsrlib.meta import Meta
 
 from .mixins import MainWindowMixin
 from .utils import LayoutBuilder
@@ -50,72 +47,6 @@ class ConfigurationItemWidget(MainWindowMixin, ConfigurationMixin, QtWidgets.QWi
         self.history().run(cmd)
 
 
-class EEPROMView(WorkspaceMixin, QtWidgets.QWidget):
-    def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
-        self.setFixedWidth(200)
-        self.workspace().configurations().dataChanged.connect(self._onModelChange)
-        self.workspace().configurations().rowsRemoved.connect(self._onModelChange)
-        self.workspace().configurations().rowsInserted.connect(self._onModelChange)
-
-    def _onModelChange(self, *args): # pylint: disable=W0613
-        self.update()
-
-    def paintEvent(self, event): # pylint: disable=R0914,W0613
-        painter = QtGui.QPainter(self)
-        painter.setRenderHint(painter.Antialiasing, True)
-
-        configurations = [configuration for configuration in self.workspace().configurations() if configuration.enabled()]
-        bsize = self.workspace().bytecodeSize()
-        text = _('{count} bytes').format(count=bsize)
-
-        font = painter.font()
-        font.setPointSize(16)
-        metrics = QtGui.QFontMetrics(font)
-        textrc = metrics.boundingRect(text).adjusted(0, -5, 0, 5)
-        height = textrc.height()
-
-        rect = self.rect()
-        painter.setFont(font)
-        painter.setBackground(QtCore.Qt.white)
-        painter.eraseRect(rect)
-        painter.drawText(QtCore.QRect(0, 0, self.width(), height), QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
-        rect.setTopLeft(QtCore.QPoint(0, height))
-
-        font.setPointSize(8)
-        painter.setFont(font)
-        metrics = QtGui.QFontMetrics(font)
-
-        fgcolor, bgcolor = Meta.warningColors() if bsize > Meta.maxBytecodeSize() else Meta.standardColors()
-        bsize -= 4 # Remove sentinel and magic
-
-        rect = QtCore.QRectF(rect).adjusted(5, 5, -5, -5)
-        path = QtGui.QPainterPath()
-        path.addRect(rect)
-        painter.fillPath(path, bgcolor)
-        painter.strokePath(path, bgcolor.darker())
-        rect.adjust(1, 1, -1, -1)
-
-        y = 0
-        for configuration in configurations:
-            h = int(math.floor(configuration.bytecodeSize() / Meta.maxBytecodeSize() * rect.height()))
-            bbox = QtCore.QRectF(rect.x(), rect.y() + y, rect.width(), h)
-            bbox = bbox.intersected(rect)
-            if bbox.isEmpty():
-                break
-
-            path = QtGui.QPainterPath()
-            path.addRect(bbox)
-            painter.fillPath(path, fgcolor)
-            painter.strokePath(path, fgcolor.darker())
-
-            text = configuration.name()
-            text = metrics.elidedText(text, QtCore.Qt.ElideMiddle, bbox.width() - 2, 0)
-            painter.drawText(bbox, QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter, text)
-
-            y += h
-
-
 class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
     selectionChanged = QtCore.pyqtSignal()
 
@@ -124,8 +55,6 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
 
         self.configurations().rowsInserted.connect(self._addRows)
         self.configurations().rowsRemoved.connect(self._removeRows)
-
-        self._eeprom = EEPROMView(self, workspace=self.workspace())
 
         self._tree = QtWidgets.QTreeWidget(self)
         self._tree.setHeaderHidden(True)
@@ -141,16 +70,14 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
         btnDel = DeleteConfigurationsButton(self, workspace=self.workspace(), container=self, mainWindow=self.mainWindow())
 
         bld = LayoutBuilder(self)
-        with bld.hbox() as hbox:
-            hbox.addWidget(self._eeprom)
-            with bld.split() as self._splitter:
-                with bld.vbox() as vbox:
-                    with bld.hbox() as header:
-                        header.addStretch(1)
-                        header.addWidget(btnDel)
-                        header.addWidget(btnAdd)
-                    vbox.addWidget(self._tree, stretch=1)
-                self._splitter.addWidget(self._properties)
+        with bld.split() as self._splitter:
+            with bld.vbox() as vbox:
+                with bld.hbox() as header:
+                    header.addStretch(1)
+                    header.addWidget(btnDel)
+                    header.addWidget(btnAdd)
+                vbox.addWidget(self._tree, stretch=1)
+            self._splitter.addWidget(self._properties)
 
     def loadState(self, settings):
         if settings.contains('MainSplitter'):
