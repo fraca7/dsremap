@@ -201,7 +201,7 @@ def alltests():
     pass
 
 
-@depends(prepare, manual, alltests, firmware)
+@depends(prepare, manual, alltests)
 def all():
     pass
 
