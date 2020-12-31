@@ -7,8 +7,9 @@ dsremap manual
    :caption: Contents:
 
    about
-   ps4config
-   usage
+   usage_leonardo
+   usage_rpi
+   ui
    actionlang
    devenv
    build

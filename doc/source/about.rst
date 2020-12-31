@@ -2,34 +2,88 @@
 What's the matter
 =================
 
-Using this software in combination with a specific Arduino setup allows you to alter on the fly the input of a Dual Shock before it reaches the PS4. This can be used to remap buttons, reverse analog pads, or implement gyro aiming even for games that don't support it "natively".
+This software allows you to alter the Dualshock inputs before they
+reach the PS4. It can be used to remap or disable buttons, reverse or
+swap analog pads, and/or add `gyro aiming
+<http://gyrowiki.jibbsmart.com/>`_ to a game that doesn't support it
+natively.
 
-.. note:: This has only be tested with the latest model of Dual Shock 4 (product ID 0x09cc) and will probably not work with other models.
+.. note:: This has only be tested with the latest model of Dual Shock
+          4 (product ID 0x09cc) and will probably not work with other
+          models.
 
-What is needed
-==============
+What you'll need
+================
 
 Hardware
 --------
 
-Obviously, a PS4 and a Dual Shock 4 controller. But also an Arduino Leonardo equipped with a USB 2.0 host shield. The end result looks like this, cables omitted:
+Arduino setup
+#############
 
-.. image:: ../images/leonardo.jpg
-   :align: center
-
-Software
---------
-
-The desktop application, used to program the Leonardo, runs on Linux, Windows and mac OS.
-
-.. warning:: The mac OS application is not signed, so you will have to bypass mac OS security restrictions the first time you launch it, by right-clicking the app and choose "Open", then confirming.
-
-Cables everywhere
-=================
-
-For various reasons Bluetooth is not supported, so you'll have to plug the Arduino to the PS4 through the native USB, then the Dual Shock through the USB host shield, like this:
+There are two possible setups. The first one uses an `Arduino Leonardo
+<https://store.arduino.cc/arduino-leonardo-with-headers>`_
+microcontroller equipped with a USB 2.0 Host Shield and works through
+USB, so you will need to plug the Dualshock to the Leonardo using an
+USB cable.
 
 .. image:: ../images/cables.jpg
    :align: center
 
-"1" goes to the Dual Shock and "2" goes to the PS4, or the PC when you're configuring. There is no need for an external power supply.
+"1" goes to the Dual Shock and "2" goes to the PS4, or the PC when
+you're configuring. There is no need for an external power supply.
+
+Pros:
+
+  * No added latency, at least none I could notice
+
+Cons:
+
+  * The cable, special :ref:`setup of the PS4<PS4Setup>` required
+
+.. note:: There are several vendors who sell USB host shields for
+          Arduino. Beware of some chinese no-name boards which come
+          with severe manufacturing defaults (I had to add solder to
+          make one work).
+
+Full list of hardware:
+
+  * Arduino Leonardo
+  * USB 2.0 Host Shield
+  * Two micro-USB to USB-A cables
+  * (optional) a USB-A extender if the cable is too short for you
+
+Raspberry Pi setup
+##################
+
+The second setup uses a `Raspberry Pi Zero W
+<https://www.raspberrypi.org/products/raspberry-pi-zero-w/>`_ through
+Bluetooth.
+
+Pros:
+
+  * No cables
+
+Cons:
+
+  * Measurable latency, with random peaks
+  * You need Wifi so the software can "speak" to the RPi
+
+Full list of hardware:
+
+  * Raspberry Pi Zero W
+  * 4Gb micro-SD card
+  * Two micro-USB to USB-A cables
+
+Software
+--------
+
+The desktop application, used to cook up your remapping configurations
+and transmit them to your device of choice, runs on Linux, Windows and
+mac OS. You can download the binaries for your platform on `Github
+<https://github.com/fraca7/dsremap/releases>`_.
+
+.. warning:: The mac OS application is not signed, so you will have to
+             bypass mac OS security restrictions the first time you
+             launch it, by right-clicking the app and choose "Open",
+             then confirming.

@@ -1,29 +1,9 @@
 
-Usage
-=====
-
-Firmware
---------
-
-Once you have your Leonardo, the first thing to do is to upload the firmware to it. The first time you launch the desktop application, a wizard should appear to help you in this process. Later you can do this by selecting "Update firmware" from the "Upload" menu.
-
-At this point you're probably still missing the external tool used to program the Arduino (except on Linux, where it is embedded in the AppImage), so the first page of the wizard will point this out.
-
-.. image:: ../images/wizard-01.png
-   :align: center
-
-On mac OS, the less painful way to install avrdude is through Homebrew_. On Windows, I use WinAVR_.
-
-.. _Homebrew: https://brew.sh
-.. _WinAVR: https://sourceforge.net/projects/winavr/
-
-Once this tool is installed, click the "Try to detect avrdude again" button and the wizard should proceed. Follow the onscreen instructions until the end.
-
 Configurations
---------------
+==============
 
 Main UI
-#######
+-------
 
 The main window is split horizontally in three main areas.
 
@@ -47,7 +27,7 @@ And the rightmost area holds the details of the currently selected configuration
 On the right you can see the size of the currently selected configurations.
 
 Uploading configurations
-########################
+------------------------
 
 Once you're done creating your configurations, they must be uploaded to the Arduino. First, make sure to check the checkboxes in the configuration list, for the ones you want to upload. Then plug in your Arduino to your PC and select "Upload configurations to", then your device, from the Upload menu.
 
@@ -56,7 +36,7 @@ Once you're done creating your configurations, they must be uploaded to the Ardu
 Now you're ready to plug the whole shebang to your PS4.
 
 Configuration choice on the device
-----------------------------------
+##################################
 
 Only one configuration may be active at a time once the system is plugged to the PS4. If you uploaded several ones, you'll have to choose which one will be active after plugging the Dual Shock and **before** pressing PS. The Arduino builtin LED will blink to indicate the currently selected configuration.
 
