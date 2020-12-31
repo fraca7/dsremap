@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-12-26 17:14+0100\n"
+"POT-Creation-Date: 2020-12-31 14:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -213,7 +213,7 @@ msgid "Drop an image here"
 msgstr ""
 
 #: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:250
-#: src/dsrlib/ui/settings.py:137
+#: src/dsrlib/ui/resdl.py:39 src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr ""
 
@@ -270,7 +270,8 @@ msgid "Unable to find <i>sudo</i> on the path."
 msgstr ""
 
 #: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
-#: src/dsrlib/ui/wizard/pages/pizero.py:211
+#: src/dsrlib/ui/wizard/pages/common.py:52
+#: src/dsrlib/ui/wizard/pages/pizero.py:160
 msgid "Error"
 msgstr ""
 
@@ -286,7 +287,27 @@ msgstr ""
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 
-#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:28
+#: src/dsrlib/ui/resdl.py:52
+msgid "Downloading manifest..."
+msgstr ""
+
+#: src/dsrlib/ui/resdl.py:83
+msgid "Cannot download manifest:{error}"
+msgstr ""
+
+#: src/dsrlib/ui/resdl.py:84 src/dsrlib/ui/resdl.py:125
+msgid "Bummer"
+msgstr ""
+
+#: src/dsrlib/ui/resdl.py:100
+msgid "Downloading image..."
+msgstr ""
+
+#: src/dsrlib/ui/resdl.py:124
+msgid "Cannot download image: {error}"
+msgstr ""
+
+#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:26
 msgid "Browse"
 msgstr ""
 
@@ -464,31 +485,31 @@ msgid ""
 "{error}"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:15
+#: src/dsrlib/ui/uicommands/misc.py:16
 msgid "Program the microcontroller with DSRemap firmware (if you use an Arduino)"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:15
+#: src/dsrlib/ui/uicommands/misc.py:16
 msgid "Update Arduino firmware"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:24
+#: src/dsrlib/ui/uicommands/misc.py:27
 msgid "Create an image file for the Raspberry Pi Zero W"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:24
+#: src/dsrlib/ui/uicommands/misc.py:27
 msgid "Setup a new SD card for the RPi0 W"
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:33
+#: src/dsrlib/ui/uicommands/misc.py:38
 msgid "About {appname}..."
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:43
+#: src/dsrlib/ui/uicommands/misc.py:48
 msgid "Settings..."
 msgstr ""
 
-#: src/dsrlib/ui/uicommands/misc.py:54
+#: src/dsrlib/ui/uicommands/misc.py:59
 msgid "Open documentation"
 msgstr ""
 
@@ -516,302 +537,270 @@ msgstr ""
 msgid "Open file"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:27
+#: src/dsrlib/ui/wizard/pages/arduino.py:25
 msgid "Try to detect avrdude again"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:32
+#: src/dsrlib/ui/wizard/pages/arduino.py:30
 msgid "You can install <b>avrdude</b> on mac OS using <a href=\"https://brew.sh\">Homebrew</a>. After installing brew, launch a terminal and type<br /><pre>brew install avrdude</pre>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:34
+#: src/dsrlib/ui/wizard/pages/arduino.py:32
 msgid "You can install <b>avrdude</b> on Linux using your regular package manager, for instance<br /><pre>apt-get install avrdude</pre>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:36
+#: src/dsrlib/ui/wizard/pages/arduino.py:34
 msgid "You can install <b>avrdude</b> on Windows using <a href=\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:53
+#: src/dsrlib/ui/wizard/pages/arduino.py:51
 msgid "Install avrdude"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:54
+#: src/dsrlib/ui/wizard/pages/arduino.py:52
 msgid "The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:67
+#: src/dsrlib/ui/wizard/pages/arduino.py:65
 msgid "Cannot find avrdude"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:67
+#: src/dsrlib/ui/wizard/pages/arduino.py:65
 msgid "avrdude found"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:72
+#: src/dsrlib/ui/wizard/pages/arduino.py:70
 msgid "Browse for avrdude"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:92
-msgid "Firmware download"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/arduino.py:113
-msgid "Unable to download firmware: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/arduino.py:117
-msgid "Error downloading firmware: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/arduino.py:145
+#: src/dsrlib/ui/wizard/pages/arduino.py:90
 msgid "Firmware upload"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:146
+#: src/dsrlib/ui/wizard/pages/arduino.py:91
 msgid "Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:169
+#: src/dsrlib/ui/wizard/pages/arduino.py:114
 msgid "Looking for Leonardo"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:170
+#: src/dsrlib/ui/wizard/pages/arduino.py:115
 msgid "Release the <b>reset</b> button now."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:196
+#: src/dsrlib/ui/wizard/pages/arduino.py:141
 msgid "Found Leonardo at {path}."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:212
+#: src/dsrlib/ui/wizard/pages/arduino.py:157
 msgid "Error resetting the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:224
+#: src/dsrlib/ui/wizard/pages/arduino.py:169
 msgid "Updating"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:225
+#: src/dsrlib/ui/wizard/pages/arduino.py:170
 msgid "Update in progress..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:255
+#: src/dsrlib/ui/wizard/pages/arduino.py:200
 msgid "Process failed to start"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:256
+#: src/dsrlib/ui/wizard/pages/arduino.py:201
 msgid "Process crashed"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:257
+#: src/dsrlib/ui/wizard/pages/arduino.py:202
 msgid "Timeout"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:258
+#: src/dsrlib/ui/wizard/pages/arduino.py:203
 msgid "Write error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:259
+#: src/dsrlib/ui/wizard/pages/arduino.py:204
 msgid "Read error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:260
+#: src/dsrlib/ui/wizard/pages/arduino.py:205
 msgid "Unknown error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:263
+#: src/dsrlib/ui/wizard/pages/arduino.py:208
 msgid "Error launching avrdude: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:272
+#: src/dsrlib/ui/wizard/pages/arduino.py:217
 msgid "Done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:275
+#: src/dsrlib/ui/wizard/pages/arduino.py:220
 msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:28
+#: src/dsrlib/ui/wizard/pages/common.py:22
 msgid "Arduino Leonardo"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:29
+#: src/dsrlib/ui/wizard/pages/common.py:23
 msgid "Raspberry Pi Zero W"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:30
+#: src/dsrlib/ui/wizard/pages/common.py:24
 msgid "Do that later"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:45
+#: src/dsrlib/ui/wizard/pages/common.py:39
 msgid "Device type"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:46
+#: src/dsrlib/ui/wizard/pages/common.py:40
 msgid "Choose what kind of device you want to configure"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:56
+#: src/dsrlib/ui/wizard/pages/common.py:52
+msgid "Unknown page {page}"
+msgstr ""
+
+#: src/dsrlib/ui/wizard/pages/common.py:66
 msgid "Skipped"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:57
+#: src/dsrlib/ui/wizard/pages/common.py:67
 msgid "Skipped initial device configuration. You can configure your devices later from the Devices menu."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/common.py:165
-msgid "Unable to download manifest: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/common.py:169
-msgid "Error downloading manifest: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/common.py:185
-msgid "Downloading manifest..."
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:35
-msgid "Image download"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:56
-msgid "Unable to download image: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:60
-msgid "Error downloading image: {error}"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:82
+#: src/dsrlib/ui/wizard/pages/pizero.py:29
 msgid ""
 "Please enter the credentials for your Wifi network.\n"
 "The Raspberry Pi will automatically connect to this network.\n"
 "If left empty, you will have to configure it yourself after creating the SD card."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:92
+#: src/dsrlib/ui/wizard/pages/pizero.py:39
 msgid "SSID"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:93
+#: src/dsrlib/ui/wizard/pages/pizero.py:40
 msgid "Password"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:94
+#: src/dsrlib/ui/wizard/pages/pizero.py:41
 msgid "Confirm password"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:102
+#: src/dsrlib/ui/wizard/pages/pizero.py:49
 msgid "Wifi configuration"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:176
+#: src/dsrlib/ui/wizard/pages/pizero.py:125
 msgid "Image copy"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:177
+#: src/dsrlib/ui/wizard/pages/pizero.py:126
 msgid "Copying image file"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:211
+#: src/dsrlib/ui/wizard/pages/pizero.py:160
 msgid "Error copying file: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:226
+#: src/dsrlib/ui/wizard/pages/pizero.py:175
 msgid ""
 "The image file has been copied to your Downloads folder.\n"
 "You can now use the <a href=\"https://www.raspberrypi.org/software/\">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\n"
 "Then use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:236
+#: src/dsrlib/ui/wizard/pages/pizero.py:185
 msgid "Create SD card"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:261
+#: src/dsrlib/ui/wizard/pages/pizero.py:210
 msgid "Device lookup"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:262
+#: src/dsrlib/ui/wizard/pages/pizero.py:211
 msgid "Looking for a configured RPi Zero W on your network..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:317
+#: src/dsrlib/ui/wizard/pages/pizero.py:266
 msgid "Preparing to pair the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:318
+#: src/dsrlib/ui/wizard/pages/pizero.py:267
 msgid "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:359
+#: src/dsrlib/ui/wizard/pages/pizero.py:308
 msgid "Pairing PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:378
+#: src/dsrlib/ui/wizard/pages/pizero.py:327
 msgid "Getting device information..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:390
-#: src/dsrlib/ui/wizard/pages/pizero.py:556
+#: src/dsrlib/ui/wizard/pages/pizero.py:339
+#: src/dsrlib/ui/wizard/pages/pizero.py:505
 msgid "Error connecting to the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:398
+#: src/dsrlib/ui/wizard/pages/pizero.py:347
 msgid "Error getting info from device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:412
+#: src/dsrlib/ui/wizard/pages/pizero.py:361
 msgid "Waiting for the PS4..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:421
+#: src/dsrlib/ui/wizard/pages/pizero.py:370
 msgid "Error while pairing the PS4: {code}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:427
+#: src/dsrlib/ui/wizard/pages/pizero.py:376
 msgid "Error while pairing the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:460
+#: src/dsrlib/ui/wizard/pages/pizero.py:409
 msgid "Waiting for Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:461
+#: src/dsrlib/ui/wizard/pages/pizero.py:410
 msgid "You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:511
+#: src/dsrlib/ui/wizard/pages/pizero.py:460
 msgid "Pairing controller"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:512
+#: src/dsrlib/ui/wizard/pages/pizero.py:461
 msgid "Pairing the controller, please wait..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:517
+#: src/dsrlib/ui/wizard/pages/pizero.py:466
 msgid "Obtaining MAC address..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:546
+#: src/dsrlib/ui/wizard/pages/pizero.py:495
 msgid "Uploading pairing info..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:560
+#: src/dsrlib/ui/wizard/pages/pizero.py:509
 msgid "Error uploading pairing info: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:565
+#: src/dsrlib/ui/wizard/pages/pizero.py:514
 msgid "Pairing the controller..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:589
+#: src/dsrlib/ui/wizard/pages/pizero.py:538
 msgid "Finished"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:590
+#: src/dsrlib/ui/wizard/pages/pizero.py:539
 msgid "Done. You can unplug the DualShock and press PS to start using it through the proxy."
 msgstr ""
 
