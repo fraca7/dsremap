@@ -16,60 +16,6 @@ from dsrlib.meta import Meta
 
 from .pageids import PageId
 from .base import Page
-from .common import ManifestDownloadPage, DownloadFilePage
-
-
-class PiZeroManifestDownloadPage(ManifestDownloadPage):
-    ID = PageId.PiZeroManifestDownload
-
-    def currentVersion(self, manifest):
-        return manifest['rpi0w']['image']['current']['version']
-
-    def nextId(self):
-        return PiZeroImageDownloadPage.ID
-
-
-class PiZeroImageDownloadPage(DownloadFilePage):
-    ID = PageId.PiZeroImageDownload
-
-    def initializePage(self):
-        self.setTitle(_('Image download'))
-        manifest = Meta.manifest()
-        self._version = manifest['rpi0w']['image']['current']['version']
-        if self._version < manifest['rpi0w']['image']['latest']['version']:
-            super().initializePage()
-        else:
-            QtCore.QTimer.singleShot(0, functools.partial(self.setState, self.STATE_FINISHED))
-
-    def nextId(self):
-        return PiZeroWifiPage.ID
-
-    def url(self):
-        manifest = Meta.manifest()
-        return Meta.imagesUrl().format(filename=manifest['rpi0w']['image']['latest']['name'])
-
-    def tempfile(self, **kwargs):
-        # Same dir for rename
-        kwargs['dir'] = Meta.dataPath('images')
-        return super().tempfile(**kwargs)
-
-    def onNetworkError(self, exc):
-        self.setSubTitle(_('Unable to download image: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
-
-    def onDownloadError(self, exc):
-        self.setSubTitle(_('Error downloading image: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
-
-    def onDownloadFinished(self, filename):
-        manifest = Meta.manifest()
-        dstname = os.path.join(Meta.dataPath('images'), manifest['rpi0w']['image']['latest']['name'])
-        if os.path.exists(dstname):
-            os.remove(dstname)
-        os.rename(filename, dstname)
-        manifest['rpi0w']['image']['current'] = manifest['rpi0w']['image']['latest']
-        Meta.updateManifest(manifest)
-        self.setState(self.STATE_FINISHED)
 
 
 class PiZeroWifiPage(Page):

@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui
 from dsrlib.ui.wizard import HexUploaderWizard, SetupSDWizard
 from dsrlib.ui.about import AboutDialog
 from dsrlib.ui.settings import SettingsDialog
+from dsrlib.ui.resdl import ResourceDownloader
 from dsrlib.meta import Meta
 
 from .base import UICommand
@@ -15,8 +16,10 @@ class UpdateHexUICommand(UICommand):
         super().__init__(*args, text=_('Update Arduino firmware'), tip=_('Program the microcontroller with DSRemap firmware (if you use an Arduino)'), **kwargs)
 
     def do(self):
-        wizard = HexUploaderWizard(self.mainWindow(), mainWindow=self.mainWindow())
-        wizard.exec_()
+        dlg = ResourceDownloader(self.mainWindow(), mainWindow=self.mainWindow(), path=('leonardo', 'firmware'))
+        if dlg.exec_() == dlg.Accepted:
+            wizard = HexUploaderWizard(self.mainWindow(), mainWindow=self.mainWindow())
+            wizard.exec_()
 
 
 class SetupSDCardUICommand(UICommand):
@@ -24,8 +27,10 @@ class SetupSDCardUICommand(UICommand):
         super().__init__(*args, text=_('Setup a new SD card for the RPi0 W'), tip=_('Create an image file for the Raspberry Pi Zero W'), **kwargs)
 
     def do(self):
-        wizard = SetupSDWizard(self.mainWindow(), mainWindow=self.mainWindow())
-        wizard.exec_()
+        dlg = ResourceDownloader(self.mainWindow(), mainWindow=self.mainWindow(), path=('rpi0w', 'image'))
+        if dlg.exec_() == dlg.Accepted:
+            wizard = SetupSDWizard(self.mainWindow(), mainWindow=self.mainWindow())
+            wizard.exec_()
 
 
 class ShowAboutDialogUICommand(UICommand):

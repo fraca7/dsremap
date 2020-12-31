@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from .pages.pizero import PiZeroManifestDownloadPage, PiZeroImageDownloadPage, PiZeroWifiPage, PiZeroCopyPage, PiZeroBurnPage, PiZeroFindPage, PiZeroPlugPage, \
+from .pages.pizero import PiZeroWifiPage, PiZeroCopyPage, PiZeroBurnPage, PiZeroFindPage, PiZeroPlugPage, \
      PiZeroPairHostPage, PiZeroWaitDSPage, PiZeroPairDSPage, PiZeroFinalPage
 from .base import Wizard
 
@@ -54,8 +54,6 @@ class SetupSDWizardMixin:
         super().__init__(*args, **kwargs)
 
     def setupPages(self):
-        self.addPage(PiZeroManifestDownloadPage(self, mainWindow=self.mainWindow()))
-        self.addPage(PiZeroImageDownloadPage(self, mainWindow=self.mainWindow()))
         self.addPage(PiZeroWifiPage(self, mainWindow=self.mainWindow()))
         self.addPage(PiZeroCopyPage(self, mainWindow=self.mainWindow()))
         self.addPage(PiZeroBurnPage(self, mainWindow=self.mainWindow()))

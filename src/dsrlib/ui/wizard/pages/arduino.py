@@ -4,7 +4,6 @@ import os
 import platform
 import logging
 import time
-import functools
 
 import serial
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -15,7 +14,6 @@ from dsrlib.ui.utils import LayoutBuilder
 
 from .pageids import PageId
 from .base import Page
-from .common import ManifestDownloadPage, DownloadFilePage
 
 
 class ArduinoAvrdudePage(Page):
@@ -61,7 +59,7 @@ class ArduinoAvrdudePage(Page):
         return Settings().avrdude() is not None
 
     def nextId(self):
-        return ArduinoManifestDownloadPage.ID
+        return ArduinoResetPage.ID
 
     def _tryAgain(self):
         self._msg.setText(_('avrdude found') if self.isComplete() else _('Cannot find avrdude'))
@@ -73,59 +71,6 @@ class ArduinoAvrdudePage(Page):
         if filename:
             Settings().setAvrdude(filename)
             self.completeChanged.emit()
-
-
-class ArduinoManifestDownloadPage(ManifestDownloadPage):
-    ID = PageId.ArduinoManifestDownload
-
-    def currentVersion(self, manifest):
-        return manifest['leonardo']['firmware']['current']['version']
-
-    def nextId(self):
-        return ArduinoDownloadPage.ID
-
-
-class ArduinoDownloadPage(DownloadFilePage):
-    ID = PageId.ArduinoDownload
-
-    def initializePage(self):
-        self.setTitle(_('Firmware download'))
-        manifest = Meta.manifest()
-        self._version = manifest['leonardo']['firmware']['current']['version']
-        if self._version < manifest['leonardo']['firmware']['latest']['version']:
-            super().initializePage()
-        else:
-            QtCore.QTimer.singleShot(0, functools.partial(self.setState, self.STATE_FINISHED))
-
-    def nextId(self):
-        return ArduinoResetPage.ID
-
-    def url(self):
-        manifest = Meta.manifest()
-        return Meta.imagesUrl().format(filename=manifest['leonardo']['firmware']['latest']['name'])
-
-    def tempfile(self, **kwargs):
-        # Same dir for rename()
-        kwargs['dir'] = Meta.dataPath('images')
-        return super().tempfile(**kwargs)
-
-    def onNetworkError(self, exc):
-        self.setSubTitle(_('Unable to download firmware: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
-
-    def onDownloadError(self, exc):
-        self.setSubTitle(_('Error downloading firmware: {error}').format(error=str(exc)))
-        self.setState(self.STATE_FINISHED if self._version != 0 else self.STATE_ERROR)
-
-    def onDownloadFinished(self, filename):
-        manifest = Meta.manifest()
-        dstname = os.path.join(Meta.dataPath('images'), manifest['leonardo']['firmware']['latest']['name'])
-        if os.path.exists(dstname):
-            os.remove(dstname)
-        os.rename(filename, dstname)
-        manifest['leonardo']['firmware']['current'] = manifest['leonardo']['firmware']['latest']
-        Meta.updateManifest(manifest)
-        self.setState(self.STATE_FINISHED)
 
 
 class ArduinoResetPage(Page):

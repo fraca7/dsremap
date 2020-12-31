@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import io
 import enum
 
@@ -163,6 +164,13 @@ class FileDownloader(Downloader):
     def __init__(self, parent, manager, filename, **kwargs):
         super().__init__(parent, manager, **kwargs)
         self._filename = filename
+
+    def abort(self):
+        super().abort()
+        os.remove(self._filename)
+
+    def filename(self):
+        return self._filename
 
     def _query(self, func, request, *args):
         super()._query(func, request, *args)
