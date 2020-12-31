@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-12-31 14:56+0100\n"
+"POT-Creation-Date: 2020-12-31 15:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Cannot download image: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:26
+#: src/dsrlib/ui/settings.py:22 src/dsrlib/ui/wizard/pages/arduino.py:29
 msgid "Browse"
 msgstr ""
 
@@ -537,107 +537,104 @@ msgstr ""
 msgid "Open file"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:25
+#: src/dsrlib/ui/wizard/pages/arduino.py:28
 msgid "Try to detect avrdude again"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:30
+#: src/dsrlib/ui/wizard/pages/arduino.py:32
 msgid "You can install <b>avrdude</b> on mac OS using <a href=\"https://brew.sh\">Homebrew</a>. After installing brew, launch a terminal and type<br /><pre>brew install avrdude</pre>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:32
+#: src/dsrlib/ui/wizard/pages/arduino.py:34
 msgid "You can install <b>avrdude</b> on Linux using your regular package manager, for instance<br /><pre>apt-get install avrdude</pre>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:34
+#: src/dsrlib/ui/wizard/pages/arduino.py:36
 msgid "You can install <b>avrdude</b> on Windows using <a href=\"https://sourceforge.net/projects/winavr/\">WinAVR</a>"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:51
+#: src/dsrlib/ui/wizard/pages/arduino.py:54
 msgid "Install avrdude"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:52
+#: src/dsrlib/ui/wizard/pages/arduino.py:58
 msgid "The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here."
 msgstr ""
 
+#: src/dsrlib/ui/wizard/pages/arduino.py:60
 #: src/dsrlib/ui/wizard/pages/arduino.py:65
-msgid "Cannot find avrdude"
+msgid "<b>avrdude</b> was found at {path}; you can specify another one here."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:65
-msgid "avrdude found"
-msgstr ""
-
-#: src/dsrlib/ui/wizard/pages/arduino.py:70
+#: src/dsrlib/ui/wizard/pages/arduino.py:80
 msgid "Browse for avrdude"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:90
+#: src/dsrlib/ui/wizard/pages/arduino.py:100
 msgid "Firmware upload"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:91
+#: src/dsrlib/ui/wizard/pages/arduino.py:101
 msgid "Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:114
+#: src/dsrlib/ui/wizard/pages/arduino.py:124
 msgid "Looking for Leonardo"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:115
+#: src/dsrlib/ui/wizard/pages/arduino.py:125
 msgid "Release the <b>reset</b> button now."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:141
+#: src/dsrlib/ui/wizard/pages/arduino.py:151
 msgid "Found Leonardo at {path}."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:157
+#: src/dsrlib/ui/wizard/pages/arduino.py:167
 msgid "Error resetting the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:169
+#: src/dsrlib/ui/wizard/pages/arduino.py:179
 msgid "Updating"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:170
+#: src/dsrlib/ui/wizard/pages/arduino.py:180
 msgid "Update in progress..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:200
+#: src/dsrlib/ui/wizard/pages/arduino.py:210
 msgid "Process failed to start"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:201
+#: src/dsrlib/ui/wizard/pages/arduino.py:211
 msgid "Process crashed"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:202
+#: src/dsrlib/ui/wizard/pages/arduino.py:212
 msgid "Timeout"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:203
+#: src/dsrlib/ui/wizard/pages/arduino.py:213
 msgid "Write error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:204
+#: src/dsrlib/ui/wizard/pages/arduino.py:214
 msgid "Read error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:205
+#: src/dsrlib/ui/wizard/pages/arduino.py:215
 msgid "Unknown error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:208
+#: src/dsrlib/ui/wizard/pages/arduino.py:218
 msgid "Error launching avrdude: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:217
+#: src/dsrlib/ui/wizard/pages/arduino.py:227
 msgid "Done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:220
+#: src/dsrlib/ui/wizard/pages/arduino.py:230
 msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
 msgstr ""
 

@@ -19,12 +19,14 @@ from .base import Page
 class ArduinoAvrdudePage(Page):
     ID = PageId.ArduinoAvrdude
 
+    STATE_INIT = 0
+    STATE_DONE = 1
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         btnTry = QtWidgets.QPushButton(_('Try to detect avrdude again'), self)
         btnBrowse = QtWidgets.QPushButton(_('Browse'), self)
-        self._msg = QtWidgets.QLabel(self)
 
         if platform.system() == 'Darwin':
             install = QtWidgets.QLabel(_('You can install <b>avrdude</b> on mac OS using <a href="https://brew.sh">Homebrew</a>. After installing brew, launch a terminal and type<br /><pre>brew install avrdude</pre>'), self)
@@ -38,7 +40,6 @@ class ArduinoAvrdudePage(Page):
 
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
-            layout.addWidget(self._msg)
             layout.addWidget(btnTry)
             layout.addWidget(btnBrowse)
             layout.addWidget(install)
@@ -47,13 +48,23 @@ class ArduinoAvrdudePage(Page):
         btnTry.clicked.connect(self._tryAgain)
         btnBrowse.clicked.connect(self._browse)
 
+        self._state = self.STATE_INIT
+
     def initializePage(self):
         self.setTitle(_('Install avrdude'))
-        self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
 
         path = Settings().avrdude()
-        if path is not None and os.path.exists(path):
-            QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
+        if path is None:
+            self.setSubTitle(_('The <b>avrdude</b> program could not be found on the path. Please install it or manually specify its path here.'))
+        else:
+            self.setSubTitle(_('<b>avrdude</b> was found at {path}; you can specify another one here.').format(path=path))
+            if self._state == self.STATE_INIT:
+                QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
+
+    def validatePage(self):
+        self.setSubTitle(_('<b>avrdude</b> was found at {path}; you can specify another one here.').format(path=Settings().avrdude()))
+        self._state = self.STATE_DONE
+        return True
 
     def isComplete(self):
         return Settings().avrdude() is not None
@@ -62,7 +73,6 @@ class ArduinoAvrdudePage(Page):
         return ArduinoResetPage.ID
 
     def _tryAgain(self):
-        self._msg.setText(_('avrdude found') if self.isComplete() else _('Cannot find avrdude'))
         self.completeChanged.emit()
         self.wizard().button(self.wizard().NextButton).click()
 
