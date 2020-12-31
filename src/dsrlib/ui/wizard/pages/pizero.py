@@ -75,9 +75,13 @@ class ImageCopyThread(QtCore.QThread):
         self._dst = dst
         self._ssid = None if ssid is None else ssid.encode('utf-8')
         self._password = None if password is None else password.encode('utf-8')
+        self._cancel = False
         super().__init__()
 
     def run(self):
+        class Cancelled(Exception):
+            pass
+
         with zipfile.ZipFile(self._src) as zipobj:
             info = zipobj.getinfo(os.path.basename(self._dst))
             size = info.file_size
@@ -92,6 +96,8 @@ class ImageCopyThread(QtCore.QThread):
                             done += len(data)
                             self.progress.emit(done, size)
                             dst.write(data)
+                            if self._cancel:
+                                raise Cancelled()
                             data = src.read(4096)
                         self.progress.emit(size, size)
 
@@ -100,10 +106,15 @@ class ImageCopyThread(QtCore.QThread):
                             dst.write(self._password)
                             dst.write(self._ssid)
                             dst.write(struct.pack('<IIH', len(self._password), len(self._ssid), 0xCAFE))
+            except Cancelled:
+                os.remove(self._dst)
             except Exception as exc: # pylint: disable=W0703
                 self.error.emit(exc)
             else:
                 self.finished.emit()
+
+    def cancel(self):
+        self._cancel = True
 
 
 class PiZeroCopyPage(Page):
@@ -121,6 +132,8 @@ class PiZeroCopyPage(Page):
             layout.addWidget(self._progress)
             layout.addStretch(1)
 
+        self.setCommitPage(True)
+
     def initializePage(self):
         self.setTitle(_('Image copy'))
         self.setSubTitle(_('Copying image file'))
@@ -137,6 +150,15 @@ class PiZeroCopyPage(Page):
         self._thread.error.connect(self._onError)
         self._thread.start()
 
+    def cleanupPage(self):
+        self.abort()
+
+    def abort(self):
+        if self._thread is not None:
+            self._thread.cancel()
+            self._thread.wait()
+            self._thread = None
+
     def isComplete(self):
         return self._finished
 
@@ -149,6 +171,7 @@ class PiZeroCopyPage(Page):
 
     def _onFinished(self):
         self._thread.wait()
+        self._thread = None
         self._finished = True
         self.completeChanged.emit()
 
@@ -157,6 +180,7 @@ class PiZeroCopyPage(Page):
 
     def _onError(self, exc):
         self._thread.wait()
+        self._thread = None
         QtWidgets.QMessageBox.critical(self, _('Error'), _('Error copying file: {error}').format(error=str(exc)))
         self._finished = True
         self.setFinalPage(True)

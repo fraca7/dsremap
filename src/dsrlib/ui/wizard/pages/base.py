@@ -6,4 +6,5 @@ from dsrlib.ui.mixins import MainWindowMixin
 
 
 class Page(MainWindowMixin, QtWidgets.QWizardPage):
-    pass
+    def abort(self):
+        pass

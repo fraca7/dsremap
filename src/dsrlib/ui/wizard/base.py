@@ -38,6 +38,10 @@ class Wizard(MainWindowMixin, QtWidgets.QWizard):
     def onSuccess(self):
         Settings().setFirmwareUploaded()
 
+    def reject(self):
+        self.currentPage().abort()
+        super().reject()
+
 
 class ManifestWizardMixin:
     def __init__(self, *args, **kwargs):
