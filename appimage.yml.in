@@ -39,6 +39,7 @@ AppDir:
       - python3-pyqt5
       - python3-pyqt5.qsci
       - qttranslations5-l10n
+      - python3-pydbus
       - libfreetype6
       - avrdude
     exclude: []

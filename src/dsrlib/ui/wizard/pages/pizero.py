@@ -11,6 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from dsrlib.domain.downloader import StringDownloader, DownloadError, DownloadNetworkError, DownloadHTTPError, AbortedError
 from dsrlib.domain.device import DeviceVisitor
 from dsrlib.ui.utils import LayoutBuilder
+from dsrlib.filemgr import FileManager
 from dsrlib.meta import Meta
 
 from .pageids import PageId
@@ -174,7 +175,7 @@ class PiZeroCopyPage(Page):
         self._finished = True
         self.completeChanged.emit()
 
-        QtGui.QDesktopServices.openUrl(QtCore.QUrl.fromLocalFile(os.path.dirname(self._dst)))
+        FileManager.showFile(self._dst)
         QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
 
     def _onError(self, exc):
