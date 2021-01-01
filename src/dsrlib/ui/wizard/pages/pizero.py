@@ -196,7 +196,12 @@ class PiZeroBurnPage(Page):
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
             layout.addStretch(1)
-            msg = QtWidgets.QLabel(_('The image file has been copied to your Downloads folder.\nYou can now use the <a href="https://www.raspberrypi.org/software/">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\nThen use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time.'), self) # pylint: disable=C0301
+            msg = QtWidgets.QLabel(_('''
+<p>The image file has been copied to your Downloads folder.</p>
+<p>You can now use the <a href="https://www.raspberrypi.org/software/">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.</p>
+<p>Once you are done, insert the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect both during the pairing process.</p>
+<p>The first boot may take some time; wait until the device appears in the Device menu and then proceed with the pairing option.</p>
+'''), self) # pylint: disable=C0301
             msg.setWordWrap(True)
             msg.setTextFormat(QtCore.Qt.RichText)
             msg.setOpenExternalLinks(True)

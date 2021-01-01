@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-01-01 15:35+0100\n"
+"POT-Creation-Date: 2021-01-01 15:44+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -707,97 +707,99 @@ msgstr ""
 
 #: src/dsrlib/ui/wizard/pages/pizero.py:199
 msgid ""
-"The image file has been copied to your Downloads folder.\n"
-"You can now use the <a href=\"https://www.raspberrypi.org/software/\">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.\n"
-"Then use the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect the two during the pairing process. The first boot may take some time."
+"\n"
+"<p>The image file has been copied to your Downloads folder.</p>\n"
+"<p>You can now use the <a href=\"https://www.raspberrypi.org/software/\">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.</p>\n"
+"<p>Once you are done, insert the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect both during the pairing process.</p>\n"
+"<p>The first boot may take some time; wait until the device appears in the Device menu and then proceed with the pairing option.</p>\n"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:209
+#: src/dsrlib/ui/wizard/pages/pizero.py:214
 msgid "Create SD card"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:234
+#: src/dsrlib/ui/wizard/pages/pizero.py:239
 msgid "Device lookup"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:235
+#: src/dsrlib/ui/wizard/pages/pizero.py:240
 msgid "Looking for a configured RPi Zero W on your network..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:290
+#: src/dsrlib/ui/wizard/pages/pizero.py:295
 msgid "Preparing to pair the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:291
+#: src/dsrlib/ui/wizard/pages/pizero.py:296
 msgid "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:332
+#: src/dsrlib/ui/wizard/pages/pizero.py:337
 msgid "Pairing PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:351
+#: src/dsrlib/ui/wizard/pages/pizero.py:356
 msgid "Getting device information..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:363
-#: src/dsrlib/ui/wizard/pages/pizero.py:529
+#: src/dsrlib/ui/wizard/pages/pizero.py:368
+#: src/dsrlib/ui/wizard/pages/pizero.py:534
 msgid "Error connecting to the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:371
+#: src/dsrlib/ui/wizard/pages/pizero.py:376
 msgid "Error getting info from device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:385
+#: src/dsrlib/ui/wizard/pages/pizero.py:390
 msgid "Waiting for the PS4..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:394
+#: src/dsrlib/ui/wizard/pages/pizero.py:399
 msgid "Error while pairing the PS4: {code}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:400
+#: src/dsrlib/ui/wizard/pages/pizero.py:405
 msgid "Error while pairing the PS4"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:433
+#: src/dsrlib/ui/wizard/pages/pizero.py:438
 msgid "Waiting for Dualshock"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:434
+#: src/dsrlib/ui/wizard/pages/pizero.py:439
 msgid "You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:484
+#: src/dsrlib/ui/wizard/pages/pizero.py:489
 msgid "Pairing controller"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:485
+#: src/dsrlib/ui/wizard/pages/pizero.py:490
 msgid "Pairing the controller, please wait..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:490
+#: src/dsrlib/ui/wizard/pages/pizero.py:495
 msgid "Obtaining MAC address..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:519
+#: src/dsrlib/ui/wizard/pages/pizero.py:524
 msgid "Uploading pairing info..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:533
+#: src/dsrlib/ui/wizard/pages/pizero.py:538
 msgid "Error uploading pairing info: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:538
+#: src/dsrlib/ui/wizard/pages/pizero.py:543
 msgid "Pairing the controller..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:562
+#: src/dsrlib/ui/wizard/pages/pizero.py:567
 msgid "Finished"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:563
+#: src/dsrlib/ui/wizard/pages/pizero.py:568
 msgid "Done. You can unplug the DualShock and press PS to start using it through the proxy."
 msgstr ""
 
