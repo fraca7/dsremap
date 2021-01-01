@@ -115,10 +115,11 @@ class ArduinoFindSerialPage(Page):
         self._timer = QtCore.QTimer(self)
         self._timer.timeout.connect(self._tick)
 
-        # It's ugly without an actual widget
+        self._msg = QtWidgets.QLabel(self)
+        self._msg.setWordWrap(True)
         bld = LayoutBuilder(self)
         with bld.vbox() as layout:
-            layout.addStretch(1)
+            layout.addWidget(self._msg)
 
     def initializePage(self):
         self.setTitle(_('Looking for Leonardo'))
@@ -225,6 +226,7 @@ class ArduinoFindSerialPage(Page):
 
         if code == 0:
             self.setSubTitle(_('Done.'))
+            self._msg.setText(_('You can now upload configurations to this device (Upload menu) and then plug it between the PS4 and Dualshock.'))
             self.wizard().onSuccess()
         else:
             self.setSubTitle(_('<b>avrdude</b> exited with code {code}. Something went wrong.').format(code=code))

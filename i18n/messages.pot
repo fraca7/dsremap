@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-01-01 13:36+0100\n"
+"POT-Creation-Date: 2021-01-01 15:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -574,63 +574,67 @@ msgstr ""
 msgid "Please plug the Leonardo to this computer and press the <b>reset</b> button. Click Continue while holding it."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:124
+#: src/dsrlib/ui/wizard/pages/arduino.py:125
 msgid "Looking for Leonardo"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:125
+#: src/dsrlib/ui/wizard/pages/arduino.py:126
 msgid "Release the <b>reset</b> button now."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:151
+#: src/dsrlib/ui/wizard/pages/arduino.py:152
 msgid "Found Leonardo at {path}."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:167
+#: src/dsrlib/ui/wizard/pages/arduino.py:168
 msgid "Error resetting the device: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:179
+#: src/dsrlib/ui/wizard/pages/arduino.py:180
 msgid "Updating"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:180
+#: src/dsrlib/ui/wizard/pages/arduino.py:181
 msgid "Update in progress..."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:210
+#: src/dsrlib/ui/wizard/pages/arduino.py:211
 msgid "Process failed to start"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:211
+#: src/dsrlib/ui/wizard/pages/arduino.py:212
 msgid "Process crashed"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:212
+#: src/dsrlib/ui/wizard/pages/arduino.py:213
 msgid "Timeout"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:213
+#: src/dsrlib/ui/wizard/pages/arduino.py:214
 msgid "Write error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:214
+#: src/dsrlib/ui/wizard/pages/arduino.py:215
 msgid "Read error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:215
+#: src/dsrlib/ui/wizard/pages/arduino.py:216
 msgid "Unknown error"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:218
+#: src/dsrlib/ui/wizard/pages/arduino.py:219
 msgid "Error launching avrdude: {error}"
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:227
+#: src/dsrlib/ui/wizard/pages/arduino.py:228
 msgid "Done."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/arduino.py:230
+#: src/dsrlib/ui/wizard/pages/arduino.py:229
+msgid "You can now upload configurations to this device (Upload menu) and then plug it between the PS4 and Dualshock."
+msgstr ""
+
+#: src/dsrlib/ui/wizard/pages/arduino.py:232
 msgid "<b>avrdude</b> exited with code {code}. Something went wrong."
 msgstr ""
 
