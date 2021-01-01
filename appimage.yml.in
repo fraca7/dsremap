@@ -7,7 +7,7 @@ script:
   - cp icons/dsremap.png AppDir/usr/share/icons/hicolor/256x256/apps/dsremap.png
   - cp dsremap.py AppDir/usr/bin/dsremap
   - cp askpass.py AppDir/usr/bin/askpass
-  - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir ptk pyserial hidapi
+  - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir ptk pyserial hidapi zeroconf
   - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir --no-dependencies pyqtcmd
   - cp -r src/dsrlib AppDir/usr/lib/python3.8/site-packages/
   - mkdir -p AppDir/usr/lib/x86_64-linux-gnu
