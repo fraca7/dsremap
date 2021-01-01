@@ -84,7 +84,10 @@ class Downloader(QtCore.QObject): # pylint: disable=R0902
         self._reply = func(self._request(request), *args)
         self._reply.downloadProgress.connect(self._onDownloadProgress)
         self._reply.uploadProgress.connect(self._onUploadProgress)
-        self._reply.errorOccurred.connect(self._onError)
+        if QtCore.QT_VERSION >= 0x050f00:
+            self._reply.errorOccurred.connect(self._onError)
+        else:
+            self._reply.error.connect(self._onError)
         self._reply.sslErrors.connect(self._onSSLError)
         self._reply.finished.connect(self._onRequestFinished)
         self._setState(DownloadState.Connecting)
