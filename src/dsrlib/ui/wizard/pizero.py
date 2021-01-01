@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-from .pages.pizero import PiZeroWifiPage, PiZeroCopyPage, PiZeroBurnPage, PiZeroFindPage, PiZeroPlugPage, \
+from .pages.pizero import PiZeroWifiPage, PiZeroCopyPage, PiZeroBurnPage, PiZeroPlugPage, \
      PiZeroPairHostPage, PiZeroWaitDSPage, PiZeroPairDSPage, PiZeroFinalPage
 from .base import Wizard
 
 
 class PairingWizardMixin:
-    def __init__(self, *args, enumerator, device=None, **kwargs):
+    def __init__(self, *args, enumerator, device, **kwargs):
         self._enumerator = enumerator
         self._device = device
         self._dualshock = None
@@ -15,7 +15,6 @@ class PairingWizardMixin:
         super().__init__(*args, **kwargs)
 
     def setupPages(self):
-        self.addPage(PiZeroFindPage(self, enumerator=self._enumerator, mainWindow=self.mainWindow()))
         self.addPage(PiZeroPlugPage(self, mainWindow=self.mainWindow()))
         self.addPage(PiZeroPairHostPage(self, mainWindow=self.mainWindow()))
         self.addPage(PiZeroWaitDSPage(self, enumerator=self._enumerator, mainWindow=self.mainWindow()))

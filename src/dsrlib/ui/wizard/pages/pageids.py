@@ -12,7 +12,6 @@ class PageId(enum.IntEnum):
     PiZeroWifi = enum.auto()
     PiZeroCopy = enum.auto()
     PiZeroBurn = enum.auto()
-    PiZeroFind = enum.auto()
     PiZeroPlug = enum.auto()
     PiZeroPairHost = enum.auto()
     PiZeroWaitDS = enum.auto()

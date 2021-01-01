@@ -3,7 +3,6 @@
 import os
 import json
 import binascii
-import functools
 import struct
 import zipfile
 
@@ -208,74 +207,9 @@ class PiZeroBurnPage(Page):
             layout.addWidget(msg)
             layout.addStretch(1)
 
-        self._nextId = PiZeroFindPage.ID
-
     def initializePage(self):
         self.setTitle(_('Create SD card'))
-        if self.wizard().page(self.nextId()) is None:
-            self._nextId = -1
-            self.setFinalPage(True)
-
-    def nextId(self):
-        return self._nextId
-
-
-class PiZeroFindPage(Page):
-    ID = PageId.PiZeroFind
-
-    def __init__(self, *args, enumerator, **kwargs):
-        super().__init__(*args, **kwargs)
-        self._enumerator = enumerator
-        self._complete = False
-        self._connected = False
-
-    def initializePage(self):
-        if self.wizard().device() is not None:
-            self._complete = True
-            self.completeChanged.emit()
-            QtCore.QTimer.singleShot(0, self.wizard().button(self.wizard().NextButton).click)
-            return
-
-        self.setTitle(_('Device lookup'))
-        self.setSubTitle(_('Looking for a configured RPi Zero W on your network...'))
-        self._connected = True
-        QtCore.QTimer.singleShot(0, functools.partial(self._enumerator.connect, self))
-
-    def cleanupPage(self):
-        if self._connected:
-            self._enumerator.disconnect(self)
-            self._connected = False
-
-    def nextId(self):
-        return PiZeroPlugPage.ID
-
-    def isComplete(self):
-        return self._complete
-
-    def onDeviceAdded(self, dev):
-        class Sorter(DeviceVisitor):
-            def __init__(self, page):
-                self._page = page
-
-            def acceptNetworkDevice(self, dev):
-                self._page.onNetworkDevice(dev)
-
-            def acceptDualshock(self, dev):
-                pass
-
-            def acceptArduino(self, dev):
-                pass
-        Sorter(self).visit(dev)
-
-    def onDeviceRemoved(self, _):
-        pass
-
-    def onNetworkDevice(self, device):
-        if self.wizard().device() is None:
-            self.wizard().setDevice(device)
-            self._complete = True
-            self.completeChanged.emit()
-            self.wizard().button(self.wizard().NextButton).click()
+        self.wizard().onSuccess()
 
 
 class PiZeroPlugPage(Page):
