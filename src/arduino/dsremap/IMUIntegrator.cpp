@@ -1,6 +1,10 @@
 
 #include "IMUIntegrator.h"
 
+#ifdef TARGET_PC
+#include <stdlib.h>
+#endif
+
 #define GYRO_RES 1024
 #define ACCEL_RES 8192
 
@@ -25,7 +29,7 @@ IMUIntegrator::IMUIntegrator()
   m_Angles.x = m_Angles.y = m_Angles.z = 0.0f;
 }
 
-void IMUIntegrator::SetCalibrationData(CalibrationData_t *pData)
+void IMUIntegrator::SetCalibrationData(const CalibrationData_t *pData)
 {
   int32_t sp2x = (int32_t)pData->gyro_speed_plus + pData->gyro_speed_minus;
 
@@ -59,7 +63,7 @@ void IMUIntegrator::SetCalibrationData(CalibrationData_t *pData)
   m_Calib[5].N = 2 * ACCEL_RES;
 }
 
-void IMUIntegrator::Update(USBReport01_t* rep)
+void IMUIntegrator::Update(const USBReport01_t* rep)
 {
   // Compute timestamp in microseconds
   uint32_t delta = 0;
@@ -73,6 +77,10 @@ void IMUIntegrator::Update(USBReport01_t* rep)
       delta = rep->timestamp - m_LastTimestamp;
     }
     delta = delta * 16 / 3;
+
+    if (delta == 0)
+      // Happens from time to time on Bluetooth...
+      return;
   }
 
   // NB: the first version used both the accelerometer & gyro

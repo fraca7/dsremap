@@ -13,14 +13,18 @@ class IMUIntegrator
 public:
   IMUIntegrator();
 
-  void SetCalibrationData(CalibrationData_t*);
-  void Update(USBReport01_t*);
+  void SetCalibrationData(const CalibrationData_t*);
+  void Update(const USBReport01_t*);
 
-  const Vector3D& Current() const {
+  const Vector3D& CurrentAngles() const {
     return m_Angles;
   }
 
-  int16_t Delta() const {
+  const Vector3D& CurrentAnglesAccel() const {
+    return m_LastGyro;
+  }
+
+  int32_t Delta() const {
     return m_LastDelta;
   }
 
@@ -36,7 +40,7 @@ private:
   bool m_FirstTimestamp;
   Vector3D m_Angles;
   Vector3D m_LastGyro;
-  int16_t m_LastDelta;
+  int32_t m_LastDelta;
 };
 
 #endif /* _IMUINTEGRATOR_H */

@@ -26,57 +26,8 @@ class GyroAction(Action):
 
     def source(self):
         return """
-#define FPS 30
-#define PPD_X (1920 / 10)
-#define PPD_Y (1080 / 10)
 #define DEADZONE 50
-
-#define MAX_SPEED 4.4
-#define MIN_SPEED MAX_SPEED / 8
-
-struct AxisState {
-  float origin;
-  float current;
-  float target;
-  float speed;
-  int padval;
-
-  void init(float angle) {
-    origin = angle;
-    current = 0;
-    target = 0;
-    speed = 0;
-    padval = 0x80;
-  }
-
-  void integrate() {
-    current = current + speed * DELTA;
-  }
-
-  void compute(float angle, int ppd) {
-    target = 1000.0 * (angle - origin) * ppd;
-
-    float delta = target - current;
-    int sign = 1;
-    if (delta < 0) {
-      delta = -delta;
-      sign = -1;
-    }
-
-    if (delta < 1) {
-      speed = 0;
-    } else {
-      speed = FPS * delta / 1000000.0;
-      if (speed > MAX_SPEED)
-        speed = MAX_SPEED;
-      if (speed < MIN_SPEED)
-        speed = MIN_SPEED;
-    }
-
-    speed = sign * speed;
-    padval = 128 * speed / MAX_SPEED + 0x80;
-  }
-};
+#define ACCEL_FACTOR 5
 
 int rpad_delta() {
   return (RPadX - 128) * (RPadX - 128) + (RPadY - 128) * (RPadY - 128);
@@ -111,14 +62,6 @@ state manual_aiming {
 };
 
 state gyro_aiming {
-  AxisState stateX;
-  AxisState stateY;
-
-  enter() {
-    stateX.init(IMUY);
-    stateY.init(IMUX);
-  }
-
   gyro_aiming() {
     if (!should_aim()) {
       go idle;
@@ -128,19 +71,8 @@ state gyro_aiming {
       go manual_aiming;
     }
 
-    stateX.compute(IMUY, PPD_X);
-    stateY.compute(IMUX, PPD_Y);
-
-    int count = 0;
-    while (count++ * 5 <= 1000 / FPS) {
-      stateX.integrate();
-      RPadX = stateX.padval;
-
-      stateY.integrate();
-      RPadY = stateY.padval;
-
-      yield;
-    }
+    RPadX = ACCEL_FACTOR * ACCELY + 0x80;
+    RPadY = ACCEL_FACTOR * ACCELX + 0x80;
   }
 };
 """ % dict(BUTTONCOND=' && '.join([button.name for button in self._buttons]))

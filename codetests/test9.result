@@ -2,11 +2,11 @@ label_0
 label_1
 label_2
 label_4
-	ADDC	%SP, 2
-	LOADC	[%SP-2]i, 1
-	ADDC	[%SP-2]i, 42
+	ADDC	%SP, 4
+	LOADC	[%SP-4]i, 1
+	ADDC	[%SP-4]i, 42
 label_5
-	SUBC	%SP, 2
+	SUBC	%SP, 4
 	YIELD
 	JUMP	label_2
 label_6

@@ -1,4 +1,6 @@
 
+General:
+
 * Remap buttons action
 * Macros
 * Documentation
@@ -6,6 +8,10 @@
 * Debug info in separate file
 * IDE
 * Codesign mac OS binary
-* Common subexpr elimination
 * Optimization pass
+* __TARGET__ preprocessing definition for device-targeted code
 
+Bluetooth:
+
+* Support multiple interfaces
+* Better defaults

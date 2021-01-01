@@ -1,0 +1,23 @@
+label_0
+label_1
+label_2
+label_4
+	PUSHI	42
+	PUSH	%TH
+	LOADA	%TH, %SP
+	SUBC	%TH, 8
+	CALL	label_6
+	POP	%TH
+	SUBC	%SP, 4
+label_5
+	YIELD
+	JUMP	label_2
+label_6
+label_7
+	ADDC	%SP, 4
+	LOADA	[%SP-4]i, [%SP-14]i
+	SUBC	%SP, 4
+	RET
+label_8
+	SUBC	%SP, 4
+label_9

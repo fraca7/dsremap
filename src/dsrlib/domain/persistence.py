@@ -7,7 +7,7 @@ import uuid
 from dsrlib.meta import Meta
 
 from .actions import Axis, ActionVisitor, InvertPadAxisAction, SwapAxisAction, \
-     GyroAction, CustomAction
+     GyroAction, CustomAction, DisableButtonAction
 from .buttons import Buttons
 from .configuration import Configuration
 
@@ -25,10 +25,13 @@ class BaseJSONWriter(ActionVisitor):
         actions = []
         for action in configuration.actions():
             actions.append(self.encodeAction(action))
-        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'enabled': configuration.enabled(), 'actions': actions}
+        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'actions': actions}
 
     def encodeAction(self, action):
         return self.visit(action)
+
+    def _acceptDisableButtonAction(self, action):
+        return {'type': 'disable_button', 'button': action.button().name}
 
     def _acceptInvertPadAxisAction(self, action):
         return {'type': 'invert_pad', 'pad': action.pad(), 'axis': action.axis()}
@@ -63,7 +66,6 @@ class JSONExporter(BaseJSONWriter):
 
     def write(self, configuration):
         data = self.encodeConfiguration(configuration)
-        data['enabled'] = False
         data['version'] = self.VERSION
         data['uuid'] = uuid.uuid1().hex
         self._zipobj.writestr('configuration.json', json.dumps(data, indent=2))
@@ -87,7 +89,6 @@ class BaseJSONReader:
         configuration = Configuration(uid=data['uuid'])
         configuration.setName(data['name'])
         configuration.setThumbnail(self.pathFor(data['thumbnail']))
-        configuration.setEnabled(data['enabled'])
 
         for adata in data['actions']:
             action = self.decodeAction(adata)
@@ -95,6 +96,9 @@ class BaseJSONReader:
         return configuration
 
     def decodeAction(self, data):
+        if data['type'] == 'disable_button':
+            action = DisableButtonAction()
+            action.setButton(Buttons[data['button']])
         if data['type'] == 'invert_pad':
             action = InvertPadAxisAction()
             action.setPad(data['pad'])

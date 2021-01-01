@@ -1,0 +1,24 @@
+{
+    "leonardo": {
+	"firmware": {
+	    "latest": {
+		"version": 1,
+		"name": "dsremap.ino.hex"
+	    }
+	}
+    },
+    "rpi0w": {
+	"image": {
+	    "latest": {
+		"version": 1,
+		"name": "2020-12-02-raspios-buster-armhf-lite.zip"
+	    }
+	},
+	"server": {
+	    "latest": {
+		"version": 1,
+		"name": "~/dsremap-service-1.0.0.sh"
+	    }
+	}
+    }
+}

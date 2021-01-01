@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+
+BUNDLE_FILE=`realpath "$0"`
+INSTALL_DIR=/opt/dsremap
+
+if [ "$UID" != "0" ]; then
+    echo Must be run as root
+    exit 1
+fi
+
+function untar_payload {
+    match=$(grep --text --line-number '^PAYLOAD:$' "$BUNDLE_FILE" | cut -d ':' -f 1)
+    payload_start=$((match + 1))
+    tail -n +$payload_start "$BUNDLE_FILE" | dd count=@TARSIZE@ iflag=count_bytes | tar xzf - -C "$1"
+}
+
+test -e "$INSTALL_DIR/incoming" && rm -rf "$INSTALL_DIR/incoming"
+mkdir -p "$INSTALL_DIR/incoming"
+untar_payload "$INSTALL_DIR/incoming"
+
+if [ -e "$INSTALL_DIR/incoming/pre.sh" ]; then
+    . "$INSTALL_DIR/incoming/pre.sh"
+fi
+
+cp -a "$INSTALL_DIR/incoming/dist"/* /
+
+if [ -e "$INSTALL_DIR/incoming/post.sh" ]; then
+    . "$INSTALL_DIR/incoming/post.sh"
+fi
+
+rm -rf "$INSTALL_DIR/incoming"
+
+exit 0
+
+PAYLOAD:

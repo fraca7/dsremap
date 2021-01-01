@@ -9,29 +9,53 @@ import platform
 import subprocess
 import glob
 import zipfile
+import getopt
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtNetwork
 
 from dsrlib import resources # pylint: disable=W0611
 from dsrlib.meta import Meta
 from dsrlib.settings import Settings
-from dsrlib.domain import Workspace, HIDEnumerator, JSONImporter, Changelog
-from dsrlib.ui.hexuploader import FirstLaunchWizard
+from dsrlib.domain import Workspace, DeviceEnumerator, JSONImporter, Changelog
+from dsrlib.ui.wizard import FirstLaunchWizard
 from dsrlib.ui.changelog import ChangelogView
 from dsrlib.ui.utils import LayoutBuilder
 
+from dsrlib.domain.downloader import StringDownloader, AbortedError, SSLError, DownloadError
 from dsrlib.domain.sudo import sudoLaunch, SudoNotFound, SudoError
 from dsrlib.ui import uicommands
 from dsrlib.ui.workspace import WorkspaceView
 
 
+def usage(msg=None, code=1):
+    if msg:
+        print(msg)
+    print('Usage: %s [options]' % sys.argv[0])
+    print('Options:')
+    print('-h, --help         Display this')
+    print('-n, --nuke         Erase configuration before starting up')
+    sys.exit(code)
+
+
 class Application(QtWidgets.QApplication):
     def __init__(self, argv):
-        super().__init__(argv)
+        super().__init__([])
         self.setApplicationName(Meta.appName())
         self.setApplicationVersion(str(Meta.appVersion()))
         self.setOrganizationDomain(Meta.appDomain())
         self.setWindowIcon(QtGui.QIcon(':icons/gamepad.svg'))
+
+        try:
+            opts, _ = getopt.getopt(argv, 'hn', ['help', 'nuke'])
+        except getopt.GetoptError as exc:
+            usage(str(exc))
+
+        for opt, _ in opts:
+            if opt in ('-h', '--help'):
+                usage(code=0)
+            if opt in ('-n', '--nuke'):
+                settings = QtCore.QSettings()
+                settings.clear()
 
         # Builtin messages.
         trans = QtCore.QTranslator(self)
@@ -44,13 +68,17 @@ class Application(QtWidgets.QApplication):
 class MainWindow(QtWidgets.QMainWindow):
     settingsChanged = QtCore.pyqtSignal()
 
-    def __init__(self):
+    logger = logging.getLogger('dsremap')
+
+    def __init__(self): # pylint: disable=R0915
         super().__init__()
+
+        self._manager = QtNetwork.QNetworkAccessManager(self)
 
         self._workspace = Workspace()
         self.setCentralWidget(WorkspaceView(self, mainWindow=self, workspace=self._workspace))
         self._workspace.load()
-        self._enum = HIDEnumerator()
+        self._devenum = DeviceEnumerator()
 
         self.setWindowTitle(_('{appName} v{appVersion}').format(appName=Meta.appName(), appVersion=str(Meta.appVersion())))
         self.statusBar()
@@ -58,8 +86,7 @@ class MainWindow(QtWidgets.QMainWindow):
         filemenu = QtWidgets.QMenu(_('File'), self)
         filemenu.addAction(uicommands.ExportConfigurationUICommand(self, mainWindow=self, container=self.centralWidget()))
         filemenu.addAction(uicommands.ImportConfigurationUICommand(self, mainWindow=self, workspace=self._workspace))
-        filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace))
-        filemenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))
+        filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace, container=self.centralWidget()))
         self.menuBar().addMenu(filemenu)
 
         editmenu = QtWidgets.QMenu(_('Edit'), self)
@@ -68,13 +95,15 @@ class MainWindow(QtWidgets.QMainWindow):
         editmenu.addAction(uicommands.ShowSettingsDialogUICommand(self, mainWindow=self))
         self.menuBar().addMenu(editmenu)
 
-        upmenu = QtWidgets.QMenu(_('Upload'), self)
-        upmenu.addMenu(uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._enum))
-        upmenu.addAction(uicommands.UpdateHexUICommand(self, mainWindow=self))
-        self.menuBar().addMenu(upmenu)
+        devmenu = uicommands.DeviceMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
+        self.menuBar().addMenu(devmenu)
+
+        uploadmenu = uicommands.UploadMenu(self, mainWindow=self, container=self.centralWidget(), workspace=self._workspace, enumerator=self._devenum)
+        self.menuBar().addMenu(uploadmenu)
 
         helpmenu = QtWidgets.QMenu(_('Help'), self)
         helpmenu.addAction(uicommands.ShowAboutDialogUICommand(self, mainWindow=self))
+        helpmenu.addAction(uicommands.OpenDocsUICommand(self, mainWindow=self))
         self.menuBar().addMenu(helpmenu)
 
         with Settings().grouped('UIState') as settings:
@@ -84,7 +113,6 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.resize(1280, 600)
             self.centralWidget().loadState(settings)
 
-        self._enum.start()
         self.raise_()
         self.show()
 
@@ -94,21 +122,39 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.check()
 
-        manager = QtNetwork.QNetworkAccessManager(self)
-        self._changelogReply = manager.get(QtNetwork.QNetworkRequest(QtCore.QUrl(Meta.changelogUrl())))
-        self._changelogReply.finished.connect(self._onChangelogReply)
+        def gotChangelog(downloader):
+            self._changelogDl = None
+            try:
+                _unused, text = downloader.result()
+            except AbortedError:
+                self.logger.info('Changelog download aborted')
+                return
+            except (DownloadError, SSLError) as exc:
+                self.logger.exception('Cannot download changelog: %s', exc)
+                return
+
+            changelog = Changelog(text)
+            if changelog.changesSince(Meta.appVersion()):
+                win = ChangelogView(self, changelog)
+                win.show()
+                win.raise_()
+
+        self._changelogDl = StringDownloader(self, self.manager(), callback=gotChangelog)
+        self._changelogDl.get(Meta.changelogUrl())
 
     def history(self):
         return self._workspace.history()
 
+    def manager(self):
+        return self._manager
+
     def closeEvent(self, event):
         self._workspace.save()
         self._workspace.cleanup()
+        self._devenum.stop()
 
-        self._enum.cancel()
-
-        if self._changelogReply:
-            self._changelogReply.abort()
+        if self._changelogDl:
+            self._changelogDl.abort()
 
         with Settings().grouped('UIState') as settings:
             settings.setValue('WindowGeometry', self.saveGeometry())
@@ -182,25 +228,8 @@ class MainWindow(QtWidgets.QMainWindow):
             settings.setValue('Imported', ','.join(imported))
 
         if not Settings().firmwareUploaded():
-            wizard = FirstLaunchWizard(self)
+            wizard = FirstLaunchWizard(self, enumerator=self._devenum, mainWindow=self)
             wizard.exec_()
-
-    def _onChangelogReply(self):
-        reply, self._changelogReply = self._changelogReply, None
-        try:
-            logger = logging.getLogger('dsremap')
-            status = reply.attribute(QtNetwork.QNetworkRequest.HttpStatusCodeAttribute)
-            if status != 200:
-                logger.warning('Got status %d while downloading changelog', status)
-                return
-            changelog = Changelog(bytes(reply.readAll()).decode('utf-8'))
-
-            if changelog.changesSince(Meta.appVersion()):
-                win = ChangelogView(self, changelog)
-                win.show()
-                win.raise_()
-        except: # pylint: disable=W0702
-            logger.exception('Cannot download changelog')
 
 
 class PasswordDialog(QtWidgets.QDialog):
@@ -256,7 +285,7 @@ def setup():
 
 
 def uimain():
-    app = Application(sys.argv)
+    app = Application(sys.argv[1:])
     win = MainWindow() # pylint: disable=W0612
     app.exec_()
 

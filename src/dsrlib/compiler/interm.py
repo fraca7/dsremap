@@ -5,7 +5,8 @@ import collections
 
 from .mtypes import MethodType, VOID, FLOAT, INT
 from .ast.nodes import Variable, EmptyNode, StateNode, VariableNode, IdentifierNode, Callable, \
-     ASTScopedVisitorMixin, ASTLoopVisitorMixin, ASTStateVisitorMixin, ASTCallableVisitorMixin, ASTVisitor
+     ASTScopedVisitorMixin, ASTLoopVisitorMixin, ASTStateVisitorMixin, ASTCallableVisitorMixin, ASTVisitor, \
+     ArgumentNode
 
 
 class Address:
@@ -47,6 +48,9 @@ class Const(Address):
 
     def __str__(self):
         return str(self.value)
+
+    def __eq__(self, other):
+        return isinstance(other, Const) and type(self.value) is type(other.value) and self.value == other.value
 
 
 class Retval(Address):
@@ -168,7 +172,7 @@ class Return:
         self.func = func
         self.var = var
 
-        assert isinstance(var, (Address, type(None)))
+        assert isinstance(var, (Address, ArgumentNode, type(None)))
 
     def __str__(self):
         return '\tret' if self.var is None else '\tret %s' % str(self.var)

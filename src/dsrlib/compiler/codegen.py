@@ -55,7 +55,7 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return 0
 
     def visitVariableNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitMemberNode(self, node):
         return 0
@@ -70,13 +70,13 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return node.symbols.size() + max(self.visit(node.init), self.visit(node.main))
 
     def visitIfNode(self, node):
-        return max(self.visit(node.yes), self.visit(node.no))
+        return self.visit(node.expr) + max(self.visit(node.yes), self.visit(node.no))
 
     def visitWhileNode(self, node):
-        return self.visit(node.body)
+        return self.visit(node.expr) + self.visit(node.body)
 
     def visitAssignmentNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitContinueNode(self, node):
         return 0
@@ -91,7 +91,7 @@ class StackSize(ASTScopedVisitorMixin, ASTVisitor):
         return 0
 
     def visitReturnNode(self, node):
-        return 0
+        return self.visit(node.expr)
 
     def visitFunctionNode(self, node):
         return 0
@@ -283,7 +283,7 @@ class CodeGenerator:
             self._generateBinary(asm.Load, RegAddr(Opcodes.REGINDEX_TH), ConstAddr(addr.offset))
         elif addr.reg == Opcodes.REGINDEX_SP:
             self._generateBinary(asm.Load, RegAddr(Opcodes.REGINDEX_TH), RegAddr(Opcodes.REGINDEX_SP))
-            self._generateBinary(asm.Sub, RegAddr(Opcodes.REGINDEX_TH), ConstAddr((2 - addr.offset + size)))
+            self._generateBinary(asm.Sub, RegAddr(Opcodes.REGINDEX_TH), ConstAddr((4 - addr.offset + size)))
         elif addr.reg == Opcodes.REGINDEX_TH:
             self._generateBinary(asm.Add, RegAddr(Opcodes.REGINDEX_TH), ConstAddr(addr.offset))
         else:

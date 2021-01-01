@@ -49,7 +49,8 @@ class Parser(LRParser, ReLexer):
         for type_ in (VOID, INT, FLOAT):
             self._symbols.add(type_.name, type_)
         for name in ('LPadX', 'LPadY', 'RPadX', 'RPadY', 'Hat', 'Square', 'Cross', 'Circle', 'Triangle', 'L1', 'R1', 'L2', 'R2',
-                     'Share', 'Options', 'L3', 'R3', 'PS', 'TPad', 'L2Value', 'R2Value', 'IMUX', 'IMUY', 'IMUZ', 'DELTA'):
+                     'Share', 'Options', 'L3', 'R3', 'PS', 'TPad', 'L2Value', 'R2Value', 'IMUX', 'IMUY', 'IMUZ', 'DELTA',
+                     'ACCELX', 'ACCELY', 'ACCELZ'):
             self._addBuiltinVar(name)
 
         self._errors = []
@@ -67,6 +68,10 @@ class Parser(LRParser, ReLexer):
         type_ = {
             'IMUX': FLOAT,
             'IMUY': FLOAT,
+            'IMUZ': FLOAT,
+            'ACCELX': FLOAT,
+            'ACCELY': FLOAT,
+            'ACCELZ': FLOAT,
             }.get(name, INT)
         self._symbols.add(name, BuiltinVariable(name, type_), size=0)
 
@@ -579,7 +584,7 @@ class Parser(LRParser, ReLexer):
     @production('method_definition<pos> -> callable_definition<func>')
     def method_definition(self, pos, func):
         rettype, name, args, body, symbols = func
-        symbols.addSize(2) # %TH on the stack
+        symbols.addSize(4) # %TH on the stack
         node = MethodNode(rettype=rettype, name=name, args=args, body=body, symbols=symbols, pos=pos)
         self._symbols.add(name, node)
         return node

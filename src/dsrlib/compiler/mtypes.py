@@ -61,7 +61,7 @@ VOID = _VOID()
 
 class _INT(Type):
     def __init__(self):
-        super().__init__('int', 2)
+        super().__init__('int', 4)
 
     def cast(self, expr):
         if expr.type() == INT:
@@ -148,7 +148,7 @@ class FunctionType(CallableType):
 
 class MethodType(CallableType):
     def savesize(self):
-        return super().savesize() + 2
+        return super().savesize() + 4 # %TH
 
 
 class StateMethodType(CallableType):

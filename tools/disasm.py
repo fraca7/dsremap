@@ -40,6 +40,7 @@ def read_configuration(stream):
 def disasm_one(bytecode, offset):
     label = '0x%04x' % offset
     opcode = bytecode[offset]
+    prev_offset = offset
     offset += 1
     maintype = Opcodes.opcode_type(opcode)
     subtype = Opcodes.opcode_subtype(opcode)
@@ -50,12 +51,8 @@ def disasm_one(bytecode, offset):
         offset += dst.size
 
         if variant == Opcodes.OPCODE_VARIANT_C:
-            if dst.type == 'i':
-                src, = struct.unpack('<h', bytecode[offset:offset+2])
-                offset += 2
-            else:
-                src, = struct.unpack('<f', bytecode[offset:offset+4])
-                offset += 4
+            src, = struct.unpack('<%s' % dst.type, bytecode[offset:offset+4])
+            offset += 4
         elif variant == Opcodes.OPCODE_VARIANT_A:
             src = Opcodes.make_addr_str(bytecode[offset:])
             offset += src.size
@@ -79,7 +76,7 @@ def disasm_one(bytecode, offset):
             Opcodes.OPCODE_SUBTYPE_BINARY_CAST: 'CAST',
             }[subtype]
 
-        print('%s %s\t%s, %s' % (label, name, dst, src))
+        instr = '%- 10s %s, %s' % (name, dst, src)
     elif maintype == Opcodes.OPCODE_TYPE_UNARY:
         dst = Opcodes.make_addr_str(bytecode[offset:])
         offset += dst.size
@@ -88,24 +85,24 @@ def disasm_one(bytecode, offset):
             Opcodes.OPCODE_SUBTYPE_UNARY_NOT: 'NOT',
             Opcodes.OPCODE_SUBTYPE_UNARY_NEG: 'NEG',
             }[subtype]
-        print('%s %s\t%s' % (label, name, dst))
+        instr = '%- 10s %s' % (name, dst)
     elif maintype == Opcodes.OPCODE_TYPE_STACK:
         if subtype == Opcodes.OPCODE_SUBTYPE_STACK_PUSHI:
-            val, = struct.unpack('<h', bytecode[offset:offset+2])
-            offset += 2
-            print('%s PUSH\t%s' % (label, val))
+            val, = struct.unpack('<i', bytecode[offset:offset+4])
+            offset += 4
+            instr = '%- 10s %s' % ('PUSH', val)
         elif subtype == Opcodes.OPCODE_SUBTYPE_STACK_PUSHF:
             val, = struct.unpack('<f', bytecode[offset:offset+4])
             offset += 4
-            print('%s PUSH\t%s' % (label, val))
+            instr = '%- 10s %s' % ('PUSH', val)
         elif subtype == Opcodes.OPCODE_SUBTYPE_STACK_PUSH:
             src = Opcodes.make_addr_str(bytecode[offset:])
             offset += src.size
-            print('%s PUSH\t%s' % (label, src))
+            instr = '%- 10s %s' % ('PUSH', src)
         elif subtype == Opcodes.OPCODE_SUBTYPE_STACK_POP:
             src = Opcodes.make_addr_str(bytecode[offset:])
             offset += src.size
-            print('%s POP\t%s' % (label, src))
+            instr = '%- 10s %s' % ('POP', src)
     elif maintype == Opcodes.OPCODE_TYPE_FLOW:
         if subtype == Opcodes.OPCODE_SUBTYPE_FLOW_JZ:
             if variant == Opcodes.OPCODE_VARIANT_A:
@@ -121,23 +118,25 @@ def disasm_one(bytecode, offset):
                 raise NotImplementedError
             jumpto, = struct.unpack('<H', bytecode[offset:offset+2])
             offset += 2
-            print('%s JZ\t%s, 0x%04x' % (label, cond, jumpto))
+            instr = '%- 10s %s, 0x%04x' % ('JZ', cond, jumpto)
         elif subtype == Opcodes.OPCODE_SUBTYPE_FLOW_JUMP:
             jumpto, = struct.unpack('<H', bytecode[offset:offset+2])
             offset += 2
-            print('%s JUMP\t0x%04x' % (label, jumpto))
+            instr = '%- 10s 0x%04x' % ('JUMP', jumpto)
         elif subtype == Opcodes.OPCODE_SUBTYPE_FLOW_YIELD:
-            print('%s YIELD' % label)
+            instr = '%- 10s' % 'YIELD'
         elif subtype == Opcodes.OPCODE_SUBTYPE_FLOW_RET:
-            print('%s RET' % label)
+            instr = '%- 10s' % 'RET'
         elif subtype == Opcodes.OPCODE_SUBTYPE_FLOW_CALL:
             jumpto, = struct.unpack('<H', bytecode[offset:offset+2])
             offset += 2
-            print('%s CALL\t0x%04x' % (label, jumpto))
+            instr = '%- 10s 0x%04x' % ('CALL', jumpto)
         else:
             raise NotImplementedError
     else:
         raise NotImplementedError
+
+    print('%s %- 40s %s' % (label, instr, ' '.join(['%02X' % val for val in bytecode[prev_offset:offset]])))
 
     return offset
 

@@ -10,7 +10,7 @@ from vmwrapper import VM, Report
 from dsrlib.compiler.opcodes import Opcodes
 
 
-class TestStack(unittest.TestCase):
+class TestFlow(unittest.TestCase):
     def setUp(self):
         self._bytecode = io.BytesIO()
 
@@ -69,7 +69,7 @@ class TestStack(unittest.TestCase):
 
     def test_jz_C_int_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_CI)
-        self.add(struct.pack('<HH', 0, 42))
+        self.add(struct.pack('<iH', 0, 42))
 
         vm, size = self.create()
         ret = vm.step(Report())
@@ -79,7 +79,7 @@ class TestStack(unittest.TestCase):
 
     def test_jz_C_int_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_CI)
-        self.add(struct.pack('<HH', 1, 42))
+        self.add(struct.pack('<iH', 1, 42))
 
         vm, size = self.create()
         ret = vm.step(Report())
@@ -155,10 +155,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_constaddr_int_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_INT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HHH', 1, 0, 1))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, 42)
@@ -166,10 +166,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_constaddr_int_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_INT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HHH', 1, 1, 1))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 1, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, size)
@@ -177,10 +177,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_constaddr_float_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_FLOAT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HfH', 1, 0.0, 1))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 0.0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, 42)
@@ -188,10 +188,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_constaddr_float_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 2, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_ZR, 4, Opcodes.ADDR_VALTYPE_FLOAT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HfH', 1, 1.0, 1))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 1.0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, size)
@@ -199,10 +199,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_regoff_int_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -4, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_INT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HHH', 1, 0, 1))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, 42)
@@ -210,10 +210,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_regoff_int_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -4, Opcodes.ADDR_VALTYPE_INT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_INT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HHH', 1, 1, 1))
+        vm, size = self.create(stack=struct.pack('<iii', 1, 1, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, size)
@@ -221,10 +221,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_regoff_float_true(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -6, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_FLOAT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HfH', 1, 0.0, 1))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 0.0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, 42)
@@ -232,10 +232,10 @@ class TestStack(unittest.TestCase):
 
     def test_jz_regoff_float_false(self):
         self.add_opcode(Opcodes.OPCODE_SUBTYPE_FLOW_JZ, variant=Opcodes.OPCODE_VARIANT_A)
-        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -6, Opcodes.ADDR_VALTYPE_FLOAT))
+        self.add(Opcodes.make_addr_regoff(Opcodes.REGINDEX_SP, -8, Opcodes.ADDR_VALTYPE_FLOAT))
         self.add(struct.pack('<H', 42))
 
-        vm, size = self.create(stack=struct.pack('<HfH', 1, 1.0, 1))
+        vm, size = self.create(stack=struct.pack('<ifi', 1, 1.0, 1))
         ret = vm.step(Report())
 
         self.assertEqual(vm.offset, size)

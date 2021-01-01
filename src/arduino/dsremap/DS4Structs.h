@@ -2,6 +2,10 @@
 #ifndef _DS4STRUCTS_H
 #define _DS4STRUCTS_H
 
+#ifdef TARGET_PC
+#include <stdint.h>
+#endif
+
 #include "platform.h"
 
 #define DS4_COMMON_FIELDS                                       \
@@ -70,6 +74,7 @@ typedef struct PACKED {
   uint8_t released : 1; // 0: pressed; 1: not pressed
   uint8_t data[3];
 
+#ifdef __cpluscplus
   uint16_t x() const {
     return data[0] | ((data[1] & 0x0F) << 8);
   }
@@ -77,6 +82,7 @@ typedef struct PACKED {
   uint16_t y() const {
     return ((data[1] & 0xF0) >> 4) | (data[2] << 4);
   }
+#endif
 } TPadPosition;
 
 typedef struct PACKED {
@@ -103,7 +109,9 @@ typedef struct PACKED {
   uint8_t unk06[5];
 } BTReport11_t;
 
+#ifdef __cplusplus
 static_assert(sizeof(BTReport11_t) == 78, "Invalid BTReport11_t size");
+#endif
 
 typedef struct PACKED {
   uint8_t id; // 0x01
@@ -115,7 +123,9 @@ typedef struct PACKED {
   uint8_t unk06[2];
 } USBReport01_t;
 
+#ifdef __cplusplus
 static_assert(sizeof(USBReport01_t) == 64, "Invalid USBReport01_t size");
+#endif
 
 typedef struct PACKED {
   int16_t gyro_x_bias;
@@ -138,7 +148,9 @@ typedef struct PACKED {
   int16_t unk01;
 } CalibrationData_t;
 
+#ifdef __cplusplus
 static_assert(sizeof(CalibrationData_t) == 36, "Invalid CalibrationData_t size");
+#endif
 
 #ifdef WIN32
 #pragma pack(pop)
@@ -146,10 +158,12 @@ static_assert(sizeof(CalibrationData_t) == 36, "Invalid CalibrationData_t size")
 
 // Some common types
 
+#ifdef __cplusplus
 enum class ButtonState {
   Released,
   Pressed
 };
+#endif
 
 typedef struct {
   float x;

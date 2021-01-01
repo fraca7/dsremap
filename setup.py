@@ -15,7 +15,6 @@ if platform.system() == 'Darwin':
 
     data_files = [
           ('', ['res/avrdude.conf']),
-          ('', ['arduino-build/dsremap.ino.hex']),
           ('', ['i18n']),
           ('configurations', glob.glob('res/configurations/*.zip')),
         ]
@@ -33,7 +32,6 @@ if platform.system() == 'Windows':
     options = {
         'include_files': [
             (r'res\avrdude.conf', r'resources\avrdude.conf'),
-            (r'arduino-build\dsremap.ino.hex', r'resources\dsremap.ino.hex'),
             (r'res\configurations', r'resources\configurations'),
             (r'i18n', r'resources\i18n'),
             ]

@@ -55,16 +55,3 @@ class DeleteActionsCommand(ConfigurationMixin, Command):
     def undo(self):
         for index, action in self._actions:
             self.configuration().addAction(action, index=index)
-
-
-class SetConfigurationEnabledCommand(ConfigurationMixin, Command):
-    def __init__(self, *, enabled, configuration):
-        super().__init__(configuration=configuration)
-        self._newEnabled = enabled
-        self._oldEnabled = configuration.enabled()
-
-    def do(self):
-        self.configuration().setEnabled(self._newEnabled)
-
-    def undo(self):
-        self.configuration().setEnabled(self._oldEnabled)

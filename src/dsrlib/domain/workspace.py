@@ -25,14 +25,13 @@ class Workspace:
     def configurations(self):
         return self._configurations
 
-    def bytecodeSize(self):
+    def bytecodeSize(self, configurations):
         total = 4 # At the end, 0-length configuration as sentinel, magic word at the start
-        for configuration in self.configurations():
-            if configuration.enabled():
-                total += configuration.bytecodeSize()
+        for configuration in configurations:
+            total += configuration.bytecodeSize()
         return total
 
-    def bytecode(self):
+    def bytecode(self, configurations):
         # The format of the data stored in the EEPROM is the following:
         #
         # uint16_t Magic word 0xCAFE
@@ -44,9 +43,8 @@ class Workspace:
 
         bytecode = io.BytesIO()
         bytecode.write(struct.pack('<H', 0xCAFE))
-        for configuration in self.configurations():
-            if configuration.enabled():
-                bytecode.write(configuration.bytecode())
+        for configuration in configurations:
+            bytecode.write(configuration.bytecode())
         bytecode.write(struct.pack('<H', 0))
         return bytecode.getvalue()
 

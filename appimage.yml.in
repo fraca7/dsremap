@@ -7,14 +7,13 @@ script:
   - cp icons/dsremap.png AppDir/usr/share/icons/hicolor/256x256/apps/dsremap.png
   - cp dsremap.py AppDir/usr/bin/dsremap
   - cp askpass.py AppDir/usr/bin/askpass
-  - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir ptk pyserial hidapi
+  - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir ptk pyserial hidapi zeroconf
   - python3 -m pip install --system --ignore-installed --prefix=/usr --root=AppDir --no-dependencies pyqtcmd
   - cp -r src/dsrlib AppDir/usr/lib/python3.8/site-packages/
   - mkdir -p AppDir/usr/lib/x86_64-linux-gnu
   - (cd AppDir/usr/lib/x86_64-linux-gnu; ln -s ../libqscintilla2_qt5.so.15 .)
   - mkdir -p AppDir/data
   - cp res/avrdude.conf AppDir/data/
-  - cp arduino-build/dsremap.ino.hex AppDir/data/
   - cp -r res/configurations AppDir/data/
   - cp -r i18n AppDir/data/
 
@@ -39,6 +38,7 @@ AppDir:
       - python3-pkg-resources
       - python3-pyqt5
       - python3-pyqt5.qsci
+      - qttranslations5-l10n
       - libfreetype6
       - avrdude
     exclude: []

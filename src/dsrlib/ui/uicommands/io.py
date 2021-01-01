@@ -50,7 +50,7 @@ class ImportConfigurationUICommand(WorkspaceMixin, UICommand):
             QtWidgets.QMessageBox.critical(self.mainWindow(), _('Import error'), _('Cannot import configuration:\n{error}').format(error=str(exc)))
 
 
-class ExportBytecodeUICommand(WorkspaceMixin, UICommand):
+class ExportBytecodeUICommand(WorkspaceMixin, NeedsSelectionUICommandMixin, UICommand):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, text=_('Export bytecode'), tip=_('Export bytecode to file'), **kwargs)
 
@@ -61,6 +61,6 @@ class ExportBytecodeUICommand(WorkspaceMixin, UICommand):
 
         try:
             with open(filename, 'wb') as fileobj:
-                fileobj.write(self.workspace().bytecode())
+                fileobj.write(self.workspace().bytecode(self.selection()))
         except Exception as exc: # pylint: disable=W0703
             QtWidgets.QMessageBox.critical(self.mainWindow(), _('Export error'), _('Cannot export bytecode:\n{error}').format(error=str(exc)))

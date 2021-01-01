@@ -1,0 +1,15 @@
+// -*- c++ -*-
+
+struct ST {
+  void foo(int a) {
+    int b = a;
+  }
+};
+
+state idle {
+  ST st;
+
+  idle() {
+    st.foo(42);
+  }
+};
