@@ -20,11 +20,11 @@ class Version(collections.namedtuple('Version', ['major', 'minor', 'patch'])):
 class Meta:
     @staticmethod
     def appVersion():
-        return Version(1, 0, 0)
+        return Version(1, 1, 0)
 
     @staticmethod
     def firmwareVersion():
-        return Version(1, 0, 0)
+        return Version(1, 1, 0)
 
     @staticmethod
     def appName():
