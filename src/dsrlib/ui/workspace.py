@@ -2,7 +2,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from dsrlib.domain import commands, WorkspaceMixin, ConfigurationMixin
+from dsrlib.domain import WorkspaceMixin, ConfigurationMixin
 
 from .mixins import MainWindowMixin
 from .utils import LayoutBuilder
@@ -14,14 +14,11 @@ class ConfigurationItemWidget(MainWindowMixin, ConfigurationMixin, QtWidgets.QWi
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._check = QtWidgets.QCheckBox(self)
-        self._check.setFixedWidth(32)
         self._thumbnail = QtWidgets.QLabel(self)
         self._name = QtWidgets.QLabel(self)
 
         bld = LayoutBuilder(self)
         with bld.hbox() as hbox:
-            hbox.addWidget(self._check)
             hbox.addWidget(self._thumbnail)
             hbox.addSpacing(10)
             hbox.addWidget(self._name)
@@ -29,7 +26,6 @@ class ConfigurationItemWidget(MainWindowMixin, ConfigurationMixin, QtWidgets.QWi
 
         self.reload()
         self.configuration().changed.connect(self.reload)
-        self._check.stateChanged.connect(self._toggleEnabled)
 
     def reload(self):
         self._name.setText(self.configuration().name())
@@ -40,11 +36,6 @@ class ConfigurationItemWidget(MainWindowMixin, ConfigurationMixin, QtWidgets.QWi
             pixmap = QtGui.QPixmap(filename)
             pixmap = pixmap.scaled(QtCore.QSize(64, 64), QtCore.Qt.KeepAspectRatio, QtCore.Qt.SmoothTransformation)
         self._thumbnail.setPixmap(pixmap)
-        self._check.setCheckState(QtCore.Qt.Checked if self.configuration().enabled() else QtCore.Qt.Unchecked)
-
-    def _toggleEnabled(self, state):
-        cmd = commands.SetConfigurationEnabledCommand(configuration=self.configuration(), enabled=(state == QtCore.Qt.Checked))
-        self.history().run(cmd)
 
 
 class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
@@ -60,11 +51,17 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
         self._tree.setHeaderHidden(True)
         self._tree.itemSelectionChanged.connect(self._selectionChanged)
         self._tree.setAlternatingRowColors(True)
+        self._tree.setSelectionMode(self._tree.ExtendedSelection)
 
         self._properties = QtWidgets.QStackedWidget(self)
-        label = QtWidgets.QLabel(_('Select a configuration'))
+        label = QtWidgets.QLabel(_('No configuration selected'), self._properties)
         label.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
         self._properties.addWidget(label)
+
+        self._selectionCount = QtWidgets.QLabel(self._properties)
+        self._selectionCount.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
+        self._selectionCount.setWordWrap(True)
+        self._properties.addWidget(self._selectionCount)
 
         btnAdd = AddConfigurationButton(self, workspace=self.workspace(), mainWindow=self.mainWindow())
         btnDel = DeleteConfigurationsButton(self, workspace=self.workspace(), container=self, mainWindow=self.mainWindow())
@@ -103,15 +100,15 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
             self._tree.setItemWidget(item, 0, widget)
 
             widget = ConfigurationView(self, mainWindow=self.mainWindow(), configuration=configuration)
-            self._properties.insertWidget(first + index + 1, widget)
+            self._properties.insertWidget(first + index + 2, widget)
 
-            if configuration.enabled() and not hasSelection:
+            if not hasSelection:
                 item.setSelected(True)
                 hasSelection = True
 
     def _removeRows(self, parent, first, last): # pylint: disable=W0613
         for _ in range(last - first + 1):
-            widget = self._properties.widget(first + 1)
+            widget = self._properties.widget(first + 2)
             self._properties.removeWidget(widget)
             widget.deleteLater()
 
@@ -123,7 +120,11 @@ class WorkspaceView(MainWindowMixin, WorkspaceMixin, QtWidgets.QWidget):
         if count == 1:
             configuration, = self.selection()
             index = self.configurations().indexOf(configuration)
-            self._properties.setCurrentIndex(index + 1)
+            self._properties.setCurrentIndex(index + 2)
+        elif count >= 2:
+            self._properties.setCurrentIndex(1)
+            size = self.workspace().bytecodeSize(self.selection())
+            self._selectionCount.setText(_('{count} configurations selected ({size} bytes). You can only upload multiple configurations to an Arduino (not to a Pi Zero), if the size does not exceed 1024 bytes.').format(count=count, size=size))
         else:
             self._properties.setCurrentIndex(0)
 

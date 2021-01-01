@@ -13,10 +13,10 @@ from .utils import LayoutBuilder
 
 
 class ConfigurationHIDUploader(WorkspaceMixin, QtWidgets.QDialog):
-    def __init__(self, parent, *, device, **kwargs):
+    def __init__(self, parent, *, device, configurations, **kwargs):
         super().__init__(parent, **kwargs)
         self._progress = QtWidgets.QProgressBar(self)
-        self._bytecode = self.workspace().bytecode()
+        self._bytecode = self.workspace().bytecode(configurations)
         self._offset = 0
         self._worker = device.worker()
         self._crc = zlib.crc32(self._bytecode)
@@ -69,8 +69,9 @@ class ConfigurationHIDUploader(WorkspaceMixin, QtWidgets.QDialog):
 
 
 class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QDialog):
-    def __init__(self, parent, *, device, **kwargs):
+    def __init__(self, parent, *, device, configuration, **kwargs):
         super().__init__(parent, **kwargs)
+        self._configuration = configuration
 
         self._progress = QtWidgets.QProgressBar(self)
 
@@ -102,7 +103,7 @@ class ConfigurationNetworkUploader(WorkspaceMixin, MainWindowMixin, QtWidgets.QD
         self._downloader = Downloader(self, self.mainWindow().manager(), callback=gotResponse)
         req = QtNetwork.QNetworkRequest(QtCore.QUrl('http://%s:%d/set_config' % (device.addr, device.port)))
         req.setHeader(req.ContentTypeHeader, 'application/octet-stream')
-        self._downloader.postBytes(req, self.workspace().bytecode())
+        self._downloader.postBytes(req, self.workspace().bytecode([self._configuration]))
         self._downloader.uploadSize.connect(self._onUploadSize)
         self._downloader.uploadProgress.connect(self._onUploadProgress)
 

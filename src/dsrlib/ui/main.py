@@ -86,7 +86,7 @@ class MainWindow(QtWidgets.QMainWindow):
         filemenu = QtWidgets.QMenu(_('File'), self)
         filemenu.addAction(uicommands.ExportConfigurationUICommand(self, mainWindow=self, container=self.centralWidget()))
         filemenu.addAction(uicommands.ImportConfigurationUICommand(self, mainWindow=self, workspace=self._workspace))
-        filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace))
+        filemenu.addAction(uicommands.ExportBytecodeUICommand(self, mainWindow=self, workspace=self._workspace, container=self.centralWidget()))
         self.menuBar().addMenu(filemenu)
 
         editmenu = QtWidgets.QMenu(_('Edit'), self)
@@ -98,7 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
         devmenu = uicommands.DeviceMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
         self.menuBar().addMenu(devmenu)
 
-        uploadmenu = uicommands.UploadMenu(self, mainWindow=self, workspace=self._workspace, enumerator=self._devenum)
+        uploadmenu = uicommands.UploadMenu(self, mainWindow=self, container=self.centralWidget(), workspace=self._workspace, enumerator=self._devenum)
         self.menuBar().addMenu(uploadmenu)
 
         helpmenu = QtWidgets.QMenu(_('Help'), self)

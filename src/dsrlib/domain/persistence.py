@@ -25,7 +25,7 @@ class BaseJSONWriter(ActionVisitor):
         actions = []
         for action in configuration.actions():
             actions.append(self.encodeAction(action))
-        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'enabled': configuration.enabled(), 'actions': actions}
+        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'actions': actions}
 
     def encodeAction(self, action):
         return self.visit(action)
@@ -66,7 +66,6 @@ class JSONExporter(BaseJSONWriter):
 
     def write(self, configuration):
         data = self.encodeConfiguration(configuration)
-        data['enabled'] = False
         data['version'] = self.VERSION
         data['uuid'] = uuid.uuid1().hex
         self._zipobj.writestr('configuration.json', json.dumps(data, indent=2))
@@ -90,7 +89,6 @@ class BaseJSONReader:
         configuration = Configuration(uid=data['uuid'])
         configuration.setName(data['name'])
         configuration.setThumbnail(self.pathFor(data['thumbnail']))
-        configuration.setEnabled(data['enabled'])
 
         for adata in data['actions']:
             action = self.decodeAction(adata)

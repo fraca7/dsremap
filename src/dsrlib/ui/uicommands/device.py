@@ -82,12 +82,13 @@ class DeviceMenu(DeviceMenuBase):
 
 
 class UploadMenu(DeviceMenuBase):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, *args, container, **kwargs):
         super().__init__(_('Upload'), parent, *args, **kwargs)
+        self._container = container
         self.start()
 
     def onNetworkDeviceAdded(self, device):
-        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
+        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, container=self._container, mainWindow=self.mainWindow(), workspace=self.workspace()))
 
     def onArduinoAdded(self, device):
         if Meta.firmwareVersion() != device.fwVersion:
@@ -96,4 +97,4 @@ class UploadMenu(DeviceMenuBase):
                                           _('A {appname}-enabled device was plugged, but the firmware version v{version1} does not match the one supported by this application (v{version2}). Please update the firmware using the Upload menu first, then unplug and replug the device.').format(appname=Meta.appName(), version1=str(device.fwVersion), version2=str(Meta.firmwareVersion())))
             return
 
-        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, mainWindow=self.mainWindow(), workspace=self.workspace()))
+        self.addDeviceAction(device, UploadConfigurationsUICommand(self, device=device, container=self._container, mainWindow=self.mainWindow(), workspace=self.workspace()))

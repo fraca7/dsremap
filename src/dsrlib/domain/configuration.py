@@ -31,14 +31,6 @@ class Configuration(QtCore.QObject):
             self._name = name
             self.changed.emit()
 
-    def enabled(self):
-        return self._enabled
-
-    def setEnabled(self, enabled):
-        if enabled != self._enabled:
-            self._enabled = enabled
-            self.changed.emit()
-
     def thumbnail(self):
         return self._thumbnail
 

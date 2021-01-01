@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-from dsrlib.meta import Meta
+from pyqtcmd import NeedsSelectionUICommandMixin
+
 from dsrlib.domain.mixins import WorkspaceMixin
 from dsrlib.domain.device import NetworkDevice
 from dsrlib.ui.configupload import ConfigurationHIDUploader, ConfigurationNetworkUploader
@@ -8,21 +9,19 @@ from dsrlib.ui.configupload import ConfigurationHIDUploader, ConfigurationNetwor
 from .base import UICommand
 
 
-class UploadConfigurationsUICommand(WorkspaceMixin, UICommand):
+class UploadConfigurationsUICommand(WorkspaceMixin, NeedsSelectionUICommandMixin, UICommand):
     def __init__(self, parent, *, device, **kwargs):
-        super().__init__(parent, text=device.name, tip=_('Send enabled configurations to device {name}').format(name=device.name), **kwargs)
         self._device = device
-
-        self.add_signal_check(self.workspace().configurations().dataChanged)
-        self.add_signal_check(self.workspace().configurations().rowsInserted)
-        self.add_signal_check(self.workspace().configurations().rowsRemoved)
+        super().__init__(parent, text=device.name, tip=_('Send selected configuration(s) to device {name}').format(name=device.name), **kwargs)
 
     def should_be_enabled(self):
-        return super().should_be_enabled() and self.workspace().bytecodeSize() <= Meta.maxBytecodeSize()
+        enabled = len(self.selection()) == 1 if isinstance(self._device, NetworkDevice) else len(self.selection()) >= 1
+        return super().should_be_enabled() and enabled
 
     def do(self):
         if isinstance(self._device, NetworkDevice):
-            uploader = ConfigurationNetworkUploader(self.mainWindow(), device=self._device, workspace=self.workspace(), mainWindow=self.mainWindow())
+            configuration, = self.selection()
+            uploader = ConfigurationNetworkUploader(self.mainWindow(), device=self._device, configuration=configuration, workspace=self.workspace(), mainWindow=self.mainWindow())
         else:
-            uploader = ConfigurationHIDUploader(self.mainWindow(), device=self._device, workspace=self.workspace())
+            uploader = ConfigurationHIDUploader(self.mainWindow(), device=self._device, configurations=self.selection(), workspace=self.workspace())
         uploader.exec_()
