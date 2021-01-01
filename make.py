@@ -156,7 +156,7 @@ def unittests():
 
 # Frozen
 
-@depends(resources, ext, firmware)
+@depends(resources, ext)
 def exe():
     if platform.system() == 'Darwin':
         subprocess.run([sys.executable, 'setup.py', 'py2app'], check=True)
