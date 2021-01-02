@@ -73,6 +73,46 @@ class ThumbnailView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
         self.history().run(cmd)
 
 
+# From https://gist.github.com/hahastudio/4345418 with minor changes
+class TextEdit(QtWidgets.QTextEdit):
+    """
+    A TextEdit editor that sends editingFinished events
+    when the text was changed and focus is lost.
+    """
+
+    editingFinished = QtCore.pyqtSignal()
+    receivedFocus = QtCore.pyqtSignal()
+
+    def __init__(self, parent):
+        super().__init__(parent)
+        self._changed = False
+        self.setTabChangesFocus(True)
+        self.textChanged.connect(self._handle_text_changed)
+
+    def focusInEvent(self, event):
+        super().focusInEvent(event)
+        self.receivedFocus.emit()
+
+    def focusOutEvent(self, event):
+        if self._changed:
+            self.editingFinished.emit()
+        super().focusOutEvent(event)
+
+    def _handle_text_changed(self): # pylint: disable=C0103
+        self._changed = True
+
+    def setTextChanged(self, state=True):
+        self._changed = state
+
+    def setHtml(self, html):
+        super().setHtml(html)
+        self._changed = False
+
+    def setPlainText(self, text):
+        super().setPlainText(text)
+        self._changed = False
+
+
 class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
     selectionChanged = QtCore.pyqtSignal()
 
@@ -85,6 +125,10 @@ class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
         self._name = QtWidgets.QLineEdit(self.configuration().name(), self)
         self._name.editingFinished.connect(self._changeName)
         self._thumbnail = ThumbnailView(self, configuration=self.configuration(), mainWindow=self.mainWindow())
+        self._description = TextEdit(self)
+        self._description.setAcceptRichText(False)
+        self._description.setPlainText(self.configuration().description())
+        self._description.editingFinished.connect(self._changeDescription)
 
         # We don't actually use a QTreeView because setItemWidget is
         # convenient. Not in the mood to write a custom delegate.
@@ -106,7 +150,9 @@ class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
                 header.addWidget(btnAdd)
             with bld.hbox() as content:
                 content.addWidget(self._thumbnail)
-                content.addWidget(self._tree, stretch=1)
+                with bld.vbox() as vbox:
+                    vbox.addWidget(self._tree)
+                    vbox.addWidget(self._description)
 
         self.configuration().changed.connect(self._updateValues)
 
@@ -138,6 +184,13 @@ class ConfigurationView(MainWindowMixin, ConfigurationMixin, QtWidgets.QWidget):
             cmd = commands.ChangeConfigurationNameCommand(configuration=self.configuration(), name=name)
             self.history().run(cmd)
 
+    def _changeDescription(self):
+        text = self._description.toPlainText()
+        if text != self.configuration().description():
+            cmd = commands.ChangeConfigurationDescriptionCommand(configuration=self.configuration(), description=text)
+            self.history().run(cmd)
+
     def _updateValues(self):
         self._name.setText(self.configuration().name())
+        self._description.setPlainText(self.configuration().description())
         self._thumbnail.reload()

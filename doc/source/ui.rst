@@ -19,8 +19,9 @@ one.
 
 And the right area holds the details of the currently selected
 configuration. You can change its name, change the thumbnail by
-dropping an image on the current one, and add or remove so-called
-"actions", which are rules for altering the Dual Shock inputs.
+dropping an image on the current one, add or remove so-called
+"actions", which are rules for altering the Dual Shock inputs, and set
+a description for the configuration.
 
 .. image:: ../images/ui_panel3.png
    :align: center

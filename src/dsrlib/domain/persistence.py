@@ -25,7 +25,7 @@ class BaseJSONWriter(ActionVisitor):
         actions = []
         for action in configuration.actions():
             actions.append(self.encodeAction(action))
-        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'actions': actions}
+        return {'name': configuration.name(), 'uuid': configuration.uuid(), 'thumbnail': self.pathFor(configuration.thumbnail()), 'actions': actions, 'description': configuration.description()}
 
     def encodeAction(self, action):
         return self.visit(action)
@@ -88,6 +88,7 @@ class BaseJSONReader:
     def decodeConfiguration(self, data):
         configuration = Configuration(uid=data['uuid'])
         configuration.setName(data['name'])
+        configuration.setDescription(data.get('description', ''))
         configuration.setThumbnail(self.pathFor(data['thumbnail']))
 
         for adata in data['actions']:

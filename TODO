@@ -10,7 +10,6 @@ General:
 * Codesign mac OS binary
 * Optimization pass
 * __TARGET__ preprocessing definition for device-targeted code
-* Free text description for configurations
 
 Bluetooth:
 

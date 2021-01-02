@@ -16,6 +16,7 @@ class Configuration(QtCore.QObject):
         super().__init__()
         self._name = _('New configuration')
         self._thumbnail = None
+        self._description = ''
         self._actions = ListModel()
         self._uuid = uid or uuid.uuid1().hex
 
@@ -28,6 +29,14 @@ class Configuration(QtCore.QObject):
     def setName(self, name):
         if name != self._name:
             self._name = name
+            self.changed.emit()
+
+    def description(self):
+        return self._description
+
+    def setDescription(self, description):
+        if description != self._description:
+            self._description = description
             self.changed.emit()
 
     def thumbnail(self):

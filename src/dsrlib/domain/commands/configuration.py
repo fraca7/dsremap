@@ -18,6 +18,19 @@ class ChangeConfigurationNameCommand(ConfigurationMixin, Command):
         self.configuration().setName(self._oldName)
 
 
+class ChangeConfigurationDescriptionCommand(ConfigurationMixin, Command):
+    def __init__(self, *, configuration, description):
+        super().__init__(configuration=configuration)
+        self._oldDescription = configuration.description()
+        self._newDescription = description
+
+    def do(self):
+        self.configuration().setDescription(self._newDescription)
+
+    def undo(self):
+        self.configuration().setDescription(self._oldDescription)
+
+
 class ChangeConfigurationThumbnailCommand(ConfigurationMixin, Command):
     def __init__(self, *, configuration, filename):
         super().__init__(configuration=configuration)
