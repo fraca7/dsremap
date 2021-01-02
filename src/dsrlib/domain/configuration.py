@@ -17,7 +17,6 @@ class Configuration(QtCore.QObject):
         self._name = _('New configuration')
         self._thumbnail = None
         self._actions = ListModel()
-        self._enabled = False
         self._uuid = uid or uuid.uuid1().hex
 
     def uuid(self):
