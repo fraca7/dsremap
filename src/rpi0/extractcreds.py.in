@@ -15,7 +15,7 @@ with open('/dev/mmcblk0', 'rb') as fileobj:
         print('Invalid magic')
     else:
         fileobj.seek(SIZE - 11, io.SEEK_SET)
-        pwdlen, ssidlen, ssh = struct.unpack('<IIB', fileobj.read(8))
+        pwdlen, ssidlen, ssh = struct.unpack('<IIB', fileobj.read(9))
 
         fileobj.seek(SIZE -11 - ssidlen - pwdlen, io.SEEK_SET)
         password = fileobj.read(pwdlen).decode('utf-8')
