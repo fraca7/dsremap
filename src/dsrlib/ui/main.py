@@ -38,24 +38,12 @@ def usage(msg=None, code=1):
 
 
 class Application(QtWidgets.QApplication):
-    def __init__(self, argv):
+    def __init__(self):
         super().__init__([])
         self.setApplicationName(Meta.appName())
         self.setApplicationVersion(str(Meta.appVersion()))
         self.setOrganizationDomain(Meta.appDomain())
         self.setWindowIcon(QtGui.QIcon(':icons/gamepad.svg'))
-
-        try:
-            opts, _ = getopt.getopt(argv, 'hn', ['help', 'nuke'])
-        except getopt.GetoptError as exc:
-            usage(str(exc))
-
-        for opt, _ in opts:
-            if opt in ('-h', '--help'):
-                usage(code=0)
-            if opt in ('-n', '--nuke'):
-                settings = QtCore.QSettings()
-                settings.clear()
 
         # Builtin messages.
         trans = QtCore.QTranslator(self)
@@ -285,7 +273,21 @@ def setup():
 
 
 def uimain():
-    app = Application(sys.argv[1:])
+    app = Application()
+
+    try:
+        opts, _ = getopt.getopt(sys.argv[1:], 'hn', ['help', 'nuke'])
+    except getopt.GetoptError as exc:
+        usage(str(exc))
+
+    for opt, _ in opts:
+        if opt in ('-h', '--help'):
+            usage(code=0)
+        if opt in ('-n', '--nuke'):
+            settings = QtCore.QSettings()
+            settings.clear()
+            sys.exit(0)
+
     win = MainWindow() # pylint: disable=W0612
     app.exec_()
 
