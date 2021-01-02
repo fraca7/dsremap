@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-01-01 15:58+0100\n"
-"PO-Revision-Date: 2021-01-01 15:59+0100\n"
+"POT-Creation-Date: 2021-01-02 12:51+0100\n"
+"PO-Revision-Date: 2021-01-02 12:51+0100\n"
 "Last-Translator: Jérôme Laheurte <jerome@jeromelaheurte.net>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -162,7 +162,7 @@ msgstr "{appname} v{appversion}"
 msgid "Done"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:92
+#: src/dsrlib/ui/actions/custom.py:44 src/dsrlib/ui/main.py:80
 msgid "Edit"
 msgstr "Édition"
 
@@ -170,7 +170,7 @@ msgstr "Édition"
 msgid "New release available"
 msgstr "Une nouvelle version est disponible"
 
-#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:253
+#: src/dsrlib/ui/changelog.py:20 src/dsrlib/ui/main.py:241
 msgid "OK"
 msgstr "OK"
 
@@ -210,32 +210,32 @@ msgstr "Redémarrage du mandataire..."
 msgid "Drop an image here"
 msgstr "Déposez une image ici"
 
-#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:250
+#: src/dsrlib/ui/ide/editor.py:41 src/dsrlib/ui/main.py:238
 #: src/dsrlib/ui/resdl.py:39 src/dsrlib/ui/settings.py:137
 msgid "Cancel"
 msgstr "Annuler"
 
-#: src/dsrlib/ui/main.py:83
+#: src/dsrlib/ui/main.py:71
 msgid "{appName} v{appVersion}"
 msgstr "{appName} v{appVersion}"
 
-#: src/dsrlib/ui/main.py:86
+#: src/dsrlib/ui/main.py:74
 msgid "File"
 msgstr "Fichier"
 
-#: src/dsrlib/ui/main.py:104
+#: src/dsrlib/ui/main.py:92
 msgid "Help"
 msgstr "Aide"
 
-#: src/dsrlib/ui/main.py:181
+#: src/dsrlib/ui/main.py:169
 msgid "<i>groups</i> exited with code {code}"
 msgstr "<b>avrdude</b> s’est terminé avec le code {code}."
 
-#: src/dsrlib/ui/main.py:184
+#: src/dsrlib/ui/main.py:172
 msgid "Cannot find groups"
 msgstr "Impossible de déterminer les groupes"
 
-#: src/dsrlib/ui/main.py:184
+#: src/dsrlib/ui/main.py:172
 msgid ""
 "Unable to find out which groups you belong to:<p />{error}<p />For this "
 "program to work correctly, you must belong to the <i>plugdev</i> group."
@@ -244,22 +244,22 @@ msgstr ""
 ">Pour que ce programme fonctionne correctement, vous devez appartenir au "
 "groupe <i>plugdev</i>."
 
-#: src/dsrlib/ui/main.py:194
+#: src/dsrlib/ui/main.py:182
 msgid ""
 "The following operations must be done before this program can work correctly:"
 msgstr ""
 "Les opérations suivantes doivent être exécutées pour que ce programme "
 "fonctionne correctement:"
 
-#: src/dsrlib/ui/main.py:196
+#: src/dsrlib/ui/main.py:184
 msgid "Install udev rules to allow HID communication"
 msgstr "Installation des règles udev pour les communications HID"
 
-#: src/dsrlib/ui/main.py:198
+#: src/dsrlib/ui/main.py:186
 msgid "Add you to the <i>plugdev</i> group"
 msgstr "Vous ajouter au groupe <i>plugdev</i>"
 
-#: src/dsrlib/ui/main.py:201
+#: src/dsrlib/ui/main.py:189
 msgid ""
 "You may have to logout and login again, or even reboot, and unplug/replug "
 "the Arduino for those changes to apply."
@@ -267,33 +267,33 @@ msgstr ""
 "Vous aurez peut-être à vous déconnecter, voire redémarrer, et débrancher/"
 "rebrancher l'Arduino pour que ces modifications soient effectives."
 
-#: src/dsrlib/ui/main.py:203
+#: src/dsrlib/ui/main.py:191
 msgid "You may be prompted for your password."
 msgstr "Vous aurez peut-être à fournir votre mot de passe."
 
-#: src/dsrlib/ui/main.py:205
+#: src/dsrlib/ui/main.py:193
 msgid "System setup"
 msgstr "Configuration du système"
 
-#: src/dsrlib/ui/main.py:215
+#: src/dsrlib/ui/main.py:203
 msgid "Unable to find <i>sudo</i> on the path."
 msgstr "Impossible de trouver <i>sudo</i> dans le chemin."
 
-#: src/dsrlib/ui/main.py:215 src/dsrlib/ui/main.py:217
+#: src/dsrlib/ui/main.py:203 src/dsrlib/ui/main.py:205
 #: src/dsrlib/ui/wizard/pages/common.py:52
-#: src/dsrlib/ui/wizard/pages/pizero.py:183
+#: src/dsrlib/ui/wizard/pages/pizero.py:184
 msgid "Error"
 msgstr "Erreur"
 
-#: src/dsrlib/ui/main.py:217
+#: src/dsrlib/ui/main.py:205
 msgid "Command failed with exit code {code}.<p />{stderr}"
 msgstr "La commande a échoué avec le code de retour {code}.<p />{stderr}"
 
-#: src/dsrlib/ui/main.py:238
+#: src/dsrlib/ui/main.py:226
 msgid "Password needed"
 msgstr "Mot de passe nécessaire"
 
-#: src/dsrlib/ui/main.py:246
+#: src/dsrlib/ui/main.py:234
 msgid "You need to enter your password to setup groups and udev rules."
 msgstr ""
 "Vous devez entrer votre mot de passe pour configurer les groupes et les "
@@ -732,7 +732,7 @@ msgstr ""
 "La configuration initiale du périphérique est ignorée. Vous pouvez "
 "configurer vos périphériques plus tard depuis le menu Périphériques."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:28
+#: src/dsrlib/ui/wizard/pages/pizero.py:29
 msgid ""
 "Please enter the credentials for your Wifi network.\n"
 "The Raspberry Pi will automatically connect to this network.\n"
@@ -744,35 +744,35 @@ msgstr ""
 "Si vous laissez ces champs vides, vous devrez le configurer vous-même après "
 "avoir créé la carte SD."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:38
+#: src/dsrlib/ui/wizard/pages/pizero.py:39
 msgid "SSID"
 msgstr "SSID"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:39
+#: src/dsrlib/ui/wizard/pages/pizero.py:40
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:40
+#: src/dsrlib/ui/wizard/pages/pizero.py:41
 msgid "Confirm password"
 msgstr "Confirmer le mot de passe"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:48
+#: src/dsrlib/ui/wizard/pages/pizero.py:49
 msgid "Wifi configuration"
 msgstr "Configuration Wifi"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:137
+#: src/dsrlib/ui/wizard/pages/pizero.py:138
 msgid "Image copy"
 msgstr "Copie de l'image"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:138
+#: src/dsrlib/ui/wizard/pages/pizero.py:139
 msgid "Copying image file"
 msgstr "Copie du fichier image"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:183
+#: src/dsrlib/ui/wizard/pages/pizero.py:184
 msgid "Error copying file: {error}"
 msgstr "Erreur de copie du fichier: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:198
+#: src/dsrlib/ui/wizard/pages/pizero.py:199
 msgid ""
 "\n"
 "<p>The image file has been copied to your Downloads folder.</p>\n"
@@ -797,15 +797,15 @@ msgstr ""
 "que le périphérique apparaisse dans le menu Périphériques puis lancez "
 "l'option d'appariement.</p>\n"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:211
+#: src/dsrlib/ui/wizard/pages/pizero.py:212
 msgid "Create SD card"
 msgstr "Création de la carte SD"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:229
+#: src/dsrlib/ui/wizard/pages/pizero.py:230
 msgid "Preparing to pair the PS4"
 msgstr "Préparation de l'appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:230
+#: src/dsrlib/ui/wizard/pages/pizero.py:231
 msgid ""
 "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when "
 "done."
@@ -813,40 +813,40 @@ msgstr ""
 "Tout d'abord, allumez votre PS4 et branchez-y le Raspberry Pi. Cliquez sur "
 "Continuer lorsque c'est fait."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:271
+#: src/dsrlib/ui/wizard/pages/pizero.py:272
 msgid "Pairing PS4"
 msgstr "Appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:290
+#: src/dsrlib/ui/wizard/pages/pizero.py:291
 msgid "Getting device information..."
 msgstr "Obtention des informations du périphérique..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:302
-#: src/dsrlib/ui/wizard/pages/pizero.py:468
+#: src/dsrlib/ui/wizard/pages/pizero.py:303
+#: src/dsrlib/ui/wizard/pages/pizero.py:469
 msgid "Error connecting to the device: {error}"
 msgstr "Erreur de connexion au périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:310
+#: src/dsrlib/ui/wizard/pages/pizero.py:311
 msgid "Error getting info from device: {error}"
 msgstr "Erreur lors de l'obtention des informations du périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:324
+#: src/dsrlib/ui/wizard/pages/pizero.py:325
 msgid "Waiting for the PS4..."
 msgstr "En attente de la PS4..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:333
+#: src/dsrlib/ui/wizard/pages/pizero.py:334
 msgid "Error while pairing the PS4: {code}"
 msgstr "Erreur lors de l'appairement de la PS4: {code}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:339
+#: src/dsrlib/ui/wizard/pages/pizero.py:340
 msgid "Error while pairing the PS4"
 msgstr "Une erreur lors de l'appairement de la PS4"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:372
+#: src/dsrlib/ui/wizard/pages/pizero.py:373
 msgid "Waiting for Dualshock"
 msgstr "En attente de la Dualshock"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:373
+#: src/dsrlib/ui/wizard/pages/pizero.py:374
 msgid ""
 "You can now unplug the Raspberry Pi from the PS4, but leave it powered. "
 "Please plug your DualShock controller to this PC."
@@ -854,41 +854,42 @@ msgstr ""
 "Vous pouvez maintenant débrancher le Raspberry Pi de la PS4, en le laissant "
 "allumé. Veuillez brancher votre contrôleur DualShock à ce PC."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:423
+#: src/dsrlib/ui/wizard/pages/pizero.py:424
 msgid "Pairing controller"
 msgstr "Appairement du contrôleur"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:424
+#: src/dsrlib/ui/wizard/pages/pizero.py:425
 msgid "Pairing the controller, please wait..."
 msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:429
+#: src/dsrlib/ui/wizard/pages/pizero.py:430
 msgid "Obtaining MAC address..."
 msgstr "Obtention de l'adresse MAC..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:458
+#: src/dsrlib/ui/wizard/pages/pizero.py:459
 msgid "Uploading pairing info..."
 msgstr "Téléversement des informations d'appairement..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:472
+#: src/dsrlib/ui/wizard/pages/pizero.py:473
 msgid "Error uploading pairing info: {error}"
 msgstr "Erreur lors du téléversement des informations d'appairement: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:477
+#: src/dsrlib/ui/wizard/pages/pizero.py:478
 msgid "Pairing the controller..."
 msgstr "Appairement du contrôleur..."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:501
+#: src/dsrlib/ui/wizard/pages/pizero.py:502
 msgid "Finished"
 msgstr "Terminé"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:502
+#: src/dsrlib/ui/wizard/pages/pizero.py:503
 msgid ""
-"Done. You can unplug the DualShock and press PS to start using it through "
-"the proxy."
+"Done. You can unplug the DualShock. Next upload a configuration to the "
+"device through the Upload menu and you can start using your controller."
 msgstr ""
-"C'est fait. Vous pouvez débrancher la DualShock et appuyer sur PS pour "
-"commencer à l'utiliser à travers le mandataire."
+"Terminé. Vous pouvez débrancher la Dualshock. Ensuite téléverser une "
+"configuration vers le périphérique via le menu Téléversement, et vous "
+"pourrez commencer à utiliser votre contrôlleur."
 
 #: src/dsrlib/ui/workspace.py:57
 msgid "No configuration selected"
@@ -903,6 +904,13 @@ msgstr ""
 "{count} configuration(s) sélectionnée(s) ({size} octets). Vous ne pouvez "
 "téléverser plusieurs configurations que vers un Arduino (pas un Pi Zero), à "
 "condition que la taille n'excède pas 1024 octets."
+
+#~ msgid ""
+#~ "Done. You can unplug the DualShock and press PS to start using it through "
+#~ "the proxy."
+#~ msgstr ""
+#~ "C'est fait. Vous pouvez débrancher la DualShock et appuyer sur PS pour "
+#~ "commencer à l'utiliser à travers le mandataire."
 
 #~ msgid "Device lookup"
 #~ msgstr "Recherche du périphérique"

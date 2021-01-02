@@ -500,5 +500,5 @@ class PiZeroFinalPage(Page):
 
     def initializePage(self):
         self.setTitle(_('Finished'))
-        self.setSubTitle(_('Done. You can unplug the DualShock and press PS to start using it through the proxy.'))
+        self.setSubTitle(_('Done. You can unplug the DualShock. Next upload a configuration to the device through the Upload menu and you can start using your controller.'))
         self.wizard().onSuccess()
