@@ -14,15 +14,17 @@ with open('/dev/mmcblk0', 'rb') as fileobj:
     if magic != 0xCAFE:
         print('Invalid magic')
     else:
-        fileobj.seek(SIZE - 10, io.SEEK_SET)
-        pwdlen, ssidlen = struct.unpack('<II', fileobj.read(8))
+        fileobj.seek(SIZE - 11, io.SEEK_SET)
+        pwdlen, ssidlen, ssh = struct.unpack('<IIB', fileobj.read(8))
 
-        fileobj.seek(SIZE -10 - ssidlen - pwdlen, io.SEEK_SET)
+        fileobj.seek(SIZE -11 - ssidlen - pwdlen, io.SEEK_SET)
         password = fileobj.read(pwdlen).decode('utf-8')
         ssid = fileobj.read(ssidlen).decode('utf-8')
 
         try:
-            proc = subprocess.run(['/usr/bin/raspi-config', 'nonint', 'do_wifi_ssid_passphrase', ssid, password], capture_output=True, check=True)
+            subprocess.run(['/usr/bin/raspi-config', 'nonint', 'do_wifi_ssid_passphrase', ssid, password], capture_output=True, check=True)
+            if ssh:
+                subprocess.run(['/usr/bin/raspi-config', 'nonint', 'do_ssh', '0'], capture_output=True, check=True)
         except subprocess.CalledProcessError as exc:
             print('raspi-config failed with code %s' % exc.returncode)
             print('Output:')

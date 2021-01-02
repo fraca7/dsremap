@@ -35,10 +35,12 @@ class PiZeroWifiPage(Page):
                 self._pwd2 = QtWidgets.QLineEdit(self)
                 for pwd in (self._pwd1, self._pwd2):
                     pwd.setEchoMode(pwd.Password)
+                self._ssh = QtWidgets.QCheckBox(_('Enable SSH'), self)
 
                 form.addRow(_('SSID'), self._ssid)
                 form.addRow(_('Password'), self._pwd1)
                 form.addRow(_('Confirm password'), self._pwd2)
+                form.addRow(self._ssh)
 
                 for widget in (self._ssid, self._pwd1, self._pwd2):
                     widget.textChanged.connect(self._checkComplete)
@@ -51,6 +53,7 @@ class PiZeroWifiPage(Page):
 
     def validatePage(self):
         self.wizard().setWifi(self._ssid.text() or None, self._pwd1.text() or None)
+        self.wizard().setSsh(self._ssh.isChecked())
         return True
 
     def _checkComplete(self, _):
@@ -70,11 +73,12 @@ class ImageCopyThread(QtCore.QThread):
     finished = QtCore.pyqtSignal()
     error = QtCore.pyqtSignal(object)
 
-    def __init__(self, src, dst, ssid, password):
+    def __init__(self, src, dst, ssid, password, ssh):
         self._src = src
         self._dst = dst
         self._ssid = None if ssid is None else ssid.encode('utf-8')
         self._password = None if password is None else password.encode('utf-8')
+        self._ssh = ssh
         self._cancel = False
         super().__init__()
 
@@ -102,10 +106,9 @@ class ImageCopyThread(QtCore.QThread):
                         self.progress.emit(size, size)
 
                         if self._ssid is not None and self._password is not None:
-                            dst.write(b'\x00' * (512 - len(self._password) - len(self._ssid) - 10))
-                            dst.write(self._password)
-                            dst.write(self._ssid)
-                            dst.write(struct.pack('<IIH', len(self._password), len(self._ssid), 0xCAFE))
+                            payload = b'%s%s%s' % (self._password, self._ssid, struct.pack('<IIBH', len(self._password), len(self._ssid), 1 if self._ssh else 0, 0xCAFE))
+                            dst.write(b'\x00' * (512 - len(payload)))
+                            dst.write(payload)
             except Cancelled:
                 os.remove(self._dst)
             except Exception as exc: # pylint: disable=W0703
@@ -144,7 +147,7 @@ class PiZeroCopyPage(Page):
         self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), '%s.img' % os.path.splitext(name)[0])
 
         ssid, password = self.wizard().wifi()
-        self._thread = ImageCopyThread(self._src, self._dst, ssid, password)
+        self._thread = ImageCopyThread(self._src, self._dst, ssid, password, self.wizard().ssh())
         self._thread.progress.connect(self._onProgress)
         self._thread.finished.connect(self._onFinished)
         self._thread.error.connect(self._onError)

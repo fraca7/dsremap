@@ -50,6 +50,7 @@ class PairingWizardMixin:
 class SetupSDWizardMixin:
     def __init__(self, *args, **kwargs):
         self._wifi = (None, None)
+        self._ssh = False
         super().__init__(*args, **kwargs)
 
     def setupPages(self):
@@ -63,6 +64,12 @@ class SetupSDWizardMixin:
 
     def setWifi(self, ssid, password):
         self._wifi = (ssid, password)
+
+    def ssh(self):
+        return self._ssh
+
+    def setSsh(self, ssh):
+        self._ssh = ssh
 
 
 class PairingWizard(PairingWizardMixin, Wizard):
