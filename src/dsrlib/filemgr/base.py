@@ -18,6 +18,7 @@ class FileManager:
 
     @classmethod
     def showFile(cls, filename):
+        filename = os.path.abspath(filename)
         for handler in reversed(cls.handlers):
             try:
                 if handler.showFile(filename):
