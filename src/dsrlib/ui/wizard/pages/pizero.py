@@ -456,7 +456,7 @@ class PiZeroPairDSPage(Page):
             self.wizard().button(self.wizard().NextButton).click()
 
     def _onReport(self, data):
-        macaddr = ':'.join(['%02X' % val for val in reversed(data[1:])])
+        macaddr = ':'.join(['%02X' % val for val in reversed(data[1:7])])
 
         self._setState(self.STATE_NETWORK)
         self.setSubTitle(_('Uploading pairing info...'))
