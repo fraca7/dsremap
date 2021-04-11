@@ -16,8 +16,7 @@ def write_ids(defname, dstname, strname):
         with codecs.getwriter('utf-8')(open(dstname, 'wb')) as dst:
             name = os.path.basename(dstname).upper().replace('.', '_')
             dst.write('\n#ifndef %s\n' % name)
-            dst.write('#define %s\n' % name)
-            dst.write('\n/* Generated on %s */\n\n' % time.ctime())
+            dst.write('#define %s\n\n' % name)
 
             for line in src:
                 line = line.strip()

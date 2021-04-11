@@ -21,9 +21,6 @@ src/ext/vmwrapper*.so
 src/ext/vmwrapper*.pyd
 res/resources.qrc
 src/dsrlib/resources.py
-src/arduino/dsremap/messages.h
-src/arduino/dsremap/opcodes.h
-src/arduino/dsremap/version.h
 src/ext/src/arduino/dsremap/VM.o
 src/pairing/*.o
 src/pairing/pairing

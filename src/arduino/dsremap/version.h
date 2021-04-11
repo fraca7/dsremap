@@ -1,0 +1,6 @@
+#ifndef _DSREMAP_VERSION_H_
+#define _DSREMAP_VERSION_H_
+#define FW_VERSION_MAJOR 1
+#define FW_VERSION_MINOR 1
+#define FW_VERSION_PATCH 0
+#endif
