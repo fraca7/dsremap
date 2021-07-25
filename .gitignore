@@ -3,7 +3,6 @@ src/proxy/test.bin
 
 .DS_Store
 *~
-build
 dist
 *.dmg
 arduino-build

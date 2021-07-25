@@ -13,6 +13,10 @@ import zlib
 import colorama
 import serial
 
+"""
+Listen for log messages on serial interface and diplays them. The "strings.pickle" file
+must be in the current directory.
+"""
 
 class CRC32Checker:
     def __init__(self):

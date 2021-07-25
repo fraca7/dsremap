@@ -38,7 +38,7 @@ def depends(*tasks, done=set()): # Yes, mutable default.
 
 def headers():
     # Log messages
-    from tools.genids import main
+    from tools.build.genids import main
     main([
         '-o', os.path.join('src', 'arduino', 'dsremap', 'messages.h'),
         '-s', os.path.join('tools', 'strings.pickle'),
@@ -83,7 +83,7 @@ def resources():
 # Other generated files
 
 def messages():
-    from tools import pygettext
+    from tools.build import pygettext
     pygettext.main([
         '-a',
         '-n',

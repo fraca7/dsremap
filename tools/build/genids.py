@@ -7,6 +7,9 @@ import getopt
 import sys
 import pickle
 
+"""
+Generates the C header file that #defines the numerical message log IDs
+"""
 
 def write_ids(defname, dstname, strname):
     current = 0
