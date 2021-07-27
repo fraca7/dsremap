@@ -700,7 +700,7 @@ See :ref:`use_calibration`
 GET_REPORT 0xa3
 ###############
 
-This contains some time of manufacture information, part of it in plain text. Not entirely deciphered though. It's identical every time (for a given controller).
+This contains some time of manufacture information, part of it in plain text. Not entirely deciphered though. There is a human-readable date and time. According to the Linux kernel driver, the hardware version of the controller lies at offset 35 and the firmware version at offset 41 (both little-endian 16 bits unsigned).
 
 GET_REPORT 0x12
 ###############
