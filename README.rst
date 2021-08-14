@@ -13,6 +13,10 @@ documentation at Readthedocs_.
 
 Changelog:
 
+  * v1.2.0
+
+    * The RPi0 now uses USB to communicate with the PS4
+
   * v1.1.0
 
     * Added support for Bluetooth through the RPi0W

@@ -1,4 +1,12 @@
 
+v1.2.0
+
+  + The RPi0 now communicates with the PS4 through USB
+
+v1.1.0
+
+  + Add Bluetooth proxying through an Rpi0
+
 v1.0.1
 
   ! Don't always show the "new version available" dialog at startup
