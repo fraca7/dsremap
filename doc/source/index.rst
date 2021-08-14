@@ -7,6 +7,7 @@ dsremap manual
    :caption: Contents:
 
    about
+   usage_ps4
    usage_leonardo
    usage_rpi
    ui

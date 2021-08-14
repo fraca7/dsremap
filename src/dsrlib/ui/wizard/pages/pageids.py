@@ -6,14 +6,15 @@ import enum
 class PageId(enum.IntEnum):
     DeviceType = enum.auto()
     DeviceNotConfigured = enum.auto()
+
     ArduinoAvrdude = enum.auto()
     ArduinoReset = enum.auto()
     ArduinoFindSerial = enum.auto()
+
     PiZeroWifi = enum.auto()
     PiZeroCopy = enum.auto()
     PiZeroBurn = enum.auto()
-    PiZeroPlug = enum.auto()
-    PiZeroPairHost = enum.auto()
+
+    PiZeroGetInfo = enum.auto()
     PiZeroWaitDS = enum.auto()
-    PiZeroPairDS = enum.auto()
     PiZeroFinal = enum.auto()

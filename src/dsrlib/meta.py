@@ -65,9 +65,13 @@ class Meta:
             return {
                 'leonardo': { 'firmware': { 'current': { 'version': 0 } } },
                 'rpi0w': { 'image': { 'current': { 'version': 0 } }, 'server': { 'current': { 'version': 0 } } },
+                'rpi0w-v2': { 'image': { 'current': { 'version': 0 } }, 'server': { 'current': { 'version': 0 } } },
                 }
         with codecs.getreader('utf-8')(open(filename, 'rb')) as fileobj:
-            return json.load(fileobj)
+            data = json.load(fileobj)
+        if 'rpi0w-v2' not in data:
+            data['rpi0w-v2'] = { 'image': { 'current': { 'version': 0 } }, 'server': { 'current': { 'version': 0 } } }
+        return data
 
     @staticmethod
     def updateManifest(manifest):

@@ -16,7 +16,7 @@ case "$1" in
     setup)
 	# This is run in the chroot
 	apt update
-	apt -y install libbluetooth3 python-virtualenv python3-dev
+	apt -y install libbluetooth3 libglib2.0 zlib1g libsoup2.4 avahi-daemon daemonize
 
 	# Kernel configuration
 	echo "dtoverlay=dwc2" >> /boot/config.txt
@@ -55,6 +55,7 @@ case "$1" in
 	sed -e "s/@IMGSIZE@/$IMGSIZE/g" extractcreds.py.in > /mnt/usr/sbin/extractcreds
 	chmod 755 /mnt/usr/sbin/extractcreds
 	patch -p0 /mnt/etc/init.d/resize2fs_once < resize2fs_once.patch
+	cp dsremap-proxy.service /mnt/etc/avahi/services/
 
 	# Copy self and installer to root, relaunch in chroot
 	name=`basename "$0"`

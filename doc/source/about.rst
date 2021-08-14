@@ -33,13 +33,9 @@ USB cable.
 "1" goes to the Dual Shock and "2" goes to the PS4, or the PC when
 you're configuring. There is no need for an external power supply.
 
-Pros:
-
-  * No added latency, at least none I could notice
-
 Cons:
 
-  * The cable, special :ref:`setup of the PS4<PS4Setup>` required
+  * The cables...
 
 .. note:: There are several vendors who sell USB host shields for
           Arduino. Beware of some chinese no-name boards which come
@@ -57,17 +53,25 @@ Raspberry Pi setup
 ##################
 
 The second setup uses a `Raspberry Pi Zero W
-<https://www.raspberrypi.org/products/raspberry-pi-zero-w/>`_ through
-Bluetooth.
+<https://www.raspberrypi.org/products/raspberry-pi-zero-w/>`_. The
+Dualshock communicates with the RPi through Bluetooth, and the RPi
+with the PS4 through USB.
+
+.. image:: ../images/rpi0.jpg
+   :align: center
 
 Pros:
 
-  * No cables
+  * No cables, at least from the Dualshock.
 
 Cons:
 
-  * Measurable latency, with random peaks
   * You need Wifi so the software can "speak" to the RPi
+  * In order to support this using Linux FunctionFS, the kernel has to
+    be patched. The patch is included as
+    src/rpi0/kernel-patch.diff. So if you want to build your own OS
+    image you'll have to rebuild the kernel as well. Pre-prepared
+    images are available through the desktop app.
 
 Full list of hardware:
 

@@ -839,23 +839,4 @@ In Gs.
 Bluetooth is mandatory
 ----------------------
 
-Unfortunately, even when the PS4 is set to communicate with the Dualshock through USB using the appropriate system setting, nothing will work if the Dualshock cannot establish a Bluetooth connection to the PS4. Here is the little experiment I did that proves this:
-
-  * Paired the Dualshock with a Linux PC, then disconnect it.
-  * Changed the code to
-
-    1. Spoof the 0x12 GET_REPORT so that the PS4 thinks the DS is paired with it, by hardcoding the PS4 address into it
-    2. Mapped the Cross button to PS (to make sure the DS simply doesn't connect by itself when pressing PS)
-
-Then I plug the DS to the PS4 through the Arduino. Nothing happens until I press Cross on the DS; then the 0x14 0x01 ... SET_REPORT happens, and the DS automatically connects to the PC. The PS4 does not react (stuck on "Press PS" screen").
-
-This shows that the PS4 will not acknowledge the DS over USB if it's not, at the same time, connected through BT.
-
-Unfortunately this means that setting up the Arduino to work untethered from the DS would be quite complicated: we would need two host shields (not even sure that's possible), and two BT dongles, so that we can close the loop to the PS4 using the second one. Not to mention there's not enough program memory in the Leonardo for this...
-
-It is possible though that only the initial connection is mandatory, and the PS4 would happily go on after a disconnection. To test this I'll need to find out how to switch the BT dongle mode, in order to
-
-  1. Handle the boot sequence on its own and use the dongle to connect to the PS4, thus unblocking the situation
-  2. Only then switch the dongle to "listen" mode and wait for the DS to connect
-
-Or maybe a single BT dongle can be used to communicate with both the DS and the PS4 ? I don't know enough to tell.
+Even when the PS4 is configured to communicate with the Dualshock through USB using the appropriate system setting, it *has* to connect through Bluetooth after receiving the 0x14 SET_REPORT, or the PS4 will not acknowledge it.

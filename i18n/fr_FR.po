@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-01-02 18:22+0100\n"
-"PO-Revision-Date: 2021-01-02 18:22+0100\n"
+"POT-Creation-Date: 2021-08-14 13:51+0200\n"
+"PO-Revision-Date: 2021-08-14 13:52+0200\n"
 "Last-Translator: Jérôme Laheurte <jerome@jeromelaheurte.net>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -356,12 +356,12 @@ msgid "Redo last undone action"
 msgstr "Refaire la dernière action défaite"
 
 #: src/dsrlib/ui/uicommands/bt.py:14
-msgid "Pair a DualShock 4 and a PS4 to this DSRemap-enabled device"
-msgstr "Appairer une Dualshock 4 et une PS4 à ce périphérique DSRemap"
+msgid "Pair a DualShock 4 to this DSRemap-enabled device"
+msgstr "Apparier une Dualshock 4 à ce périphérique DSRemap"
 
 #: src/dsrlib/ui/uicommands/bt.py:14
-msgid "Pair to PS4 and Dualshock"
-msgstr "Appariement avec la PS4 et la Dualshock"
+msgid "Pair with a Dualshock"
+msgstr "Apparier avec une Dualshock"
 
 #: src/dsrlib/ui/uicommands/bt.py:25
 msgid "Reboot"
@@ -783,9 +783,7 @@ msgid ""
 "<p>You can now use the <a href=\"https://www.raspberrypi.org/software/"
 "\">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero "
 "W, using the Custom image option.</p>\n"
-"<p>Once you are done, insert the SD card in your Pi and power it on. "
-"Position it near your PS4 because you will have to connect both during the "
-"pairing process.</p>\n"
+"<p>Once you are done, insert the SD card in your Pi and power it on.</p>\n"
 "<p>The first boot may take some time; wait until the device appears in the "
 "Device menu and then proceed with the pairing option.</p>\n"
 msgstr ""
@@ -795,8 +793,7 @@ msgstr ""
 "software/\">créateur d'images Raspberry Pi</a> pour créer la carte SD pour "
 "votre Raspberry Pi Zero W, en utilisant l'option Image personnalisée.</p>\n"
 "<p>Une fois cela fait, insérez la carte SD dans votre Pi et branchez-le à "
-"l'alimentation. Mettez-le près de votre PS4 car vous aurez besoin de "
-"connecter les deux lors du processus d'appariement.</p>\n"
+"l'alimentation.</p>\n"
 "<p>Le premier démarrage peut prendre un certain temps; attendez jusqu'à ce "
 "que le périphérique apparaisse dans le menu Périphériques puis lancez "
 "l'option d'appariement.</p>\n"
@@ -805,95 +802,45 @@ msgstr ""
 msgid "Create SD card"
 msgstr "Création de la carte SD"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:233
-msgid "Preparing to pair the PS4"
-msgstr "Préparation de l'appairement de la PS4"
+#: src/dsrlib/ui/wizard/pages/pizero.py:243
+msgid "Getting device information"
+msgstr "Obtention des informations du périphérique"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:234
-msgid ""
-"First, power on your PS4 and plug the Raspberry Pi to it. Click Next when "
-"done."
-msgstr ""
-"Tout d'abord, allumez votre PS4 et branchez-y le Raspberry Pi. Cliquez sur "
-"Continuer lorsque c'est fait."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:275
-msgid "Pairing PS4"
-msgstr "Appairement de la PS4"
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:294
-msgid "Getting device information..."
-msgstr "Obtention des informations du périphérique..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:306
-#: src/dsrlib/ui/wizard/pages/pizero.py:472
+#: src/dsrlib/ui/wizard/pages/pizero.py:272
 msgid "Error connecting to the device: {error}"
 msgstr "Erreur de connexion au périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:314
+#: src/dsrlib/ui/wizard/pages/pizero.py:280
 msgid "Error getting info from device: {error}"
 msgstr "Erreur lors de l'obtention des informations du périphérique: {error}"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:328
-msgid "Waiting for the PS4..."
-msgstr "En attente de la PS4..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:337
-msgid "Error while pairing the PS4: {code}"
-msgstr "Erreur lors de l'appairement de la PS4: {code}"
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:343
-msgid "Error while pairing the PS4"
-msgstr "Une erreur lors de l'appairement de la PS4"
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:376
+#: src/dsrlib/ui/wizard/pages/pizero.py:308
 msgid "Waiting for Dualshock"
 msgstr "En attente de la Dualshock"
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:377
-msgid ""
-"You can now unplug the Raspberry Pi from the PS4, but leave it powered. "
-"Please plug your DualShock controller to this PC."
+#: src/dsrlib/ui/wizard/pages/pizero.py:309
+msgid "Please plug your DualShock controller to this PC."
+msgstr "Veuillez brancher votre contrôlleur Dualshock à ce PC."
+
+#: src/dsrlib/ui/wizard/pages/pizero.py:344
+msgid "Pairing the Dualshock..."
+msgstr "Appariement de la Dualshock..."
+
+#: src/dsrlib/ui/wizard/pages/pizero.py:368
+msgid "Done. You can now unplug the Dualshock from this PC."
+msgstr "Terminé. Vous pouvez maintenant débrancher la Dualshock de ce PC."
+
+#: src/dsrlib/ui/wizard/pages/pizero.py:369
+msgid "To use it, first plug the Pi to the PS4 as shown here:"
 msgstr ""
-"Vous pouvez maintenant débrancher le Raspberry Pi de la PS4, en le laissant "
-"allumé. Veuillez brancher votre contrôleur DualShock à ce PC."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:427
-msgid "Pairing controller"
-msgstr "Appairement du contrôleur"
+#: src/dsrlib/ui/wizard/pages/pizero.py:376
+msgid "Then upload a configuration, power on the PS4 and press the PS button."
+msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:428
-msgid "Pairing the controller, please wait..."
-msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:433
-msgid "Obtaining MAC address..."
-msgstr "Obtention de l'adresse MAC..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:462
-msgid "Uploading pairing info..."
-msgstr "Téléversement des informations d'appairement..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:476
-msgid "Error uploading pairing info: {error}"
-msgstr "Erreur lors du téléversement des informations d'appairement: {error}"
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:481
-msgid "Pairing the controller..."
-msgstr "Appairement du contrôleur..."
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:505
+#: src/dsrlib/ui/wizard/pages/pizero.py:379
 msgid "Finished"
 msgstr "Terminé"
-
-#: src/dsrlib/ui/wizard/pages/pizero.py:506
-msgid ""
-"Done. You can unplug the DualShock. Next upload a configuration to the "
-"device through the Upload menu and you can start using your controller."
-msgstr ""
-"Terminé. Vous pouvez débrancher la Dualshock. Ensuite téléverser une "
-"configuration vers le périphérique via le menu Téléversement, et vous "
-"pourrez commencer à utiliser votre contrôlleur."
 
 #: src/dsrlib/ui/workspace.py:57
 msgid "No configuration selected"
@@ -908,6 +855,62 @@ msgstr ""
 "{count} configuration(s) sélectionnée(s) ({size} octets). Vous ne pouvez "
 "téléverser plusieurs configurations que vers un Arduino (pas un Pi Zero), à "
 "condition que la taille n'excède pas 1024 octets."
+
+#~ msgid "Preparing to pair the PS4"
+#~ msgstr "Préparation de l'appairement de la PS4"
+
+#~ msgid ""
+#~ "First, power on your PS4 and plug the Raspberry Pi to it. Click Next when "
+#~ "done."
+#~ msgstr ""
+#~ "Tout d'abord, allumez votre PS4 et branchez-y le Raspberry Pi. Cliquez "
+#~ "sur Continuer lorsque c'est fait."
+
+#~ msgid "Pairing PS4"
+#~ msgstr "Appairement de la PS4"
+
+#~ msgid "Waiting for the PS4..."
+#~ msgstr "En attente de la PS4..."
+
+#~ msgid "Error while pairing the PS4: {code}"
+#~ msgstr "Erreur lors de l'appairement de la PS4: {code}"
+
+#~ msgid "Error while pairing the PS4"
+#~ msgstr "Une erreur lors de l'appairement de la PS4"
+
+#~ msgid ""
+#~ "You can now unplug the Raspberry Pi from the PS4, but leave it powered. "
+#~ "Please plug your DualShock controller to this PC."
+#~ msgstr ""
+#~ "Vous pouvez maintenant débrancher le Raspberry Pi de la PS4, en le "
+#~ "laissant allumé. Veuillez brancher votre contrôleur DualShock à ce PC."
+
+#~ msgid "Pairing controller"
+#~ msgstr "Appairement du contrôleur"
+
+#~ msgid "Pairing the controller, please wait..."
+#~ msgstr "Contrôleur en cous d'appairement, veuillez patienter..."
+
+#~ msgid "Obtaining MAC address..."
+#~ msgstr "Obtention de l'adresse MAC..."
+
+#~ msgid "Uploading pairing info..."
+#~ msgstr "Téléversement des informations d'appairement..."
+
+#~ msgid "Error uploading pairing info: {error}"
+#~ msgstr ""
+#~ "Erreur lors du téléversement des informations d'appairement: {error}"
+
+#~ msgid "Pairing the controller..."
+#~ msgstr "Appairement du contrôleur..."
+
+#~ msgid ""
+#~ "Done. You can unplug the DualShock. Next upload a configuration to the "
+#~ "device through the Upload menu and you can start using your controller."
+#~ msgstr ""
+#~ "Terminé. Vous pouvez débrancher la Dualshock. Ensuite téléverser une "
+#~ "configuration vers le périphérique via le menu Téléversement, et vous "
+#~ "pourrez commencer à utiliser votre contrôlleur."
 
 #~ msgid ""
 #~ "Done. You can unplug the DualShock and press PS to start using it through "
@@ -981,16 +984,6 @@ msgstr ""
 
 #~ msgid "Upload configurations to"
 #~ msgstr "Téléverser les configurations vers"
-
-#~ msgid ""
-#~ "First, please plug your Dualshock controller to this PC using an USB "
-#~ "cable."
-#~ msgstr ""
-#~ "Tout d'abord, veuillez brancher votre contrôleur Dualshock à ce PC en "
-#~ "utilisant un câble USB."
-
-#~ msgid "PS4 paired. You can unplug the Raspberry Pi from it."
-#~ msgstr "PS4 appariée. Vous pouvez la débrancher du Pi."
 
 #~ msgid ""
 #~ "\n"

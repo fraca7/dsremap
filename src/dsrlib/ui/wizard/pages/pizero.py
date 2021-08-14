@@ -8,7 +8,7 @@ import zipfile
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from dsrlib.domain.downloader import StringDownloader, DownloadError, DownloadNetworkError, DownloadHTTPError, AbortedError
+from dsrlib.domain.downloader import StringDownloader, DownloadNetworkError, DownloadHTTPError, AbortedError
 from dsrlib.domain.device import DeviceVisitor
 from dsrlib.ui.utils import LayoutBuilder
 from dsrlib.filemgr import FileManager
@@ -142,7 +142,7 @@ class PiZeroCopyPage(Page):
         self.setSubTitle(_('Copying image file'))
 
         manifest = Meta.manifest()
-        name = manifest['rpi0w']['image']['current']['name']
+        name = manifest['rpi0w-v2']['image']['current']['name']
         self._src = os.path.join(Meta.dataPath('images'), name)
         self._dst = os.path.join(QtCore.QStandardPaths.writableLocation(QtCore.QStandardPaths.DownloadLocation), '%s.img' % os.path.splitext(name)[0])
 
@@ -202,7 +202,7 @@ class PiZeroBurnPage(Page):
             msg = QtWidgets.QLabel(_('''
 <p>The image file has been copied to your Downloads folder.</p>
 <p>You can now use the <a href="https://www.raspberrypi.org/software/">Raspberry Pi Imager</a> to create the SD card for your Raspberry Pi Zero W, using the Custom image option.</p>
-<p>Once you are done, insert the SD card in your Pi and power it on. Position it near your PS4 because you will have to connect both during the pairing process.</p>
+<p>Once you are done, insert the SD card in your Pi and power it on.</p>
 <p>The first boot may take some time; wait until the device appears in the Device menu and then proceed with the pairing option.</p>
 '''), self) # pylint: disable=C0301
             msg.setWordWrap(True)
@@ -216,50 +216,18 @@ class PiZeroBurnPage(Page):
         self.wizard().onSuccess()
 
 
-class PiZeroPlugPage(Page):
-    ID = PageId.PiZeroPlug
+class PiZeroGetInfoPage(Page):
+    ID = PageId.PiZeroGetInfo
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        bld = LayoutBuilder(self)
-        with bld.vbox() as layout:
-            img = QtWidgets.QLabel(self)
-            img.setPixmap(QtGui.QPixmap(':images/rpi_ps4.jpg'))
-            img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
-            layout.addWidget(img)
-
-    def initializePage(self):
-        self.setTitle(_('Preparing to pair the PS4'))
-        self.setSubTitle(_('First, power on your PS4 and plug the Raspberry Pi to it. Click Next when done.'))
-
-    def nextId(self):
-        return PiZeroPairHostPage.ID
-
-
-class PiZeroPairHostPage(Page):
-    ID = PageId.PiZeroPairHost
-
-    STATE_CONTACTING = 0
+    STATE_DOWNLOADING = 0
     STATE_WAITING = 1
-    STATE_PAIRING = 2
+    STATE_DONE = 2
     STATE_ERROR = 3
-    STATE_DONE = 4
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        bld = LayoutBuilder(self)
-        with bld.vbox() as layout:
-            self._message = QtWidgets.QTextEdit(self)
-            self._message.setReadOnly(True)
-            layout.addWidget(self._message)
 
     def isComplete(self):
         return self._state in (self.STATE_DONE, self.STATE_ERROR)
 
     def nextId(self):
-        # Without this the Next button is still shown and enabled even after calling setFinalPage(True)
         if self._state == self.STATE_ERROR:
             return -1
         return PiZeroWaitDSPage.ID
@@ -272,10 +240,9 @@ class PiZeroPairHostPage(Page):
             self.wizard().button(self.wizard().NextButton).click()
 
     def initializePage(self):
-        self.setTitle(_('Pairing PS4'))
+        self.setTitle(_('Getting device information'))
 
-        self._setState(self.STATE_CONTACTING)
-        self._message.hide()
+        self._setState(self.STATE_DOWNLOADING)
         self._downloader = None
         self._retryCount = 0
         self._timer = QtCore.QTimer(self)
@@ -290,8 +257,7 @@ class PiZeroPairHostPage(Page):
             self._timer.stop()
 
     def _getInfo(self):
-        self._setState(self.STATE_CONTACTING)
-        self.setSubTitle(_('Getting device information...'))
+        self._setState(self.STATE_DOWNLOADING)
 
         def gotInfo(downloader):
             self._downloader = None
@@ -316,46 +282,12 @@ class PiZeroPairHostPage(Page):
                 return
 
             data = json.loads(text)
-            self.wizard().setDongle(data['bt_interfaces'][0])
-            self._pair()
+            self.wizard().setDongle(data['bdaddr'])
+            self._setState(self.STATE_DONE)
 
         dev = self.wizard().device()
         self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=gotInfo)
         self._downloader.get('http://%s:%d/info' % (dev.addr, dev.port))
-
-    def _pair(self):
-        self._setState(self.STATE_PAIRING)
-        self.setSubTitle(_('Waiting for the PS4...'))
-
-        def pairingDone(downloader):
-            self._downloader = None
-            try:
-                _unused, text = downloader.result()
-            except AbortedError:
-                return
-            except DownloadError as exc:
-                self.setSubTitle(_('Error while pairing the PS4: {code}').format(code=str(exc)))
-                self._setState(self.STATE_ERROR)
-                return
-
-            data = json.loads(text)
-            if data['status'] == 'ko':
-                self.setSubTitle(_('Error while pairing the PS4'))
-                self._message.setPlainText(data['stderr'])
-                self._setState(self.STATE_ERROR)
-                return
-
-            self.wizard().setLinkKey(data['key'])
-            self._setState(self.STATE_DONE)
-
-        dev = self.wizard().device()
-
-        url = QtCore.QUrl('http://%s:%d/setup_ps4' % (dev.addr, dev.port))
-        query = QtCore.QUrlQuery()
-        query.addQueryItem('interface', self.wizard().dongle())
-        url.setQuery(query)
-        self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=pairingDone)
-        self._downloader.get(url)
 
 
 class PiZeroWaitDSPage(Page):
@@ -374,9 +306,13 @@ class PiZeroWaitDSPage(Page):
 
     def initializePage(self):
         self.setTitle(_('Waiting for Dualshock'))
-        self.setSubTitle(_('You can now unplug the Raspberry Pi from the PS4, but leave it powered. Please plug your DualShock controller to this PC.'))
+        self.setSubTitle(_('Please plug your DualShock controller to this PC.'))
 
         self._found = False
+        # Bad things happen in the UI if we connect directly
+        QtCore.QTimer.singleShot(0, self._connect)
+
+    def _connect(self):
         self._enumerator.connect(self)
 
     def cleanupPage(self):
@@ -386,7 +322,7 @@ class PiZeroWaitDSPage(Page):
         return self._found
 
     def nextId(self):
-        return PiZeroPairDSPage.ID
+        return PiZeroFinalPage.ID
 
     def onDeviceAdded(self, device):
         class Visitor(DeviceVisitor):
@@ -405,8 +341,15 @@ class PiZeroWaitDSPage(Page):
         Visitor(self).visit(device)
 
     def onDualshockAdded(self, device):
+        self.setSubTitle(_('Pairing the Dualshock...'))
+
+        worker = device.worker()
+        worker.start()
+        report = b'\x13' + bytes(reversed(binascii.unhexlify(self.wizard().dongle().replace(':', '')))) + (b'\x00' * 16)
+        worker.write(report)
+        worker.cancel() # Actually this is blocking but shouldn't take long...
+
         self._found = True
-        self.wizard().setDualshock(device)
         self.completeChanged.emit()
         self.wizard().button(self.wizard().NextButton).click()
 
@@ -414,94 +357,25 @@ class PiZeroWaitDSPage(Page):
         pass
 
 
-class PiZeroPairDSPage(Page):
-    ID = PageId.PiZeroPairDS
-
-    STATE_REPORT = 0
-    STATE_NETWORK = 1
-    STATE_PAIR = 2
-    STATE_ERROR = 3
-    STATE_DONE = 4
-
-    def initializePage(self):
-        self.setTitle(_('Pairing controller'))
-        self.setSubTitle(_('Pairing the controller, please wait...'))
-
-        self._setState(self.STATE_REPORT)
-        self._downloader = None
-
-        self.setSubTitle(_('Obtaining MAC address...'))
-        self._worker = self.wizard().dualshock().worker()
-        self._worker.start()
-        self._worker.reportReceived.connect(self._onReport)
-        self._worker.getReport(0x81, 64)
-
-    def cleanupPage(self):
-        if self._downloader is not None:
-            self._downloader.abort()
-
-    def isComplete(self):
-        return self._state in (self.STATE_DONE, self.STATE_ERROR)
-
-    def nextId(self):
-        if self._state == self.STATE_ERROR:
-            return -1
-        return PiZeroFinalPage.ID
-
-    def _setState(self, state):
-        self._state = state
-        self.completeChanged.emit()
-        self.setFinalPage(state == self.STATE_ERROR)
-        if state == self.STATE_DONE:
-            self.wizard().button(self.wizard().NextButton).click()
-
-    def _onReport(self, data):
-        macaddr = ':'.join(['%02X' % val for val in reversed(data[1:7])])
-
-        self._setState(self.STATE_NETWORK)
-        self.setSubTitle(_('Uploading pairing info...'))
-
-        def gotResponse(downloader):
-            self._downloader = None
-            try:
-                _unused, text = downloader.result()
-            except AbortedError:
-                self._setState(self.STATE_ERROR)
-                return
-            except DownloadNetworkError as exc:
-                self.setSubTitle(_('Error connecting to the device: {error}').format(error=str(exc)))
-                self._setState(self.STATE_ERROR)
-                return
-            except DownloadHTTPError as exc:
-                self.setSubTitle(_('Error uploading pairing info: {error}').format(error=str(exc)))
-                self._setState(self.STATE_ERROR)
-                return
-
-            data = json.loads(text)
-            self.setSubTitle(_('Pairing the controller...'))
-            self._setState(self.STATE_PAIR)
-
-            report = b'\x13' + bytes(reversed(binascii.unhexlify(data['interface'].replace(':', '')))) + binascii.unhexlify(data['link_key'])
-            self._worker.write(report)
-            self._worker.cancel() # Actually this is blocking but shouldn't take long...
-
-            self._setState(self.STATE_DONE)
-
-        dev = self.wizard().device()
-        url = QtCore.QUrl('http://%s:%d/setup_ds4' % (dev.addr, dev.port))
-        query = QtCore.QUrlQuery()
-        query.addQueryItem('interface', self.wizard().dongle())
-        query.addQueryItem('ds4', macaddr)
-        query.addQueryItem('link_key', self.wizard().linkKey())
-        url.setQuery(query)
-        self._downloader = StringDownloader(self, self.mainWindow().manager(), callback=gotResponse)
-        self._downloader.get(url)
-
-
 class PiZeroFinalPage(Page):
     ID = PageId.PiZeroFinal
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        bld = LayoutBuilder(self)
+        with bld.vbox() as layout:
+            layout.addWidget(QtWidgets.QLabel(_('Done. You can now unplug the Dualshock from this PC.'), self))
+            layout.addWidget(QtWidgets.QLabel(_('To use it, first plug the Pi to the PS4 as shown here:'), self))
+
+            img = QtWidgets.QLabel(self)
+            img.setPixmap(QtGui.QPixmap(':images/rpi_ps4.jpg'))
+            img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
+            layout.addWidget(img)
+
+            layout.addWidget(QtWidgets.QLabel(_('Then upload a configuration, power on the PS4 and press the PS button.'), self))
+
     def initializePage(self):
         self.setTitle(_('Finished'))
-        self.setSubTitle(_('Done. You can unplug the DualShock. Next upload a configuration to the device through the Upload menu and you can start using your controller.'))
         self.wizard().onSuccess()
+        self.setFinalPage(True)

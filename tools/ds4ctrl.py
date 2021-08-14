@@ -6,6 +6,7 @@ import contextlib
 import collections
 import random
 import binascii
+import struct
 
 import hid
 
@@ -15,6 +16,7 @@ Dualshock command-line utility
 
 
 PairingInfo = collections.namedtuple('PairingInfo', ['addr', 'paired_to'])
+IMUCalib = collections.namedtuple('IMUCalib', ['gxbias', 'gybias', 'gzbias', 'gxp', 'gxm', 'gyp', 'gym', 'gzp', 'gzm', 'gsp', 'gsm', 'axp', 'axm', 'ayp', 'aym', 'azp', 'azm'])
 
 class BTAddr:
     def __init__(self, binary):
@@ -42,6 +44,10 @@ class Dualshock:
         data = bytes(self.handle.get_feature_report(0x81, 64))
         return BTAddr(data[1:])
 
+    def get_imu_calibration(self):
+        data = bytes(self.handle.get_feature_report(0x02, 64))
+        return IMUCalib(*struct.unpack('<%s' % ('h' * 17), data[1:-2]))
+
 
 @contextlib.contextmanager
 def find_dualshock():
@@ -64,8 +70,18 @@ def show_info(args):
         print('Controller (PID=0x%04x)' % ds4.pid)
 
         info = ds4.get_pairing_info()
+        imu = ds4.get_imu_calibration()
         print('  BT address:          %s' % info.addr.string)
         print('  Currently paired to: %s' % info.paired_to.string)
+        print('  IMU calibration:')
+        print('    Gyro')
+        print('      Bias: %d - %d - %d' % (imu.gxbias, imu.gybias, imu.gzbias))
+        print('      Max: %d - %d - %d' % (imu.gxp, imu.gyp, imu.gzp))
+        print('      Min: %d - %d - %d' % (imu.gxm, imu.gym, imu.gzm))
+        print('      Speed: %d - %d' % (imu.gsp, imu.gsm))
+        print('    Accelerometer')
+        print('      Max: %d - %d - %d' % (imu.axp, imu.ayp, imu.azp))
+        print('      Min: %d - %d - %d' % (imu.axm, imu.aym, imu.azm))
 
 
 def pair_controller(args):

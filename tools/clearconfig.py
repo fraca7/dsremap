@@ -12,7 +12,7 @@ from dsrlib.ui.main import Application
 from dsrlib.meta import Meta
 
 if __name__ == '__main__':
-    app = Application([])
+    app = Application()
     settings = QtCore.QSettings()
     settings.clear()
     settings.sync()

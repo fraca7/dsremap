@@ -27,7 +27,7 @@ class SetupSDCardUICommand(UICommand):
         super().__init__(*args, text=_('Setup a new SD card for the RPi0 W'), tip=_('Create an image file for the Raspberry Pi Zero W'), **kwargs)
 
     def do(self):
-        dlg = ResourceDownloader(self.mainWindow(), mainWindow=self.mainWindow(), path=('rpi0w', 'image'))
+        dlg = ResourceDownloader(self.mainWindow(), mainWindow=self.mainWindow(), path=('rpi0w-v2', 'image'))
         if dlg.exec_() == dlg.Accepted:
             wizard = SetupSDWizard(self.mainWindow(), mainWindow=self.mainWindow())
             wizard.exec_()

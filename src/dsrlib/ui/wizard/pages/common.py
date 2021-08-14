@@ -45,7 +45,7 @@ class DeviceChoicePage(Page):
 
         try:
             path = {
-                PageId.PiZeroWifi: ('rpi0w', 'image'),
+                PageId.PiZeroWifi: ('rpi0w-v2', 'image'),
                 PageId.ArduinoAvrdude: ('leonardo', 'firmware'),
                 }[self._nextId]
         except KeyError:

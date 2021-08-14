@@ -11,7 +11,7 @@ from .base import UICommand
 
 class PairUICommand(UICommand):
     def __init__(self, parent, *, device, enumerator, **kwargs):
-        super().__init__(parent, text=_('Pair to PS4 and Dualshock'), tip=_('Pair a DualShock 4 and a PS4 to this DSRemap-enabled device'), **kwargs)
+        super().__init__(parent, text=_('Pair with a Dualshock'), tip=_('Pair a DualShock 4 to this DSRemap-enabled device'), **kwargs)
         self._device = device
         self._enumerator = enumerator
 

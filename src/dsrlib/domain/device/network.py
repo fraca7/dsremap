@@ -49,6 +49,8 @@ class ZeroconfEnumerator(QtCore.QObject):
             target.onDeviceRemoved(dev)
 
     def _onAdded(self, info):
+        if info is None:
+            return
         if not info.name.startswith('DSRemap'):
             return
         dev = NetworkDevice(info.name, socket.inet_ntoa(info.addresses[0]), info.port)

@@ -1,0 +1,46 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          dsremap-proxy
+# Required-Start:    networking bluetooth
+# Required-Stop:     networking bluetooth
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: DSRemap proxy server
+# Description:       DSRemap proxy server
+### END INIT INFO
+
+set -e
+
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+	service bluetooth stop
+	hciconfig hci0 up pscan
+
+	if [ ! -e /var/run/dsremap-proxy.pid ]; then
+	    /usr/sbin/daemonize -c /opt/dsremap /opt/dsremap/dsremap-proxy
+	    for idx in 0 1 2 3 4 5 6 7 8 9; do
+		if [ -e /var/run/dsremap-proxy.pid ]; then
+		    break
+		fi
+	    done
+	fi
+	;;
+    stop)
+	if [ -e /var/run/dsremap-proxy.pid ]; then
+	    kill -2 `cat /var/run/dsremap-proxy.pid`
+	    for idx in 0 1 2 3 4 5 6 7 8 9; do
+		if [ ! -e /var/run/dsremap-proxy.pid ]; then
+		    break
+		fi
+	    done
+	fi
+	;;
+    restart)
+	$0 stop
+	$0 start
+	;;
+    *)
+	;;
+esac

@@ -1,0 +1,23 @@
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 7df180b11..4b95092b7 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -2129,6 +2129,18 @@ static int __must_check ffs_do_single_desc(char *data, unsigned len,
+ 		pr_vdebug("unimplemented descriptor: %d\n", _ds->bDescriptorType);
+ 		return -EINVAL;
+ 
++	case 0x24:
++	case 0x25:
++		if (*current_class == USB_CLASS_AUDIO) {
++			pr_vdebug("Audio-specific descriptor");
++			// Ignore for now.
++			break;
++		} else {
++			pr_vdebug("unknown descriptor: %d for class %d\n", _ds->bDescriptorType, *current_class);
++			return -EINVAL;
++		}
++		break;
++
+ 	default:
+ 		/* We should never be here */
+ 		pr_vdebug("unknown descriptor: %d\n", _ds->bDescriptorType);

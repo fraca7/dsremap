@@ -21,10 +21,4 @@ src/ext/vmwrapper*.pyd
 res/resources.qrc
 src/dsrlib/resources.py
 src/ext/src/arduino/dsremap/VM.o
-src/pairing/*.o
-src/pairing/pairing
-src/proxy/*.o
-src/proxy/proxy
-src/proxy/cpp/*.o
-src/server/dsremap-service-*.sh
-src/server/dsremap-service-*.tgz
+src/proxy/build

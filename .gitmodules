@@ -1,3 +1,0 @@
-[submodule "src/rpi0/l2cap_proxy"]
-	path = src/l2cap_proxy
-	url = https://github.com/fraca7/l2cap_proxy.git
