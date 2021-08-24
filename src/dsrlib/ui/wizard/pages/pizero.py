@@ -373,6 +373,7 @@ class PiZeroFinalPage(Page):
             img.setAlignment(QtCore.Qt.AlignCenter|QtCore.Qt.AlignHCenter)
             layout.addWidget(img)
 
+            layout.addWidget(QtWidgets.QLabel(_('As shown in the photo, the RPi will be powered by the PS4. Beware of the port.'), self))
             layout.addWidget(QtWidgets.QLabel(_('Then upload a configuration, power on the PS4 and press the PS button.'), self))
 
     def initializePage(self):

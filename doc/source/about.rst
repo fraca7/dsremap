@@ -62,7 +62,8 @@ with the PS4 through USB.
 
 Pros:
 
-  * No cables, at least from the Dualshock.
+  * No cables, at least from the Dualshock. The PS4 is even able to
+    power the RPi through its USB port.
 
 Cons:
 
@@ -77,7 +78,7 @@ Full list of hardware:
 
   * Raspberry Pi Zero W
   * 4Gb micro-SD card
-  * Two micro-USB to USB-A cables
+  * One micro-USB to USB-A cables
 
 Software
 --------

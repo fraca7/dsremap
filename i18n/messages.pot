@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-08-14 13:51+0200\n"
+"POT-Creation-Date: 2021-08-23 18:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -755,10 +755,14 @@ msgid "To use it, first plug the Pi to the PS4 as shown here:"
 msgstr ""
 
 #: src/dsrlib/ui/wizard/pages/pizero.py:376
+msgid "As shown in the photo, the RPi will be powered by the PS4. Beware of the port."
+msgstr ""
+
+#: src/dsrlib/ui/wizard/pages/pizero.py:377
 msgid "Then upload a configuration, power on the PS4 and press the PS button."
 msgstr ""
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:379
+#: src/dsrlib/ui/wizard/pages/pizero.py:380
 msgid "Finished"
 msgstr ""
 

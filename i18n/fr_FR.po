@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2021-08-14 13:51+0200\n"
-"PO-Revision-Date: 2021-08-14 13:52+0200\n"
+"POT-Creation-Date: 2021-08-23 18:21+0200\n"
+"PO-Revision-Date: 2021-08-23 18:23+0200\n"
 "Last-Translator: Jérôme Laheurte <jerome@jeromelaheurte.net>\n"
 "Language-Team: \n"
 "Language: fr_FR\n"
@@ -832,13 +832,21 @@ msgstr "Terminé. Vous pouvez maintenant débrancher la Dualshock de ce PC."
 
 #: src/dsrlib/ui/wizard/pages/pizero.py:369
 msgid "To use it, first plug the Pi to the PS4 as shown here:"
-msgstr ""
+msgstr "Pour l'utiliser, brancher d'abord le Pi sur la PS4 comme montré ici:"
 
 #: src/dsrlib/ui/wizard/pages/pizero.py:376
-msgid "Then upload a configuration, power on the PS4 and press the PS button."
+msgid ""
+"As shown in the photo, the RPi will be powered by the PS4. Beware of the "
+"port."
 msgstr ""
+"Comme montré sur la photo, le RPi sera alimenté par la PS4. Faites attention "
+"au port."
 
-#: src/dsrlib/ui/wizard/pages/pizero.py:379
+#: src/dsrlib/ui/wizard/pages/pizero.py:377
+msgid "Then upload a configuration, power on the PS4 and press the PS button."
+msgstr "Puis téléversez une configuration, allumez la PS4 et appuyer sur PS."
+
+#: src/dsrlib/ui/wizard/pages/pizero.py:380
 msgid "Finished"
 msgstr "Terminé"
 
