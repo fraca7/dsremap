@@ -92,8 +92,10 @@ namespace dsremap
       const guint8* data;
       gsize len;
       soup_buffer_get_data(buffer, &data, &len);
-      std::ofstream ofs(_config_path, std::ios::trunc);
-      ofs.write((const char*)data, len);
+      {
+        std::ofstream ofs(_config_path, std::ios::trunc);
+        ofs.write((const char*)data, len);
+      }
       soup_buffer_free(buffer);
 
       info("Reconfiguring");
