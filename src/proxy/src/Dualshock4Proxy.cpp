@@ -23,6 +23,10 @@
 #include <src/bluetooth/BTUtils.h>
 #include <src/usb/Dualshock4HIDInterface.h>
 
+#ifdef USE_SPDLOG
+#include <spdlog/fmt/bin_to_hex.h>
+#endif
+
 #include "Dualshock4Proxy.h"
 
 namespace dsremap
@@ -115,14 +119,28 @@ namespace dsremap
         uint16_t stacksize;
       } header;
       ifs.read((char*)&header, sizeof(header));
-      if (ifs.gcount() != sizeof(header))
+
+      if (ifs.gcount() != sizeof(header)) {
+#ifdef USE_SPDLOG
+        error("Incomplete header: {}", spdlog::to_hex((uint8_t*)&header, (uint8_t*)&header + ifs.gcount()));
+#endif
         throw std::runtime_error("Bytecode file too short");
-      if (header.magic != 0xCAFE)
+      }
+
+      if (header.magic != 0xCAFE) {
+#ifdef USE_SPDLOG
+        error("Invalid magic: {}", spdlog::to_hex((uint8_t*)&header, (uint8_t*)&header + ifs.gcount()));
+#endif
         throw std::runtime_error("Invalid magic in bytecode file");
+      }
 
       uint8_t* bytecode = (uint8_t*)malloc(header.actionlen - 2);
       ifs.read((char*)bytecode, header.actionlen - 2);
       if (ifs.gcount() != header.actionlen - 2) {
+#ifdef USE_SPDLOG
+        error("Bytecode to short. Header: {}", spdlog::to_hex((uint8_t*)&header, (uint8_t*)&header + sizeof(header)));
+        error("Bytecode: {}", spdlog::to_hex(bytecode, bytecode + ifs.gcount()));
+#endif
         free(bytecode);
         throw std::runtime_error("Bytecode file too short");
       }
