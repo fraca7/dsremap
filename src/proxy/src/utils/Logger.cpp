@@ -39,8 +39,11 @@ namespace dsremap
     if (!_sink.get())
       _sink.reset(new spdlog::sinks::rotating_file_sink_st("/var/log/dsremap-proxy.log", 65536, 10));
 
-    if (!_logger.get())
+    if (!_logger.get()) {
       _logger = std::make_shared<spdlog::logger>(name, _sink);
+      _logger->set_level(spdlog::level::info);
+      _logger->flush_on(spdlog::level::info);
+    }
 #endif
   }
 
