@@ -98,6 +98,7 @@ namespace dsremap
   void File::mount(const std::string& type, const std::string& dev) const
   {
     std::string cmdline = format("/bin/mount -t {} {} {}", type, dev, _path);
+
     int err;
     switch ((err = ::system(cmdline.c_str()))) {
       case 0:

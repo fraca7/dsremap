@@ -30,7 +30,7 @@ if (USE_SPDLOG)
   add_definitions(-DUSE_SPDLOG)
 endif ()
 
-add_compile_options(-Wall)
+add_compile_options(-Wall -Wno-psabi)
 add_definitions(-DENABLE_TIMING)
 add_definitions(-DTARGET_PC)
 add_definitions(-DCONFIG_PATH="/opt/dsremap/bytecode.bin")
@@ -51,17 +51,7 @@ link_directories(dsremap-proxy
   ${SOUP_LIBRARY_DIRS}
   )
 
-add_executable(dsremap-proxy
-  proxy.cpp
-
-  src/Dualshock4Proxy.cpp
-  src/Dualshock4Proxy.h
-  src/AuthChallenge.cpp
-  src/AuthChallenge.h
-
-  src/HTTPServer.cpp
-  src/HTTPServer.h
-
+add_library(dsremap-lib STATIC
   src/utils/format.h
   src/utils/format.cpp
   src/utils/File.cpp
@@ -110,6 +100,22 @@ add_executable(dsremap-proxy
   src/usb/Dualshock4.h
   src/usb/Dualshock4HIDInterface.cpp
   src/usb/Dualshock4HIDInterface.h
+  src/usb/Dualsense.cpp
+  src/usb/Dualsense.h
+  src/usb/DualsenseHIDInterface.cpp
+  src/usb/DualsenseHIDInterface.h
+  )
+
+add_executable(dsremap-proxy
+  proxy.cpp
+
+  src/Dualshock4Proxy.cpp
+  src/Dualshock4Proxy.h
+  src/AuthChallenge.cpp
+  src/AuthChallenge.h
+
+  src/HTTPServer.cpp
+  src/HTTPServer.h
 
   ${PROJECT_SOURCE_DIR}/../arduino/dsremap/VM.h
   ${PROJECT_SOURCE_DIR}/../arduino/dsremap/VM.cpp
@@ -117,7 +123,22 @@ add_executable(dsremap-proxy
   ${PROJECT_SOURCE_DIR}/../arduino/dsremap/IMUIntegrator.cpp
   )
 
+add_executable(psctrl
+  psctrl.cpp
+  )
+
 target_link_libraries(dsremap-proxy
+  dsremap-lib
+  ${GLIB_LIBRARIES}
+  ${BLUEZ_LIBRARIES}
+  ${ZLIB_LIBRARIES}
+  ${SOUP_LIBRARIES}
+  rt
+  pthread
+  )
+
+target_link_libraries(psctrl
+  dsremap-lib
   ${GLIB_LIBRARIES}
   ${BLUEZ_LIBRARIES}
   ${ZLIB_LIBRARIES}
@@ -128,6 +149,7 @@ target_link_libraries(dsremap-proxy
 
 if (USE_SPDLOG)
   target_link_libraries(dsremap-proxy spdlog::spdlog)
+  target_link_libraries(psctrl spdlog::spdlog)
 endif ()
 
 add_custom_target(installer ALL

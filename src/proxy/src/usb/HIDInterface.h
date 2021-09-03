@@ -16,6 +16,9 @@
 
 #include <vector>
 #include <cstdint>
+#ifdef ENABLE_TIMING
+#include <chrono>
+#endif
 
 #include <src/utils/Application.h>
 #include <src/usb/Interface.h>
@@ -43,6 +46,15 @@ namespace dsremap
     HIDInterface(unsigned int index, Listener&);
     virtual ~HIDInterface();
 
+    void enable_interrupt_in();
+    void send_input_report(const uint8_t*, uint16_t);
+
+    void add_in_endpoint(InEndpoint* ep) override;
+    void add_out_endpoint(OutEndpoint* ep) override;
+
+    void on_endpoint_data(OutEndpoint&, const std::vector<uint8_t>&) override;
+    void on_error(std::exception_ptr) override;
+
     virtual const std::vector<uint8_t>& get_report_descriptor() const = 0;
 
     void parse_usb_descriptor(const std::vector<uint8_t>&) override;
@@ -65,6 +77,14 @@ namespace dsremap
   private:
     Listener& _listener;
     Protocol _protocol;
+    bool _data_enabled;
+
+    InEndpoint* _ep1;
+
+#ifdef ENABLE_TIMING
+    std::chrono::high_resolution_clock::time_point _last_timing;
+    uint32_t _timing_count;
+#endif
   };
 }
 

@@ -18,23 +18,12 @@
 namespace dsremap
 {
   Dualshock4HIDInterface::Dualshock4HIDInterface(HIDInterface::Listener& listener)
-    : HIDInterface(3, listener),
-      _data_enabled(false),
-      ep1(NULL)
+    : HIDInterface(3, listener)
   {
-#ifdef ENABLE_TIMING
-    _last_timing = std::chrono::high_resolution_clock::now();
-    _timing_count = 0U;
-#endif
   }
 
   Dualshock4HIDInterface::~Dualshock4HIDInterface()
   {
-  }
-
-  void Dualshock4HIDInterface::enable_interrupt_in()
-  {
-    _data_enabled = true;
   }
 
   const std::vector<uint8_t>& Dualshock4HIDInterface::get_report_descriptor() const
@@ -44,40 +33,7 @@ namespace dsremap
 
   void Dualshock4HIDInterface::send_input_report(USBReport01_t& report)
   {
-    if (_data_enabled) {
-      ep1->write((uint8_t*)&report, sizeof(report));
-#ifdef ENABLE_TIMING
-      auto now = std::chrono::high_resolution_clock::now();
-      if (now - _last_timing > std::chrono::seconds(1)) {
-        if (_timing_count)
-          debug("{} input/s", _timing_count);
-        _timing_count = 0U;
-        _last_timing = now;
-      }
-
-      ++_timing_count;
-#endif
-    }
-  }
-
-  void Dualshock4HIDInterface::add_in_endpoint(InEndpoint* ep)
-  {
-    ep1 = ep;
-  }
-
-  void Dualshock4HIDInterface::add_out_endpoint(OutEndpoint* ep)
-  {
-    ep->set_enabled(true);
-  }
-
-  void Dualshock4HIDInterface::on_endpoint_data(OutEndpoint&, const std::vector<uint8_t>& data)
-  {
-    listener().on_usb_out_report(data[0], data);
-  }
-
-  void Dualshock4HIDInterface::on_error(std::exception_ptr exc_ptr)
-  {
-    listener().on_error(exc_ptr);
+    HIDInterface::send_input_report((uint8_t*)&report, sizeof(report));
   }
 
   std::vector<uint8_t> Dualshock4HIDInterface::_report_descriptor = {
