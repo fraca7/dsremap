@@ -12,6 +12,7 @@
 
 #include <stdexcept>
 #include <fstream>
+#include <cstring>
 
 #ifdef USE_SPDLOG
 #include <spdlog/spdlog.h>
