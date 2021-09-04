@@ -20,7 +20,6 @@
 #include <glib-unix.h>
 
 #include <src/utils/format.h>
-#include <src/utils/BytecodeFile.h>
 #include <src/bluetooth/BTUtils.h>
 #include <src/usb/Dualshock4HIDInterface.h>
 
@@ -29,23 +28,15 @@
 namespace dsremap
 {
   Dualshock4Proxy::Dualshock4Proxy(Application& app, int fd_0x11, int fd_0x13)
-    : Proxy(app, fd_0x11, fd_0x13),
-      USBDevice::Listener(),
-      HIDInterface::Listener(),
-      _state(State::GatheringReports),
+    : SonyControllerProxy(app, fd_0x11, fd_0x13),
       _report_06(),
       _report_a3(),
       _report_02_usb(),
       _report_02_bt(),
       _host_addr(),
       _usb_device(nullptr),
-      _bt_device(nullptr),
-      _auth(*this),
-      _imu(),
-      _vm(nullptr)
+      _auth(*this)
   {
-    reconfigure();
-
     std::vector<uint8_t> out_report(79);
 
     out_report[0x00] = 0xa2;
@@ -67,46 +58,6 @@ namespace dsremap
 
     debug("Get report 0x06");
     get_report(0x06, 0x0035);
-  }
-
-  Dualshock4Proxy::~Dualshock4Proxy()
-  {
-  }
-
-  void Dualshock4Proxy::stop()
-  {
-    switch (_state) {
-      case State::GatheringReports:
-        info("Request stop in GatheringReports; stopping");
-        delete this;
-      case State::Attaching:
-        info("Request stop in Attaching; closing");
-        _state = State::Closing;
-        break;
-      case State::SendPS:
-        info("Request stop in SendPS; closing");
-        _state = State::Closing;
-        _usb_device->detach();
-        break;
-      case State::Connecting:
-      case State::Running:
-        info("Request stop in Running; closing");
-        _bt_device.reset(nullptr);
-        _state = State::Closing;
-        _usb_device->detach();
-        break;
-      case State::Closing:
-        break;
-    }
-  }
-
-  void Dualshock4Proxy::reconfigure()
-  {
-    _vm.reset(nullptr);
-
-    BytecodeFile bc;
-    if (bc.exists())
-      _vm.reset(new VM(bc.bytecode(), true, bc.stacksize()));
   }
 
   //==============================================================================
@@ -241,35 +192,6 @@ namespace dsremap
       case State::Closing:
         break;
     }
-  }
-
-  //==============================================================================
-  // USB gadget housekeeping
-
-  void Dualshock4Proxy::on_device_attached(USBDevice&)
-  {
-    switch (_state) {
-      case State::GatheringReports:
-      case State::SendPS:
-      case State::Connecting:
-      case State::Running:
-        assert(0);
-        break;
-      case State::Attaching:
-        info("Device attached; moving to state Connecting");
-        _state = State::Connecting;
-        break;
-      case State::Closing:
-        info("Device attached; detaching immediately");
-        _usb_device->detach();
-        break;
-    }
-  }
-
-  void Dualshock4Proxy::on_device_detached(USBDevice&)
-  {
-    info("Device detached; stopping");
-    delete this;
   }
 
   //==============================================================================
@@ -435,20 +357,6 @@ namespace dsremap
 
   void Dualshock4Proxy::on_bt_out_report(int id, const std::vector<uint8_t>& data)
   {
-    // Don't care
-  }
-
-  //==============================================================================
-  // Error handling
-
-  void Dualshock4Proxy::on_error(std::exception_ptr exc_ptr)
-  {
-    try {
-      std::rethrow_exception(exc_ptr);
-    } catch (const std::exception& exc) {
-      error("Error: {}", exc.what());
-    }
-
-    stop();
+    // Don't care for now
   }
 }

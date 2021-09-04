@@ -111,6 +111,8 @@ add_library(dsremap-lib STATIC
 add_executable(dsremap-proxy
   proxy.cpp
 
+  src/SonyControllerProxy.cpp
+  src/SonyControllerProxy.h
   src/Dualshock4Proxy.cpp
   src/Dualshock4Proxy.h
   src/AuthChallenge.cpp

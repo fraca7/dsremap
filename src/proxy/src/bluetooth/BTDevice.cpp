@@ -10,8 +10,6 @@
 
 **********************************************************************/
 
-#include <bluetooth/bluetooth.h>
-#include <bluetooth/l2cap.h>
 #include <unistd.h>
 #include <glib-unix.h>
 
@@ -21,6 +19,9 @@
 
 #include "BTUtils.h"
 #include "BTDevice.h"
+
+// Include after bluetooth.h...
+#include <bluetooth/l2cap.h>
 
 static const uint8_t sdp_pdu_request[] = {
   0x06, 0x00, 0x01, 0x00, 0x0f, 0x35, 0x03, 0x19, 0x01, 0x00, 0x08, 0x00, 0x35, 0x05, 0x0a, 0x00, 0x00, 0xff, 0xff, 0x00

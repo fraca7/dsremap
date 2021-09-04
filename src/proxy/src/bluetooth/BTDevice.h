@@ -19,6 +19,7 @@
 #include <array>
 
 #include <glib.h>
+#include <bluetooth/bluetooth.h>
 
 #include <src/utils/Application.h>
 #include <src/utils/Logger.h>
