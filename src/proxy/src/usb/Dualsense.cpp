@@ -17,49 +17,13 @@
 namespace dsremap
 {
   Dualsense::Dualsense(USBDevice::Listener& dev_listener, HIDInterface::Listener& hid_listener)
-    : USBDevice(dev_listener),
-      _audio_if_0(0),
-      _audio_if_1(1),
-      _audio_if_2(2),
-      _hid_if(hid_listener)
-  {
-  }
-
-  Dualsense::~Dualsense()
+    : SonyController<DualsenseHIDInterface>(dev_listener, hid_listener)
   {
   }
 
   const std::vector<uint8_t>& Dualsense::get_descriptor() const
   {
     return _usb_descriptor;
-  }
-
-  Interface* Dualsense::get_interface(const Interface::interface_descriptor_t& desc)
-  {
-    switch (desc.bInterfaceClass) {
-      case 0x03: // HID
-        switch (desc.bInterfaceNumber) {
-          case 3:
-            return &_hid_if;
-          default:
-            throw std::runtime_error(format("Unknown HID interface {}", desc.bInterfaceNumber));
-        }
-        break;
-      case 0x01: // Audio
-        switch (desc.bInterfaceNumber) {
-          case 0:
-            return &_audio_if_0;
-          case 1:
-            return &_audio_if_1;
-          case 2:
-            return &_audio_if_2;
-          default:
-            throw std::runtime_error(format("Unknown Audio interface {}", desc.bInterfaceNumber));
-        }
-        break;
-      default:
-        throw std::runtime_error(format("Unknown interface class 0x{:02x}", desc.bInterfaceClass));
-    }
   }
 
   std::vector<uint8_t> Dualsense::_usb_descriptor = {
