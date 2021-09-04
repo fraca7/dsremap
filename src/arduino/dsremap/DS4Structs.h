@@ -175,4 +175,58 @@ typedef struct {
 #define CLAMPU8(x) ((uint8_t)((x) < 0 ? 0 : (((x) > 255) ? 255 : (x))))
 #define CLAMPS16(x) ((int16_t)((x) < -32768 ? -32768 : ((x) > 32767 ? 32767 : (x))))
 
+/*
+ * The structures the VM operates on. Getting this from a Dualshock
+ * report only involves pointer arithmetic; some values has to be
+ * swapped around in the Dualsense case.
+ */
+
+#ifdef WIN32
+#pragma pack(push, 1)
+#endif
+
+typedef struct PACKED {
+  uint8_t LPadX;
+  uint8_t LPadY;
+  uint8_t RPadX;
+  uint8_t RPadY;
+
+  uint8_t Hat : 4;
+  uint8_t Square : 1;
+  uint8_t Cross : 1;
+  uint8_t Circle : 1;
+  uint8_t Triangle : 1;
+
+  uint8_t L1 : 1;
+  uint8_t R1 : 1;
+  uint8_t L2 : 1;
+  uint8_t R2 : 1;
+  uint8_t Share : 1;
+  uint8_t Options : 1;
+  uint8_t L3 : 1;
+  uint8_t R3 : 1;
+
+  uint8_t PS : 1;
+  uint8_t TPad : 1;
+  uint8_t unused : 6;
+
+  uint8_t L2Value;
+  uint8_t R2Value;
+} controller_state_t;
+
+typedef struct PACKED {
+  uint16_t timestamp;
+  uint8_t unused;
+  int16_t gyroX;
+  int16_t gyroY;
+  int16_t gyroZ;
+  int16_t accelX;
+  int16_t accelY;
+  int16_t accelZ;
+} imu_state_t;
+
+#ifdef WIN32
+#pragma pack(pop)
+#endif
+
 #endif /* _DS4STRUCTS_H */

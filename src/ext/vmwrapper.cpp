@@ -28,7 +28,7 @@ public:
     m_IMUY = report->IMUY;
     m_IMUZ = report->IMUZ;
 
-    return VM::Step(&report->report);
+    return VM::Step((controller_state_t*)((uint8_t*)&report->report + 1));
   }
 
   PyObject* GetStack() {

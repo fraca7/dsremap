@@ -262,9 +262,9 @@ namespace dsremap
           memcpy((uint8_t*)&report + 1, data.data() + 4, sizeof(report) - 1);
           report.touchEventCount = std::min(report.touchEventCount, (uint8_t)3);
 
-          _imu.Update(&report);
+          _imu.Update((imu_state_t*)(data.data() + 13));
           if (_vm.get())
-            _vm->Run(&report, &_imu);
+            _vm->Run((controller_state_t*)(data.data() + 4), &_imu);
 
           if (_state == State::SendPS)
             report.PS = ((_pscount++ % 50) == 0) ? 0 : 1;

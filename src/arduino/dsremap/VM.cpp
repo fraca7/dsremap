@@ -71,7 +71,7 @@ VM::~VM()
     free(m_Bytecode);
 }
 
-void VM::Run(USBReport01_t* report, const IMUIntegrator* pIMU)
+void VM::Run(controller_state_t* report, const IMUIntegrator* pIMU)
 {
   if (pIMU->Delta()) {
     m_DELTA = pIMU->Delta();
@@ -90,7 +90,7 @@ void VM::Run(USBReport01_t* report, const IMUIntegrator* pIMU)
   }
 }
 
-bool VM::Step(USBReport01_t* report)
+bool VM::Step(controller_state_t* report)
 {
   bool ret = false;
 
@@ -115,7 +115,7 @@ bool VM::Step(USBReport01_t* report)
   return ret;
 }
 
-void VM::StepBinary(USBReport01_t* report, uint8_t opcode)
+void VM::StepBinary(controller_state_t* report, uint8_t opcode)
 {
   uint16_t dst = (uint16_t)LoadU8() << 8;
 
@@ -182,7 +182,7 @@ void VM::StepBinary(USBReport01_t* report, uint8_t opcode)
   }
 }
 
-void VM::StepUnary(USBReport01_t* report, uint8_t opcode)
+void VM::StepUnary(controller_state_t* report, uint8_t opcode)
 {
   uint16_t addr = (uint16_t)LoadU8() << 8;
   int addrtype = ADDR_TYPE(addr);
@@ -286,7 +286,7 @@ void VM::StepUnary(USBReport01_t* report, uint8_t opcode)
   }
 }
 
-void VM::StepStack(USBReport01_t* report, uint8_t opcode)
+void VM::StepStack(controller_state_t* report, uint8_t opcode)
 {
   switch (OPCODE_SUBTYPE(opcode)) {
     case OPCODE_SUBTYPE_STACK_POP:
@@ -361,7 +361,7 @@ void VM::StepStack(USBReport01_t* report, uint8_t opcode)
   }
 }
 
-bool VM::StepFlow(USBReport01_t* report, uint8_t opcode)
+bool VM::StepFlow(controller_state_t* report, uint8_t opcode)
 {
   bool ret = false;
 
@@ -532,7 +532,7 @@ void VM::PushF(float v)
   m_SP += sizeof(v);
 }
 
-int32_t VM::GetIntRegister(USBReport01_t* report, int index)
+int32_t VM::GetIntRegister(controller_state_t* report, int index)
 {
   switch (index) {
     case REGINDEX_ZR:
@@ -591,7 +591,7 @@ int32_t VM::GetIntRegister(USBReport01_t* report, int index)
   return 0;
 }
 
-void VM::SetIntRegister(USBReport01_t* report, int index, int32_t value)
+void VM::SetIntRegister(controller_state_t* report, int index, int32_t value)
 {
   switch (index) {
     case REGINDEX_LPADX:
@@ -702,7 +702,7 @@ void VM::SetIntRegister(USBReport01_t* report, int index, int32_t value)
   }
 }
 
-float VM::GetFloatRegister(USBReport01_t* report, int index)
+float VM::GetFloatRegister(controller_state_t* report, int index)
 {
   switch (index) {
     case REGINDEX_IMUX:
@@ -818,7 +818,7 @@ float VM::BinaryOpFloat(uint8_t opcode, float op1, float op2)
   return op1;
 }
 
-int32_t VM::LoadIntAddr(USBReport01_t* report, uint8_t opcode)
+int32_t VM::LoadIntAddr(controller_state_t* report, uint8_t opcode)
 {
   switch (OPCODE_VARIANT(opcode)) {
     case OPCODE_VARIANT_C:
@@ -853,7 +853,7 @@ int32_t VM::LoadIntAddr(USBReport01_t* report, uint8_t opcode)
   return 0;
 }
 
-float VM::LoadFloatAddr(USBReport01_t* report, uint8_t opcode)
+float VM::LoadFloatAddr(controller_state_t* report, uint8_t opcode)
 {
   switch (OPCODE_VARIANT(opcode)) {
     case OPCODE_VARIANT_C:

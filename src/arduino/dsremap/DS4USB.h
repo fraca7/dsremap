@@ -15,8 +15,8 @@ public:
 
   // DS4 impl
   void GET_REPORT(uint8_t, uint8_t, uint16_t);
-  void SET_REPORT(uint8_t, uint8_t, uint16_t, uint8_t*);
-  void SendData(uint16_t, uint8_t*);
+  void SET_REPORT(uint8_t, uint8_t, uint16_t, const uint8_t*);
+  void SendData(uint16_t, const uint8_t*);
 
   // Endpoint extractor, to find out the HID interface number
   void EndpointXtract(uint8_t conf, uint8_t iface, uint8_t alt, uint8_t proto, const USB_ENDPOINT_DESCRIPTOR *pep) override;

@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include <src/utils/format.h>
+
 #include "Dualsense.h"
 
 namespace dsremap

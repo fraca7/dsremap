@@ -196,10 +196,10 @@ void Host::loop()
         USBReport01_t* report = (USBReport01_t*)m_OutReport;
 
 #ifndef DISABLE_REMAPPING
-        m_Integrator.Update(report);
+        m_Integrator.Update((imu_state_t*)(m_OutReport + 10));
 
         if (m_CurrentConfig < m_Configurations.Count())
-          m_Configurations.GetItem(m_CurrentConfig)->Run(report, &m_Integrator);
+          m_Configurations.GetItem(m_CurrentConfig)->Run((controller_state_t*)(m_OutReport + 1), &m_Integrator);
 
         m_Blink.loop();
 
@@ -394,7 +394,7 @@ void Host::CreateHIDReport(uint8_t reportId, const uint8_t reportType, uint16_t 
     m_pDevice->GET_REPORT(reportType, reportId, len);
 }
 
-void Host::ProcessHIDReport(uint8_t reportId, uint8_t reportType, const void* data, uint16_t len)
+void Host::ProcessHIDReport(uint8_t reportId, uint8_t reportType, const uint8_t* data, uint16_t len)
 {
   LogDebug(INFO_SET_REPORT, reportType, reportId, len);
 

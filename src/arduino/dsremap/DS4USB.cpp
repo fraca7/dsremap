@@ -77,16 +77,16 @@ void DS4USB::GET_REPORT(uint8_t reportType, uint8_t reportId, uint16_t len)
     m_pHost->SendReport(len, reportBuf);
 }
 
-void DS4USB::SET_REPORT(uint8_t reportType, uint8_t reportId, uint16_t len, uint8_t* buf)
+void DS4USB::SET_REPORT(uint8_t reportType, uint8_t reportId, uint16_t len, const uint8_t* buf)
 {
-  uint8_t rcode = SetReport(0, m_Interface, reportType, reportId, len, buf);
+  uint8_t rcode = SetReport(0, m_Interface, reportType, reportId, len, const_cast<uint8_t*>(buf));
   if (rcode)
     LogError(ERROR_SET_REPORT, rcode);
 }
 
-void DS4USB::SendData(uint16_t len, uint8_t* buf)
+void DS4USB::SendData(uint16_t len, const uint8_t* buf)
 {
-  uint8_t rcode = SndRpt(len, buf);
+  uint8_t rcode = SndRpt(len, const_cast<uint8_t*>(buf));
   if (rcode)
     LogError(ERROR_SNDRPT, rcode);
 }

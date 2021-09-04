@@ -35,7 +35,7 @@ public:
   // LUFA callbacks
   void ReportDescriptorSent();
   void CreateHIDReport(uint8_t reportId, const uint8_t reportType, uint16_t len);
-  void ProcessHIDReport(const uint8_t reportId, const uint8_t reportType, const void* data, const uint16_t len);
+  void ProcessHIDReport(const uint8_t reportId, const uint8_t reportType, const uint8_t* data, const uint16_t len);
   void GotDataFromHost(const uint8_t* buf, uint16_t len);
   bool ShouldSpoofAudio() const;
 

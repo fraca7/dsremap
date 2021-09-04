@@ -14,7 +14,7 @@ public:
   IMUIntegrator();
 
   void SetCalibrationData(const CalibrationData_t*);
-  void Update(const USBReport01_t*);
+  void Update(const imu_state_t*);
 
   const Vector3D& CurrentAngles() const {
     return m_Angles;

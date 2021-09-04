@@ -14,7 +14,7 @@ class Configuration : public DArray<VM>
 public:
   using DArray<VM>::DArray;
 
-  void Run(USBReport01_t*, const IMUIntegrator*);
+  void Run(controller_state_t*, const IMUIntegrator*);
 };
 
 #endif /* _CONFIGURATION_H */

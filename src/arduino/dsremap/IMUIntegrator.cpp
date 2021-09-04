@@ -63,7 +63,7 @@ void IMUIntegrator::SetCalibrationData(const CalibrationData_t *pData)
   m_Calib[5].N = 2 * ACCEL_RES;
 }
 
-void IMUIntegrator::Update(const USBReport01_t* rep)
+void IMUIntegrator::Update(const imu_state_t* rep)
 {
   // Compute timestamp in microseconds
   uint32_t delta = 0;
