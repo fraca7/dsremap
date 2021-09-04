@@ -10,6 +10,8 @@
 
 **********************************************************************/
 
+#include <cassert>
+
 #include <src/utils/BytecodeFile.h>
 
 #include "SonyControllerProxy.h"
