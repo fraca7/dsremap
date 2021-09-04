@@ -22,6 +22,7 @@
 
 #include <src/utils/Application.h>
 #include <src/usb/Interface.h>
+#include <dsremap/DS4Structs.h>
 
 namespace dsremap
 {
@@ -30,6 +31,18 @@ namespace dsremap
   class HIDInterface : public Interface
   {
   public:
+    class InputReport
+    {
+    public:
+      virtual ~InputReport();
+
+      virtual void get_imu(imu_state_t*) const = 0;
+      virtual void get_ctrl(controller_state_t*) const = 0;
+      virtual void set_ctrl(const controller_state_t*) = 0;
+
+      virtual void send(HIDInterface&) const = 0;
+    };
+
     class Listener : public Application::ErrorHandler
     {
     public:

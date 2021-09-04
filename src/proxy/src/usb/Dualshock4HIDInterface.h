@@ -16,7 +16,6 @@
 
 #include <vector>
 
-#include <dsremap/DS4Structs.h>
 #include <src/usb/HIDInterface.h>
 
 namespace dsremap
@@ -24,10 +23,23 @@ namespace dsremap
   class Dualshock4HIDInterface : public HIDInterface
   {
   public:
+    class InputReport : public HIDInterface::InputReport
+    {
+    public:
+      InputReport(const std::vector<uint8_t>& bluetooth_data);
+
+      void get_imu(imu_state_t*) const override;
+      void get_ctrl(controller_state_t*) const override;
+      void set_ctrl(const controller_state_t*) override;
+
+      void send(HIDInterface&) const override;
+
+    private:
+      USBReport01_t _report;
+    };
+
     Dualshock4HIDInterface(HIDInterface::Listener&);
     ~Dualshock4HIDInterface();
-
-    void send_input_report(USBReport01_t&);
 
     const std::vector<uint8_t>& get_report_descriptor() const override;
 

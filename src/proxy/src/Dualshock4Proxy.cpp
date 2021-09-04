@@ -257,19 +257,23 @@ namespace dsremap
         // Those are the main IN reports; we transfer them to the PS4
         // through the USB gadget
         if ((data[0] == 0xa1) && (data[1] == 0x11)) {
-          USBReport01_t report;
-          report.id = 0x01;
-          memcpy((uint8_t*)&report + 1, data.data() + 4, sizeof(report) - 1);
-          report.touchEventCount = std::min(report.touchEventCount, (uint8_t)3);
+          Dualshock4HIDInterface::InputReport report(data);
 
-          _imu.Update((imu_state_t*)((uint8_t*)&report + 10));
+          imu_state_t imu;
+          report.get_imu(&imu);
+          _imu.Update(&imu);
+
+          controller_state_t ctrl;
+          report.get_ctrl(&ctrl);
+
           if (_vm.get())
-            _vm->Run((controller_state_t*)((uint8_t*)&report + 1), &_imu);
+            _vm->Run(&ctrl, &_imu);
 
           if (_state == State::SendPS)
-            report.PS = ((_pscount++ % 50) == 0) ? 0 : 1;
+            ctrl.PS = ((_pscount++ % 50) == 0) ? 0 : 1;
 
-          _usb_device->hid_interface().send_input_report(report);
+          report.set_ctrl(&ctrl);
+          report.send(_usb_device->hid_interface());
         }
 
         break;

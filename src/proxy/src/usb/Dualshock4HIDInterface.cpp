@@ -17,6 +17,33 @@
 
 namespace dsremap
 {
+  Dualshock4HIDInterface::InputReport::InputReport(const std::vector<uint8_t>& bluetooth_data)
+  {
+    _report.id = 0x01;
+    memcpy((uint8_t*)&_report + 1, bluetooth_data.data() + 4, sizeof(_report) - 1);
+    _report.touchEventCount = std::min(_report.touchEventCount, (uint8_t)3);
+  }
+
+  void Dualshock4HIDInterface::InputReport::get_imu(imu_state_t* imu) const
+  {
+    memcpy(imu, &_report.timestamp, sizeof(*imu));
+  }
+
+  void Dualshock4HIDInterface::InputReport::get_ctrl(controller_state_t* ctrl) const
+  {
+    memcpy(ctrl, (uint8_t*)&_report + 1, sizeof(*ctrl));
+  }
+
+  void Dualshock4HIDInterface::InputReport::set_ctrl(const controller_state_t* ctrl)
+  {
+    memcpy((uint8_t*)&_report + 1, ctrl, sizeof(*ctrl));
+  }
+
+  void Dualshock4HIDInterface::InputReport::send(HIDInterface& hid) const
+  {
+    hid.send_input_report((uint8_t*)&_report, sizeof(_report));
+  }
+
   Dualshock4HIDInterface::Dualshock4HIDInterface(HIDInterface::Listener& listener)
     : HIDInterface(3, listener)
   {
@@ -29,11 +56,6 @@ namespace dsremap
   const std::vector<uint8_t>& Dualshock4HIDInterface::get_report_descriptor() const
   {
     return _report_descriptor;
-  }
-
-  void Dualshock4HIDInterface::send_input_report(USBReport01_t& report)
-  {
-    HIDInterface::send_input_report((uint8_t*)&report, sizeof(report));
   }
 
   std::vector<uint8_t> Dualshock4HIDInterface::_report_descriptor = {

@@ -17,6 +17,10 @@
 
 namespace dsremap
 {
+  HIDInterface::InputReport::~InputReport()
+  {
+  }
+
   HIDInterface::HIDInterface(unsigned int index, HIDInterface::Listener& listener)
     : Interface(index),
       _listener(listener),
