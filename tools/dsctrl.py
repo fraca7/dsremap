@@ -74,12 +74,17 @@ class Controller:
             s2 = ''.join([chr(value) if 32 <= value < 64 else '.' for value in data[offset * 16:offset * 16 + 16]])
             print('%04x %-47s %s' % (offset * 16, s1, s2))
 
-    def extract_reports(self):
+    def extract_reports(self, addr=None):
         data = { 'pid': self.pid, 'reports': {} }
         for report_id in self.known_reports():
-            report = binascii.hexlify(bytes(self.handle.get_feature_report(report_id, 64))).decode('ascii')
-            data['reports']['%02x' % report_id] = report
+            report = list(self.handle.get_feature_report(report_id, 64))
+            if addr is not None:
+                self._replace_addr(report, addr)
+            data['reports']['%02x' % report_id] = binascii.hexlify(bytes(report)).decode('ascii')
         print(json.dumps(data, indent=2))
+
+    def _replace_addr(self, report, addr):
+        raise NotImplementedError
 
 
 class Dualshock(Controller):
@@ -100,6 +105,10 @@ class Dualshock(Controller):
     def known_reports(self):
         return (0x02, 0xa3, 0x12, 0x81)
 
+    def _replace_addr(self, report, addr):
+        if report[0] == 0x12:
+            report[1:7] = addr.binary
+
 
 class Dualsense(Controller):
     def name(self):
@@ -118,6 +127,10 @@ class Dualsense(Controller):
 
     def known_reports(self):
         return (0x05, 0x20, 0x09)
+
+    def _replace_addr(self, report, addr):
+        if report[0] == 0x09:
+            report[1:7] = addr.binary
 
 
 @contextlib.contextmanager
@@ -171,7 +184,7 @@ def print_report(args):
 
 def extract_reports(args):
     with find_controller() as ctrl:
-        ctrl.extract_reports()
+        ctrl.extract_reports(addr=None if args.address is None else BTAddr.from_string(args.address))
 
 
 def main(argv):
@@ -191,6 +204,7 @@ def main(argv):
     parser_print.set_defaults(func=print_report)
 
     parser_extract = subparsers.add_parser('extract', help='Extract all known reports in JSON format')
+    parser_extract.add_argument('-a', '--address', help='Replace controller MAC address with this one in the pairing report', default=None)
     parser_extract.set_defaults(func=extract_reports)
 
     args = parser.parse_args(argv)
