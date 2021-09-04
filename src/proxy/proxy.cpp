@@ -26,9 +26,20 @@
 #include <src/utils/File.h>
 #include <src/bluetooth/BluetoothAcceptor.h>
 #include <src/HTTPServer.h>
+#include <src/Dualshock4Proxy.h>
 
 using namespace std;
 using namespace dsremap;
+
+class Dualshock4App : public BluetoothAcceptor
+{
+public:
+  using BluetoothAcceptor::BluetoothAcceptor;
+
+  void create_proxy(int fd_0x11, int fd_0x13) {
+    new Dualshock4Proxy(*this, fd_0x11, fd_0x13);
+  }
+};
 
 int main(int argc, char* argv[])
 {
@@ -47,7 +58,7 @@ int main(int argc, char* argv[])
   }
 
   try {
-    BluetoothAcceptor app;
+    Dualshock4App app;
     HTTPServer srv(app, 8000, CONFIG_PATH);
 
     app.run();

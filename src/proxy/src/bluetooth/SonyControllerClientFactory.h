@@ -1,6 +1,6 @@
 
 /**
- * @file Dualshock4ClientFactory.h
+ * @file SonyControllerClientFactory.h
  */
 
 /**********************************************************************
@@ -11,8 +11,8 @@
 
 **********************************************************************/
 
-#ifndef _DUALSHOCK4CLIENTFACTORY_H
-#define _DUALSHOCK4CLIENTFACTORY_H
+#ifndef _SONYCONTROLLERCLIENTFACTORY_H
+#define _SONYCONTROLLERCLIENTFACTORY_H
 
 #include <array>
 
@@ -22,19 +22,19 @@
 namespace dsremap
 {
   /**
-   * Acceptor client factory for the Dualshock4. This is instantiated
-   * by SDPClientFactory when a connection is made on PSM 0x01. Its
-   * role is to send the PDU response when appropriate and wait for
-   * connections from the same bdaddr on PSMs 0x11 and 0x13. Then it
-   * creates a new Dualshock4Proxy instance to handle the rest.
+   * Acceptor client factory. This is instantiated by SDPClientFactory
+   * when a connection is made on PSM 0x01. Its role is to send the
+   * PDU response when appropriate and wait for connections from the
+   * same bdaddr on PSMs 0x11 and 0x13. Then it creates a new Proxy
+   * instance to handle the rest.
    */
-  class Dualshock4ClientFactory : public BluetoothAcceptor::ClientFactory,
-                                  public Application::Component,
-                                  public Logger
+  class SonyControllerClientFactory : public BluetoothAcceptor::ClientFactory,
+                                      public Application::Component,
+                                      public Logger
   {
   public:
-    Dualshock4ClientFactory(BluetoothAcceptor&, const std::string& addr, int fd);
-    ~Dualshock4ClientFactory();
+    SonyControllerClientFactory(BluetoothAcceptor&, const std::string& addr, int fd);
+    ~SonyControllerClientFactory();
 
     bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd) override;
 
@@ -61,4 +61,4 @@ namespace dsremap
   };
 }
 
-#endif /* _DUALSHOCK4CLIENTFACTORY_H */
+#endif /* _SONYCONTROLLERCLIENTFACTORY_H */

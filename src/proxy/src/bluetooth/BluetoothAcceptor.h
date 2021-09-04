@@ -55,6 +55,8 @@ namespace dsremap
      */
     void remove_client_factory(ClientFactory*);
 
+    virtual void create_proxy(int fd_0x11, int fd_0x13) = 0;
+
   private:
     // Listen on 3 PSMs: SDP, HID control, HID interrupt
     struct Descriptor {

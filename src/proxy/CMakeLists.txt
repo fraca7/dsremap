@@ -60,6 +60,8 @@ add_library(dsremap-lib STATIC
   src/utils/Logger.h
   src/utils/Application.cpp
   src/utils/Application.h
+  src/utils/BytecodeFile.cpp
+  src/utils/BytecodeFile.h
 
   src/bluetooth/BTUtils.cpp
   src/bluetooth/BTUtils.h
@@ -67,8 +69,8 @@ add_library(dsremap-lib STATIC
   src/bluetooth/BluetoothAcceptor.h
   src/bluetooth/SDPClientFactory.cpp
   src/bluetooth/SDPClientFactory.h
-  src/bluetooth/Dualshock4ClientFactory.cpp
-  src/bluetooth/Dualshock4ClientFactory.h
+  src/bluetooth/SonyControllerClientFactory.cpp
+  src/bluetooth/SonyControllerClientFactory.h
   src/bluetooth/BTDevice.h
   src/bluetooth/BTDevice.cpp
   src/bluetooth/Proxy.h

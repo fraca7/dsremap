@@ -1,5 +1,5 @@
 /**
- * @file Dualshock4ClientFactory.cpp
+ * @file SonyControllerClientFactory.cpp
  */
 
 /**********************************************************************
@@ -17,10 +17,8 @@
 #include <bluetooth/bluetooth.h>
 #include <bluetooth/l2cap.h>
 
-#include <src/Dualshock4Proxy.h>
-
 #include "BTUtils.h"
-#include "Dualshock4ClientFactory.h"
+#include "SonyControllerClientFactory.h"
 
 static const uint8_t sdp_pdu_response[] = {
   0x07, 0x00, 0x01, 0x01, 0x5b, 0x01, 0x58, 0x36, 0x01, 0x55, 0x36, 0x00,
@@ -57,10 +55,10 @@ static const uint8_t sdp_pdu_response[] = {
 
 namespace dsremap
 {
-  Dualshock4ClientFactory::Dualshock4ClientFactory(BluetoothAcceptor& acceptor, const std::string& addr, int fd)
+  SonyControllerClientFactory::SonyControllerClientFactory(BluetoothAcceptor& acceptor, const std::string& addr, int fd)
     : BluetoothAcceptor::ClientFactory(),
       Application::Component(acceptor),
-      Logger("Dualshock4ClientFactory"),
+      Logger("SonyControllerClientFactory"),
       _acceptor(acceptor),
       _state(State::SDP),
       _addr(addr),
@@ -68,10 +66,10 @@ namespace dsremap
       _fd_0x11(-1),
       _fd_0x13(-1)
   {
-    g_unix_fd_add(fd, G_IO_IN, &Dualshock4ClientFactory::static_io_callback, static_cast<gpointer>(this));
+    g_unix_fd_add(fd, G_IO_IN, &SonyControllerClientFactory::static_io_callback, static_cast<gpointer>(this));
   }
 
-  Dualshock4ClientFactory::~Dualshock4ClientFactory()
+  SonyControllerClientFactory::~SonyControllerClientFactory()
   {
     while (g_source_remove_by_user_data(static_cast<gpointer>(this)));
     ::close(_fd_0x01);
@@ -84,7 +82,7 @@ namespace dsremap
     }
   }
 
-  bool Dualshock4ClientFactory::on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd)
+  bool SonyControllerClientFactory::on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd)
   {
     if (addr == _addr) {
       switch (psm) {
@@ -94,7 +92,7 @@ namespace dsremap
             _acceptor.remove_client_factory(this);
             _state = State::SDP;
             _fd_0x01 = fd;
-            g_unix_fd_add(fd, G_IO_IN, &Dualshock4ClientFactory::static_io_callback, static_cast<gpointer>(this));
+            g_unix_fd_add(fd, G_IO_IN, &SonyControllerClientFactory::static_io_callback, static_cast<gpointer>(this));
           }
           break;
         case 0x11:
@@ -121,9 +119,9 @@ namespace dsremap
         _state = State::Done;
 
         try {
-          new Dualshock4Proxy(application(), _fd_0x11, _fd_0x13);
+          _acceptor.create_proxy(_fd_0x11, _fd_0x13);
         } catch (const std::exception& exc) {
-          error("Error while creating Dualshock4Proxy: {}", exc.what());
+          error("Error while creating proxy: {}", exc.what());
         }
 
         delete this;
@@ -135,22 +133,22 @@ namespace dsremap
     return false;
   }
 
-  void Dualshock4ClientFactory::stop()
+  void SonyControllerClientFactory::stop()
   {
     _acceptor.remove_client_factory(this);
     delete this;
   }
 
-  void Dualshock4ClientFactory::reconfigure()
+  void SonyControllerClientFactory::reconfigure()
   {
   }
 
-  gboolean Dualshock4ClientFactory::static_io_callback(gint fd, GIOCondition cond, gpointer ptr)
+  gboolean SonyControllerClientFactory::static_io_callback(gint fd, GIOCondition cond, gpointer ptr)
   {
-    return static_cast<Dualshock4ClientFactory*>(ptr)->io_callback(fd, cond);
+    return static_cast<SonyControllerClientFactory*>(ptr)->io_callback(fd, cond);
   }
 
-  bool Dualshock4ClientFactory::io_callback(int fd, GIOCondition)
+  bool SonyControllerClientFactory::io_callback(int fd, GIOCondition)
   {
     uint8_t data[1024];
     size_t len = ::read(fd, data, sizeof(data));

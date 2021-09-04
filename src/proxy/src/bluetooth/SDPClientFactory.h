@@ -21,7 +21,7 @@ namespace dsremap
 {
   /**
    * Standard acceptor client factory; creates a new
-   * Dualshock4ClientFactory on incoming SDP connections.
+   * SonyControllerClientFactory on incoming SDP connections.
    */
   class SDPClientFactory : public BluetoothAcceptor::ClientFactory,
                            public Logger

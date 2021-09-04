@@ -11,7 +11,7 @@
 **********************************************************************/
 
 #include "SDPClientFactory.h"
-#include "Dualshock4ClientFactory.h"
+#include "SonyControllerClientFactory.h"
 
 namespace dsremap
 {
@@ -30,7 +30,7 @@ namespace dsremap
     if (psm == 0x01) {
       info("Got SDP connection; adding client");
 
-      new Dualshock4ClientFactory(acceptor, addr, fd);
+      new SonyControllerClientFactory(acceptor, addr, fd);
 
       return true;
     }
