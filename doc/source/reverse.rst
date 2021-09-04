@@ -10,6 +10,9 @@ Those observations come from different sources:
 
 The Dualshock used is a recent version (product 0x9cc).
 
+PS4/Dualshock
+~~~~~~~~~~~~~
+
 Device descriptor
 -----------------
 
@@ -531,7 +534,7 @@ This is the USB 0x01 report descriptor. Over BT, the report ID is 0x11 and it's 
 +--------+--------+--------------------------------------------------------------------------+
 + Offset + Type   + Meaning                                                                  +
 +========+========+==========================================================================+
-+ 0      + uint8  + Report descriptor                                                        +
++ 0      + uint8  + Report ID                                                                +
 +--------+--------+--------------------------------------------------------------------------+
 + 1      + uint8  + Left pad X (0x00 is left, 0xFF right)                                    +
 +--------+--------+--------------------------------------------------------------------------+
@@ -641,10 +644,8 @@ The configuration descriptor defines 3 audio interfaces (0, 1, 2) with 1 and 2 h
 
 So, when spoofing the DualShock, the device must send the exact same USB descriptor. The actual audio interfaces do not need to be implemented when dealing with the PS4. On the other hand, mac OS (and probably others) will reset the device if they aren't implemented. That is why Host.cpp has some logic to detect if it's plugged to a PS4 or a PC; in the latter case audio interfaces are not included in the USB descriptor.
 
-Boot sequence (PS4)
--------------------
-
-This is what happens when a Dualshock is plugged to the PS4.
+Known feature reports
+---------------------
 
 GET_REPORT 0x02
 ###############
@@ -721,10 +722,23 @@ This contains information about the Dualshock pairing "state".
 
 The last 6 bytes are set to 0x00 if the Dualshock was never paired.
 
+GET_REPORT 0x81
+###############
+
+This contains the Dualshock's BT address.
+
++--------+-------+---------------------------------------------------------+
++ Offset + Type  + Meaning                                                 +
++========+=======+=========================================================+
++ 0      + uint8 + Report ID (0x81)                                        +
++--------+-------+---------------------------------------------------------+
++ 1-6    +       + BT address of the Dualshock                             +
++--------+-------+---------------------------------------------------------+
+
 SET_REPORT 0x13
 ###############
 
-This only happens if the PS4 BT address in report 0x12 does not match the PS4's. It contains the PS4 BT address, and the link key for BT encryption.
+This contains the PS4 BT address, and the link key for BT encryption.
 
 +--------+-------+-----------------------+
 + Offset + Type  + Meaning               +
@@ -735,8 +749,6 @@ This only happens if the PS4 BT address in report 0x12 does not match the PS4's.
 +--------+-------+-----------------------+
 + 7-22   +       + Link key              +
 +--------+-------+-----------------------+
-
-For some reason, after this I get write timeouts on the interrupt IN endpoint to the host, though the control endpoint seems unaffected. This is probably a bug on my side.
 
 SET_REPORT 0x14
 ###############
@@ -758,53 +770,32 @@ SET_REPORT 0x14
 
 See also :ref:`bluetooth_mandatory`
 
-After a SET_REPORT 0x13, a SET_REPORT 0x14 with value 0x02 is
-immediately sent to disconnect the DS from its current host.
-
-After pressing PS
------------------
-
-SET_REPORT 0x14
-###############
-
-Immediately after pressing PS, the PS4 asks the Dualshock to connect via Bluetooth using this report (with first byte 0x01, see above).
-
-After this, the host sends regular data over the interrupt OUT endpoint (to set the LED colors/rumble/etc) and the periodic authentication challenge starts.
-
 Authentication challenge
-------------------------
+########################
 
 The host sends several SET_REPORT 0xf0 containing challenge data, then checks challenge response availability through GET_REPORT 0xf2, and finally collects the response with GET_REPORT 0xf1. This is all explained in https://eleccelerator.com/wiki/index.php?title=DualShock_4#0xf1
 
+Boot sequence
+-------------
+
+When the Dualshock is plugged to the Playstation, the following happens:
+
+  * GET_REPORT 0x02
+  * GET_REPORT 0xa3
+  * GET_REPORT 0x12
+
+Then, if the paired address from report 0x12 did not match the PS4's:
+
+  * SET_REPORT 0x13
+  * SET_REPORT 0x14 with value 0x02
+
+Then, after pressing PS
+
+  * SET_REPORT 0x14 with value 0x01
+
+Interrupt OUT reports start coming in after this (actually after the Dualshock is connected through Bluetooth).
+
 .. _use_calibration:
-
-Boot sequence (mac OS)
-----------------------
-
-  * GET_REPORT 0xa3 Manufacturer info
-  * GET_REPORT 0x12 Pairing state
-
-Boot sequence (Linux)
----------------------
-
-  * GET_REPORT 0x81 Controller MAC address
-  * GET_REPORT 0x02 IMU calibration data
-  * GET_REPORT 0xa3 Manufacturer info
-
-The 0x81 report:
-
-+--------+-------+---------------------------------------------------------+
-+ Offset + Type  + Meaning                                                 +
-+========+=======+=========================================================+
-+ 0      + uint8 + Report ID (0x81)                                        +
-+--------+-------+---------------------------------------------------------+
-+ 1-6    +       + BT address of the Dualshock                             +
-+--------+-------+---------------------------------------------------------+
-
-Boot sequence (Windows)
------------------------
-
-Windows does not send anything after getting the report descriptor.
 
 IMU calibration
 ---------------
@@ -840,3 +831,499 @@ Bluetooth is mandatory
 ----------------------
 
 Even when the PS4 is configured to communicate with the Dualshock through USB using the appropriate system setting, it *has* to connect through Bluetooth after receiving the 0x14 SET_REPORT, or the PS4 will not acknowledge it.
+
+PS5/DualSense
+~~~~~~~~~~~~~
+
+Device descriptor
+-----------------
+
+.. code-block:: none
+
+  Descriptor Length:	12
+  Descriptor type:	01
+  USB version:		0200
+  Device class:		00
+  Device Subclass:	00
+  Device Protocol:	00
+  Max.packet size:	40
+  Vendor  ID:		054C
+  Product ID:		0CE6
+  Revision ID:		0100
+  Mfg.string index:	01
+  Prod.string index:	02
+  Serial number index:	00
+  Number of conf.:	01
+
+Configuration descriptor
+------------------------
+
+227 bytes
+
+.. code-block:: none
+
+  0x09,        // bLength
+  0x02,        // bDescriptorType (Configuration)
+  0xE3, 0x00,  // wTotalLength 227
+  0x04,        // bNumInterfaces 4
+  0x01,        // bConfigurationValue
+  0x00,        // iConfiguration (String Index)
+  0xC0,        // bmAttributes Self Powered
+  0xFA,        // bMaxPower 500mA
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x00,        // bInterfaceNumber 0
+  0x00,        // bAlternateSetting
+  0x00,        // bNumEndpoints 0
+  0x01,        // bInterfaceClass (Audio)
+  0x01,        // bInterfaceSubClass (Audio Control)
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x0A,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x01,        // bDescriptorSubtype (CS_INTERFACE -> HEADER)
+  0x00, 0x01,  // bcdADC 1.00
+  0x49, 0x00,  // wTotalLength 73
+  0x02,        // binCollection 0x02
+  0x01,        // baInterfaceNr 1
+  0x02,        // baInterfaceNr 2
+
+  0x0C,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x02,        // bDescriptorSubtype (CS_INTERFACE -> INPUT_TERMINAL)
+  0x01,        // bTerminalID
+  0x01, 0x01,  // wTerminalType (USB Streaming)
+  0x06,        // bAssocTerminal
+  0x04,        // bNrChannels 4
+  0x33, 0x00,  // wChannelConfig (Left and Right Front,Left and Right Surround)
+  0x00,        // iChannelNames
+  0x00,        // iTerminal
+
+  0x0C,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x06,        // bDescriptorSubtype (CS_INTERFACE -> FEATURE_UNIT)
+  0x02,        // bUnitID
+  0x01,        // bSourceID
+  0x01,        // bControlSize 1
+  0x03, 0x00,  // bmaControls[0] (Mute,Volume)
+  0x00, 0x00,  // bmaControls[1] (None)
+  0x00, 0x00,  // bmaControls[2] (None)
+
+  0x09,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x03,        // bDescriptorSubtype (CS_INTERFACE -> OUTPUT_TERMINAL)
+  0x03,        // bTerminalID
+  0x01, 0x03,  // wTerminalType (Speaker)
+  0x04,        // bAssocTerminal
+  0x02,        // bSourceID
+  0x00,        // iTerminal
+
+  0x0C,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x02,        // bDescriptorSubtype (CS_INTERFACE -> INPUT_TERMINAL)
+  0x04,        // bTerminalID
+  0x02, 0x04,  // wTerminalType (Headset)
+  0x03,        // bAssocTerminal
+  0x01,        // bNrChannels 1
+  0x00, 0x00,  // wChannelConfig
+  0x00,        // iChannelNames
+  0x00,        // iTerminal
+
+  0x09,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x06,        // bDescriptorSubtype (CS_INTERFACE -> FEATURE_UNIT)
+  0x05,        // bUnitID
+  0x04,        // bSourceID
+  0x01,        // bControlSize 1
+  0x03, 0x00,  // bmaControls[0] (Mute,Volume)
+  0x00,        // iFeature
+
+  0x09,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x03,        // bDescriptorSubtype (CS_INTERFACE -> OUTPUT_TERMINAL)
+  0x06,        // bTerminalID
+  0x01, 0x01,  // wTerminalType (USB Streaming)
+  0x01,        // bAssocTerminal
+  0x05,        // bSourceID
+  0x00,        // iTerminal
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x01,        // bInterfaceNumber 1
+  0x00,        // bAlternateSetting
+  0x00,        // bNumEndpoints 0
+  0x01,        // bInterfaceClass (Audio)
+  0x02,        // bInterfaceSubClass (Audio Streaming)
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x01,        // bInterfaceNumber 1
+  0x01,        // bAlternateSetting
+  0x01,        // bNumEndpoints 1
+  0x01,        // bInterfaceClass (Audio)
+  0x02,        // bInterfaceSubClass (Audio Streaming)
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x07,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x01,        // bDescriptorSubtype (CS_INTERFACE -> AS_GENERAL)
+  0x01,        // bTerminalLink
+  0x01,        // bDelay 1
+  0x01, 0x00,  // wFormatTag (PCM)
+
+  0x0B,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x02,        // bDescriptorSubtype (CS_INTERFACE -> FORMAT_TYPE)
+  0x01,        // bFormatType 1
+  0x04,        // bNrChannels 4
+  0x02,        // bSubFrameSize 2
+  0x10,        // bBitResolution 16
+  0x01,        // bSamFreqType 1
+  0x80, 0xBB, 0x00,  // tSamFreq[1] 48000 Hz
+
+  0x09,        // bLength
+  0x05,        // bDescriptorType (See Next Line)
+  0x01,        // bEndpointAddress (OUT/H2D)
+  0x09,        // bmAttributes (Isochronous, Adaptive, Data EP)
+  0x88, 0x01,  // wMaxPacketSize 392
+  0x01,        // bInterval 1 (unit depends on device speed)
+  0x00,        // bRefresh
+  0x00,        // bSyncAddress
+
+  0x07,        // bLength
+  0x25,        // bDescriptorType (See Next Line)
+  0x01,        // bDescriptorSubtype (CS_ENDPOINT -> EP_GENERAL)
+  0x01,        // bmAttributes (Sampling Freq Control)
+  0x00,        // bLockDelayUnits
+  0x00, 0x00,  // wLockDelay 0
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x02,        // bInterfaceNumber 2
+  0x00,        // bAlternateSetting
+  0x00,        // bNumEndpoints 0
+  0x01,        // bInterfaceClass (Audio)
+  0x02,        // bInterfaceSubClass (Audio Streaming)
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x02,        // bInterfaceNumber 2
+  0x01,        // bAlternateSetting
+  0x01,        // bNumEndpoints 1
+  0x01,        // bInterfaceClass (Audio)
+  0x02,        // bInterfaceSubClass (Audio Streaming)
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x07,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x01,        // bDescriptorSubtype (CS_INTERFACE -> AS_GENERAL)
+  0x06,        // bTerminalLink
+  0x01,        // bDelay 1
+  0x01, 0x00,  // wFormatTag (PCM)
+
+  0x0B,        // bLength
+  0x24,        // bDescriptorType (See Next Line)
+  0x02,        // bDescriptorSubtype (CS_INTERFACE -> FORMAT_TYPE)
+  0x01,        // bFormatType 1
+  0x02,        // bNrChannels (Stereo)
+  0x02,        // bSubFrameSize 2
+  0x10,        // bBitResolution 16
+  0x01,        // bSamFreqType 1
+  0x80, 0xBB, 0x00,  // tSamFreq[1] 48000 Hz
+
+  0x09,        // bLength
+  0x05,        // bDescriptorType (See Next Line)
+  0x82,        // bEndpointAddress (IN/D2H)
+  0x05,        // bmAttributes (Isochronous, Async, Data EP)
+  0xC4, 0x00,  // wMaxPacketSize 196
+  0x01,        // bInterval 1 (unit depends on device speed)
+  0x00,        // bRefresh
+  0x00,        // bSyncAddress
+
+  0x07,        // bLength
+  0x25,        // bDescriptorType (See Next Line)
+  0x01,        // bDescriptorSubtype (CS_ENDPOINT -> EP_GENERAL)
+  0x00,        // bmAttributes (None)
+  0x00,        // bLockDelayUnits
+  0x00, 0x00,  // wLockDelay 0
+
+  0x09,        // bLength
+  0x04,        // bDescriptorType (Interface)
+  0x03,        // bInterfaceNumber 3
+  0x00,        // bAlternateSetting
+  0x02,        // bNumEndpoints 2
+  0x03,        // bInterfaceClass
+  0x00,        // bInterfaceSubClass
+  0x00,        // bInterfaceProtocol
+  0x00,        // iInterface (String Index)
+
+  0x09,        // bLength
+  0x21,        // bDescriptorType (HID)
+  0x11, 0x01,  // bcdHID 1.11
+  0x00,        // bCountryCode
+  0x01,        // bNumDescriptors
+  0x22,        // bDescriptorType[0] (HID)
+  0x11, 0x01,  // wDescriptorLength[0] 273
+
+  0x07,        // bLength
+  0x05,        // bDescriptorType (Endpoint)
+  0x84,        // bEndpointAddress (IN/D2H)
+  0x03,        // bmAttributes (Interrupt)
+  0x40, 0x00,  // wMaxPacketSize 64
+  0x04,        // bInterval 4 (unit depends on device speed)
+
+  0x07,        // bLength
+  0x05,        // bDescriptorType (Endpoint)
+  0x03,        // bEndpointAddress (OUT/H2D)
+  0x03,        // bmAttributes (Interrupt)
+  0x40, 0x00,  // wMaxPacketSize 64
+  0x04,        // bInterval 4 (unit depends on device speed)
+
+This is basically the same as the Dualshock, with twice as much audio channels.
+
+HID report descriptor
+---------------------
+
+.. code-block:: none
+
+  0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
+  0x09, 0x05,        // Usage (Game Pad)
+  0xA1, 0x01,        // Collection (Application)
+  0x85, 0x01,        //   Report ID (1)
+  0x09, 0x30,        //   Usage (X)
+  0x09, 0x31,        //   Usage (Y)
+  0x09, 0x32,        //   Usage (Z)
+  0x09, 0x35,        //   Usage (Rz)
+  0x09, 0x33,        //   Usage (Rx)
+  0x09, 0x34,        //   Usage (Ry)
+  0x15, 0x00,        //   Logical Minimum (0)
+  0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+  0x75, 0x08,        //   Report Size (8)
+  0x95, 0x06,        //   Report Count (6)
+  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+  0x09, 0x20,        //   Usage (0x20)
+  0x95, 0x01,        //   Report Count (1)
+  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
+  0x09, 0x39,        //   Usage (Hat switch)
+  0x15, 0x00,        //   Logical Minimum (0)
+  0x25, 0x07,        //   Logical Maximum (7)
+  0x35, 0x00,        //   Physical Minimum (0)
+  0x46, 0x3B, 0x01,  //   Physical Maximum (315)
+  0x65, 0x14,        //   Unit (System: English Rotation, Length: Centimeter)
+  0x75, 0x04,        //   Report Size (4)
+  0x95, 0x01,        //   Report Count (1)
+  0x81, 0x42,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
+  0x65, 0x00,        //   Unit (None)
+  0x05, 0x09,        //   Usage Page (Button)
+  0x19, 0x01,        //   Usage Minimum (0x01)
+  0x29, 0x0F,        //   Usage Maximum (0x0F)
+  0x15, 0x00,        //   Logical Minimum (0)
+  0x25, 0x01,        //   Logical Maximum (1)
+  0x75, 0x01,        //   Report Size (1)
+  0x95, 0x0F,        //   Report Count (15)
+  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+  0x09, 0x21,        //   Usage (0x21)
+  0x95, 0x0D,        //   Report Count (13)
+  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  0x06, 0x00, 0xFF,  //   Usage Page (Vendor Defined 0xFF00)
+  0x09, 0x22,        //   Usage (0x22)
+  0x15, 0x00,        //   Logical Minimum (0)
+  0x26, 0xFF, 0x00,  //   Logical Maximum (255)
+  0x75, 0x08,        //   Report Size (8)
+  0x95, 0x34,        //   Report Count (52)
+  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  0x85, 0x02,        //   Report ID (2)
+  0x09, 0x23,        //   Usage (0x23)
+  0x95, 0x2F,        //   Report Count (47)
+  0x91, 0x02,        //   Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x05,        //   Report ID (5)
+  0x09, 0x33,        //   Usage (0x33)
+  0x95, 0x28,        //   Report Count (40)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x08,        //   Report ID (8)
+  0x09, 0x34,        //   Usage (0x34)
+  0x95, 0x2F,        //   Report Count (47)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x09,        //   Report ID (9)
+  0x09, 0x24,        //   Usage (0x24)
+  0x95, 0x13,        //   Report Count (19)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x0A,        //   Report ID (10)
+  0x09, 0x25,        //   Usage (0x25)
+  0x95, 0x1A,        //   Report Count (26)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x20,        //   Report ID (32)
+  0x09, 0x26,        //   Usage (0x26)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x21,        //   Report ID (33)
+  0x09, 0x27,        //   Usage (0x27)
+  0x95, 0x04,        //   Report Count (4)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x22,        //   Report ID (34)
+  0x09, 0x40,        //   Usage (0x40)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x80,        //   Report ID (-128)
+  0x09, 0x28,        //   Usage (0x28)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x81,        //   Report ID (-127)
+  0x09, 0x29,        //   Usage (0x29)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x82,        //   Report ID (-126)
+  0x09, 0x2A,        //   Usage (0x2A)
+  0x95, 0x09,        //   Report Count (9)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x83,        //   Report ID (-125)
+  0x09, 0x2B,        //   Usage (0x2B)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x84,        //   Report ID (-124)
+  0x09, 0x2C,        //   Usage (0x2C)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0x85,        //   Report ID (-123)
+  0x09, 0x2D,        //   Usage (0x2D)
+  0x95, 0x02,        //   Report Count (2)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xA0,        //   Report ID (-96)
+  0x09, 0x2E,        //   Usage (0x2E)
+  0x95, 0x01,        //   Report Count (1)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xE0,        //   Report ID (-32)
+  0x09, 0x2F,        //   Usage (0x2F)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xF0,        //   Report ID (-16)
+  0x09, 0x30,        //   Usage (0x30)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xF1,        //   Report ID (-15)
+  0x09, 0x31,        //   Usage (0x31)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xF2,        //   Report ID (-14)
+  0x09, 0x32,        //   Usage (0x32)
+  0x95, 0x0F,        //   Report Count (15)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xF4,        //   Report ID (-12)
+  0x09, 0x35,        //   Usage (0x35)
+  0x95, 0x3F,        //   Report Count (63)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0x85, 0xF5,        //   Report ID (-11)
+  0x09, 0x36,        //   Usage (0x36)
+  0x95, 0x03,        //   Report Count (3)
+  0xB1, 0x02,        //   Feature (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
+  0xC0,              // End Collection
+
+Input report structure
+----------------------
+
+The report ID is 0x01 over USB. Over Bluetooth, report 0x01 is a simplified version, as for the Dualshock, but after GET_REPORT 0x20 it becomes 0x31 which is similar to this in structure, but the report ID is followed by a single byte (0x51), so offsets have to be adjusted.
+
++--------+--------+--------------------------------------------------------------------------+
++ Offset + Type   + Meaning                                                                  +
++========+========+==========================================================================+
++ 0      + uint8  + Report ID                                                                +
++--------+--------+--------------------------------------------------------------------------+
++ 1      + uint8  + Left pad X (0x00 is left, 0xFF right)                                    +
++--------+--------+--------------------------------------------------------------------------+
++ 2      + uint8  + Left pad Y (0x00 is up, 0xFF down)                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 3      + uint8  + Right pad X                                                              +
++--------+--------+--------------------------------------------------------------------------+
++ 4      + uint8  + Right pad Y                                                              +
++--------+--------+--------------------------------------------------------------------------+
++ 5      + uint8  + L2 value                                                                 +
++--------+--------+--------------------------------------------------------------------------+
++ 6      + uint8  + R2 value                                                                 +
++--------+--------+--------------------------------------------------------------------------+
++ 7      + uint8  + A counter. This is incremented for each report.                          +
++--------+--------+--------------------------------------------------------------------------+
++ 8      + uint4  + DPad                                                                     +
++--------+--------+--------------------------------------------------------------------------+
++ 8      + bool   + Square                                                                   +
++--------+--------+--------------------------------------------------------------------------+
++ 8      + bool   + Cross                                                                    +
++--------+--------+--------------------------------------------------------------------------+
++ 8      + bool   + Circle                                                                   +
++--------+--------+--------------------------------------------------------------------------+
++ 8      + bool   + Triangle                                                                 +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + R3                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + L3                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + Options                                                                  +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + Share                                                                    +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + L1                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + R1                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + L2                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 9      + bool   + R2                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 10     + uint5  + Unknown                                                                  +
++--------+--------+--------------------------------------------------------------------------+
++ 10     + bool   + Mute                                                                     +
++--------+--------+--------------------------------------------------------------------------+
++ 10     + bool   + TPad                                                                     +
++--------+--------+--------------------------------------------------------------------------+
++ 10     + bool   + PS                                                                       +
++--------+--------+--------------------------------------------------------------------------+
++ 11     + uint8  + Unknown                                                                  +
++--------+--------+--------------------------------------------------------------------------+
++ 12-15  + uint32 + Another counter, on 32 bits. Not sure about the highest byte.            +
++--------+--------+--------------------------------------------------------------------------+
++ 16-29  +        + Probably IMU values, yet to confirm                                      +
++--------+--------+--------------------------------------------------------------------------+
++ 30     + uint16 + Timestamp (unit is probably 5.33ms)                                      +
++--------+--------+--------------------------------------------------------------------------+
++ 32     + uint8  + Unknown, probably battery                                                +
++--------+--------+--------------------------------------------------------------------------+
++ 33-63  +        + Unknown, probably touchpad (among other stuff)                           +
++--------+--------+--------------------------------------------------------------------------+
+
+Known feature reports
+---------------------
+
+GET_REPORT 0x05
+###############
+
+IMU calibration data. Details still to be investigated.
+
+GET_REPORT 0x20
+###############
+
+Manufacturing info; this is the equivalent of the Dualshock's 0xa3 report.
+
+GET_REPORT 0x09
+###############
+
+Exact same structure as the Dualshock's 0x12 report (pairing state).
+
+SET_REPORT 0x0a
+###############
+
+Exact same structure as the Dualshock's 0x13 report (set pairing and link key).
+
+SET_REPORT 0x08
+###############
+
+Exact same structure as the Dualshock's 0x14 report (connect/disconnect).
