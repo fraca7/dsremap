@@ -233,44 +233,46 @@ namespace dsremap
 
   void USBDevice::on_control_data_available(ControlEndpoint& ep)
   {
-    usb_functionfs_event event;
-    ep.read((uint8_t*)&event, sizeof(event));
+    usb_functionfs_event events[4];
+    size_t len = ep.read((uint8_t*)&events, sizeof(events));
 
-    switch (event.type) {
-      case FUNCTIONFS_BIND:
-      {
-        info("Bind event");
-        InterfaceDescriptorParser parser(*this);
-        parser.parse(get_descriptor());
-        break;
+    for (unsigned int i = 0; i < len / sizeof(*events); ++i) {
+      switch (events[i].type) {
+        case FUNCTIONFS_BIND:
+        {
+          info("Bind event");
+          InterfaceDescriptorParser parser(*this);
+          parser.parse(get_descriptor());
+          break;
+        }
+        case FUNCTIONFS_UNBIND:
+          info("Unbind event");
+          break;
+        case FUNCTIONFS_ENABLE:
+        {
+          info("Enable event");
+          EndpointDescriptorParser parser(*this);
+          parser.parse(get_descriptor());
+          _state = State::Attached;
+          _listener.on_device_attached(*this);
+          break;
+        }
+        case FUNCTIONFS_DISABLE:
+          info("Disable event");
+          break;
+        case FUNCTIONFS_SUSPEND:
+          info("Suspend event");
+          break;
+        case FUNCTIONFS_RESUME:
+          info("Resume event");
+          break;
+        case FUNCTIONFS_SETUP:
+          handle_setup(ep, events[i].u.setup);
+          break;
+        default:
+          error("Unknown event type 0x{:02x}", events[i].type);
+          break;
       }
-      case FUNCTIONFS_UNBIND:
-        info("Unbind event");
-        break;
-      case FUNCTIONFS_ENABLE:
-      {
-        info("Enable event");
-        EndpointDescriptorParser parser(*this);
-        parser.parse(get_descriptor());
-        _state = State::Attached;
-        _listener.on_device_attached(*this);
-        break;
-      }
-      case FUNCTIONFS_DISABLE:
-        info("Disable event");
-        break;
-      case FUNCTIONFS_SUSPEND:
-        info("Suspend event");
-        break;
-      case FUNCTIONFS_RESUME:
-        info("Resume event");
-        break;
-      case FUNCTIONFS_SETUP:
-        handle_setup(ep, event.u.setup);
-        break;
-      default:
-        error("Unknown event type 0x{:02x}", event.type);
-        break;
     }
   }
 
