@@ -4,7 +4,6 @@ import sys
 import argparse
 import contextlib
 import collections
-import random
 import binascii
 import struct
 import json
@@ -164,7 +163,7 @@ def show_info(args):
 
 def pair_controller(args):
     if args.key is None:
-        key = bytes([random.randint(0, 255) for idx in range(16)])
+        key = b'\xde\xad\xbe\xef\xde\xad\xbe\xef\xde\xad\xbe\xef\xde\xad\xbe\xef'
     else:
         key = binascii.unhexlify(args.key)
         if len(key) != 16:
