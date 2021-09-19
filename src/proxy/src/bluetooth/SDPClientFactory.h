@@ -30,7 +30,7 @@ namespace dsremap
     SDPClientFactory();
     ~SDPClientFactory();
 
-    bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd) override;
+    bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, uint16_t cid, int fd) override;
   };
 }
 

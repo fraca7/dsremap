@@ -36,7 +36,7 @@ namespace dsremap
     SonyControllerClientFactory(BluetoothAcceptor&, const std::string& addr, int fd);
     ~SonyControllerClientFactory();
 
-    bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd) override;
+    bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, uint16_t cid, int fd) override;
 
     void stop() override;
     void reconfigure() override;

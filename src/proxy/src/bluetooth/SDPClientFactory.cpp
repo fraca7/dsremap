@@ -25,7 +25,7 @@ namespace dsremap
   {
   }
 
-  bool SDPClientFactory::on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd)
+  bool SDPClientFactory::on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, uint16_t cid, int fd)
   {
     if (psm == 0x01) {
       info("Got SDP connection; adding client");
