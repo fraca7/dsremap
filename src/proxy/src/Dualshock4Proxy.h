@@ -29,7 +29,7 @@ namespace dsremap
   class Dualshock4Proxy : public SonyControllerProxy
   {
   public:
-    Dualshock4Proxy(Application&, int fd_0x11, int fd_0x13);
+    Dualshock4Proxy(BluetoothAcceptor&, int fd_0x11, int fd_0x13);
 
     // HIDInterface::Listener
     void on_usb_get_report(ControlEndpoint&, int, int) override;
@@ -41,6 +41,9 @@ namespace dsremap
     void on_bt_get_report(int, int, int) override;
     void on_bt_set_report(int, int, const std::vector<uint8_t>&) override;
     void on_bt_out_report(int, const std::vector<uint8_t>&) override;
+    const std::vector<uint8_t>& get_ssa_response() override {
+      return _ssa_response;
+    }
 
   protected:
     USBDevice& usb_device() override {
@@ -49,6 +52,7 @@ namespace dsremap
 
   private:
     unsigned int _pscount;
+    BluetoothAcceptor& _acceptor;
 
     std::array<uint8_t, 54> _report_06;
     std::array<uint8_t, 50> _report_a3;
@@ -61,6 +65,8 @@ namespace dsremap
 
     void got_control_data(const std::vector<uint8_t>&) override;
     void got_interrupt_data(const std::vector<uint8_t>&) override;
+
+    static const std::vector<uint8_t> _ssa_response;
   };
 }
 

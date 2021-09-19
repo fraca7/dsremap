@@ -38,7 +38,7 @@ namespace dsremap
       /**
        * Return true if the new connection was handled, to stop propagation.
        */
-      virtual bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, int fd) = 0;
+      virtual bool on_new_connection(BluetoothAcceptor& acceptor, const std::string& addr, uint16_t psm, uint16_t cid, int fd) = 0;
     };
 
     BluetoothAcceptor();

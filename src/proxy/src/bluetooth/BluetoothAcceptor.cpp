@@ -118,7 +118,7 @@ namespace dsremap
         // add/remove may be called from the callback itself so copy
         std::list<ClientFactory*> factories(_client_factories.begin(), _client_factories.end());
         for (auto factory : factories) {
-          if (factory->on_new_connection(*this, buf, dsc.psm, new_fd))
+          if (factory->on_new_connection(*this, buf, dsc.psm, btohs(addr.l2_cid), new_fd))
             return true;
         }
 

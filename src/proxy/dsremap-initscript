@@ -17,6 +17,7 @@ case "$1" in
     start)
 	service bluetooth stop
 	hciconfig hci0 up pscan
+	hciconfig hci0 class 0x508
 
 	if [ ! -e /var/run/dsremap-proxy.pid ]; then
 	    /usr/sbin/daemonize -c /opt/dsremap /opt/dsremap/dsremap-proxy

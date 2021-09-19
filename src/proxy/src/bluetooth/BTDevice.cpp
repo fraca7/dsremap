@@ -12,6 +12,14 @@
 
 #include <unistd.h>
 #include <glib-unix.h>
+#include <sys/ioctl.h>
+#include <sys/uio.h>
+#include <stdlib.h>
+
+#include <bluetooth/bluetooth.h>
+#include <bluetooth/l2cap.h>
+#include <bluetooth/hci.h>
+#include <bluetooth/hci_lib.h>
 
 #include <system_error>
 
@@ -20,8 +28,7 @@
 #include "BTUtils.h"
 #include "BTDevice.h"
 
-// Include after bluetooth.h...
-#include <bluetooth/l2cap.h>
+#define ACL_MTU 1024
 
 static const uint8_t sdp_pdu_request[] = {
   0x06, 0x00, 0x01, 0x00, 0x0f, 0x35, 0x03, 0x19, 0x01, 0x00, 0x08, 0x00, 0x35, 0x05, 0x0a, 0x00, 0x00, 0xff, 0xff, 0x00
@@ -29,12 +36,15 @@ static const uint8_t sdp_pdu_request[] = {
 
 namespace dsremap
 {
-  BTDevice::BTDevice(Listener& listener, const bdaddr_t* addr)
+  BTDevice::BTDevice(BluetoothAcceptor& acceptor, Listener& listener, const bdaddr_t* addr)
     : Logger("BTClient"),
+      _acceptor(acceptor),
       _listener(listener),
       _fds({ -1, -1, -1 }),
       _connected({ false, false, false })
   {
+    acceptor.add_client_factory(this);
+
     memcpy(&_host_addr, addr, sizeof(*addr));
     _connect(0);
   }
@@ -47,6 +57,129 @@ namespace dsremap
     }
 
     while (g_source_remove_by_user_data(static_cast<gpointer>(this)));
+
+    _acceptor.remove_client_factory(this);
+  }
+
+  bool BTDevice::on_new_connection(BluetoothAcceptor&, const std::string& addr, uint16_t psm, uint16_t cid, int fd)
+  {
+    if (psm == 0x01) {
+      // Lifted from https://github.com/matlo/l2cap_proxy
+
+      bdaddr_t dst_addr;
+      str2ba(addr.c_str(), &dst_addr);
+
+      auto data = _listener.get_ssa_response();
+      info("First connection to this console; sending SSA ({} bytes)", data.size());
+
+      struct hci_conn_info_req* cr = (struct hci_conn_info_req*)malloc(sizeof(struct hci_conn_info_req) + sizeof(struct hci_conn_info));
+      bacpy(&cr->bdaddr, &dst_addr);
+      cr->type = ACL_LINK;
+      try {
+        int device;
+        if ((device = hci_get_route(const_cast<bdaddr_t*>(&dst_addr))) < 0)
+          throw std::system_error(errno, std::generic_category(), "hci_get_route");
+
+        int dd;
+        if ((dd = hci_open_dev(device)) < 0)
+          throw std::system_error(errno, std::generic_category(), "hci_open_dev");
+
+        try {
+          if (ioctl(dd, HCIGETCONNINFO, (unsigned long)cr) < 0)
+            throw std::system_error(errno, std::generic_category(), "ioctl HCIGETCONNINFO");
+  
+          uint16_t data_len = ACL_MTU - 1 - HCI_ACL_HDR_SIZE - L2CAP_HDR_SIZE;
+          if (data.size() < data_len)
+            data_len = data.size();
+
+          struct iovec iv[4];
+          uint8_t type = HCI_ACLDATA_PKT;
+
+          iv[0].iov_base = &type;
+          iv[0].iov_len = 1;
+
+          hci_acl_hdr acl_hdr;
+          acl_hdr.handle = htobs(acl_handle_pack(cr->conn_info->handle, ACL_START));
+          acl_hdr.dlen = htobs(data_len + L2CAP_HDR_SIZE);
+  
+          iv[1].iov_base = &acl_hdr;
+          iv[1].iov_len = HCI_ACL_HDR_SIZE;
+
+          l2cap_hdr l2_hdr;
+          l2_hdr.cid = htobs(cid);
+          l2_hdr.len = htobs(data.size());
+
+          iv[2].iov_base = &l2_hdr;
+          iv[2].iov_len = L2CAP_HDR_SIZE;
+
+          int ivn = 3;
+  
+          if (data_len)
+          {
+            iv[3].iov_base = const_cast<uint8_t*>(data.data());
+            iv[3].iov_len = htobs(data_len);
+            ivn = 4;
+          }
+  
+          while (writev(dd, iv, ivn) < 0)
+          {
+            if (errno == EAGAIN || errno == EINTR)
+              continue;
+            throw std::system_error(errno, std::generic_category(), "writev");
+          }
+
+          size_t plen = data.size() - data_len;
+          const uint8_t* pdata = data.data();
+
+          while(plen)
+          {
+            pdata += data_len;
+            data_len = ACL_MTU - 1 - HCI_ACL_HDR_SIZE;
+            if(plen < data_len)
+              data_len = plen;
+
+            iv[0].iov_base = &type;
+            iv[0].iov_len = 1;
+
+            acl_hdr.handle = htobs(acl_handle_pack(cr->conn_info->handle, ACL_CONT));
+            acl_hdr.dlen = htobs(plen);
+
+            iv[1].iov_base = &acl_hdr;
+            iv[1].iov_len = HCI_ACL_HDR_SIZE;
+
+            iv[2].iov_base = const_cast<uint8_t*>(pdata);
+            iv[2].iov_len = htobs(data_len);
+            ivn = 3;
+  
+            while (writev(dd, iv, ivn) < 0)
+            {
+              if (errno == EAGAIN || errno == EINTR)
+                continue;
+              throw std::system_error(errno, std::generic_category(), "writev");
+            }
+    
+            plen -= data_len;
+          }
+
+          free(cr);
+          close(dd);
+          close(fd);
+        } catch (...) {
+          close(dd);
+          close(fd);
+          throw;
+        }
+      } catch (...) {
+        free(cr);
+        close(fd);
+        throw;
+      }
+
+      close(fd);
+      return true;
+    }
+
+    return false;
   }
 
   gboolean BTDevice::static_io_callback(int fd, GIOCondition cond, gpointer ptr)
@@ -197,6 +330,5 @@ namespace dsremap
       _fds[index] = -1;
       throw;
     }
-
   }
 }
