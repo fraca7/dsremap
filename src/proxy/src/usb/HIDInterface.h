@@ -22,7 +22,7 @@
 
 #include <src/utils/Application.h>
 #include <src/usb/Interface.h>
-#include <dsremap/DS4Structs.h>
+#include <dsremap/CommonStructs.h>
 
 namespace dsremap
 {

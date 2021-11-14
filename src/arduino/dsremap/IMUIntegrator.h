@@ -6,7 +6,7 @@
 #include "Config.h"
 #endif
 
-#include "DS4Structs.h"
+#include "CommonStructs.h"
 
 class IMUIntegrator
 {

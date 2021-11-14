@@ -2,6 +2,7 @@
 #include "Config.h"
 #include "Descriptors.h"
 #include "Host.h"
+#include "DS4HID.h"
 
 #include "messages.h"
 

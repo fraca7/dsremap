@@ -5,7 +5,7 @@
 #include "LUFAConfig.h"
 #include <LUFA.h>
 #include "Config.h"
-#include "platform.h"
+#include "Utils.h"
 
 class LogChecksum {
 public:

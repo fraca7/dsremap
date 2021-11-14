@@ -17,6 +17,7 @@
 #include <vector>
 
 #include <src/usb/HIDInterface.h>
+#include <dsremap/DS4Structs.h>
 
 namespace dsremap
 {

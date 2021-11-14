@@ -8,6 +8,7 @@
 #include "Host.h"
 #include "Descriptors.h"
 #include "DS4USB.h"
+#include "DS4Structs.h"
 #include "BytecodeWriter.h"
 #include "VM.h"
 #include "version.h"

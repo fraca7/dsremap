@@ -5,7 +5,6 @@
 #include "Config.h"
 
 #include "LUFAConfig.h"
-#include "DS4HID.h"
 
 #include <LUFA.h>
 

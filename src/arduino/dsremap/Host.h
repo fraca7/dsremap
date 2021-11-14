@@ -6,7 +6,7 @@
 #include "LUFAConfig.h"
 
 #include "Descriptors.h"
-#include "DS4Structs.h"
+#include "CommonStructs.h"
 
 #ifndef DISABLE_REMAPPING
 #include "Configuration.h"

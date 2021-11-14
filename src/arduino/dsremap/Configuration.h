@@ -3,7 +3,7 @@
 #define _CONFIGURATION_H
 
 #include "darray.h"
-#include "DS4Structs.h"
+#include "CommonStructs.h"
 
 #include "VM.h"
 

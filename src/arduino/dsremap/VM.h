@@ -2,7 +2,7 @@
 #ifndef _VM_H
 #define _VM_H
 
-#include "DS4Structs.h"
+#include "CommonStructs.h"
 #include "IMUIntegrator.h"
 #include "opcodes.h"
 
