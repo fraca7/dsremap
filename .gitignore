@@ -22,3 +22,5 @@ res/resources.qrc
 src/dsrlib/resources.py
 src/ext/src/arduino/dsremap/VM.o
 src/proxy/build
+venv
+
