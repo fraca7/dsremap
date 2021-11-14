@@ -131,4 +131,8 @@ static_assert(sizeof(USBReport01_t) == 64, "Invalid USBReport01_t size");
 #pragma pack(pop)
 #endif
 
+#define CONTROLLER_STATE_FROM_BUFFER(state, data) memcpy((uint8_t*)(state), (uint8_t*)(data) + 1, sizeof(*state))
+#define CONTROLLER_STATE_TO_BUFFER(state, data) memcpy((uint8_t*)(data) + 1, (uint8_t*)(state), sizeof(*state))
+#define IMU_STATE_FROM_BUFFER(imu, data) ((imu_state_t*)((uint8_t*)(data) + 10))
+
 #endif /* _DS4STRUCTS_H */

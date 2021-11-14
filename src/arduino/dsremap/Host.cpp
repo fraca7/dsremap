@@ -194,17 +194,21 @@ void Host::loop()
     case HostState::PC:
     case HostState::PS4:
       if (m_OutLen) {
-        USBReport01_t* report = (USBReport01_t*)m_OutReport;
+        controller_state_t ctrl;
+        CONTROLLER_STATE_FROM_BUFFER(&ctrl, m_OutReport);
 
 #ifndef DISABLE_REMAPPING
-        m_Integrator.Update((imu_state_t*)(m_OutReport + 10));
+        imu_state_t imu;
+        IMU_STATE_FROM_BUFFER(&imu, m_OutReport);
+
+        m_Integrator.Update(&imu);
 
         if (m_CurrentConfig < m_Configurations.Count())
-          m_Configurations.GetItem(m_CurrentConfig)->Run((controller_state_t*)(m_OutReport + 1), &m_Integrator);
+          m_Configurations.GetItem(m_CurrentConfig)->Run(&ctrl, &m_Integrator);
 
         m_Blink.loop();
 
-        if (report->PS) {
+        if (ctrl.PS) {
           if (m_HostState == HostState::PC_Config) {
             m_Blink.SetBlinkCount(0);
             SET_STATE(HostState::PC);
@@ -217,11 +221,11 @@ void Host::loop()
         if ((m_HostState == HostState::PC_Config) || (m_HostState == HostState::PS4_Config)) {
           switch (m_HatState) {
             case ButtonState::Released:
-              if (report->Hat == 0x00)
+              if (ctrl.Hat == 0x00)
                 m_HatState = ButtonState::Pressed;
               break;
             case ButtonState::Pressed:
-              if (report->Hat != 0x00) {
+              if (ctrl.Hat != 0x00) {
                 m_HatState = ButtonState::Released;
                 m_CurrentConfig = (m_CurrentConfig + 1) % m_Configurations.Count();
                 m_Blink.SetBlinkCount(m_CurrentConfig + 1);
@@ -229,6 +233,8 @@ void Host::loop()
               break;
           }
         }
+
+        CONTROLLER_STATE_TO_BUFFER(&ctrl, m_OutReport);
 #endif
 
         Endpoint_SelectEndpoint(DEVICE_EPADDR_IN);
