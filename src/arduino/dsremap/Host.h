@@ -14,7 +14,8 @@
 #include "IMUIntegrator.h"
 #endif
 
-class DS4USB;
+class USBController;
+
 #ifndef DISABLE_REMAPPING
 class BytecodeWriter;
 #endif
@@ -27,7 +28,7 @@ class Host
 public:
   Host();
 
-  void OnDeviceReady(DS4USB*);
+  void OnDeviceReady(USBController*);
   void OnDeviceData(uint16_t, uint8_t*);
   void SendReport(uint16_t, const uint8_t*, USB_DescriptorMemorySpaces_t = MEMSPACE_RAM);
   void SetCalibrationData(CalibrationData_t*);
@@ -42,7 +43,7 @@ public:
   void loop();
 
 private:
-  DS4USB* m_pDevice;
+  USBController* m_pDevice;
 #ifndef DISABLE_REMAPPING
   IMUIntegrator m_Integrator;
 #endif

@@ -44,6 +44,7 @@ void IMUIntegrator::SetCalibrationData(const CalibrationData_t *pData)
   m_Calib[1].N = sp2x * GYRO_RES;
   m_Calib[2].N = sp2x * GYRO_RES;
 
+  /*
   int32_t twoG;
 
   twoG = (int32_t)pData->acc_x_plus - pData->acc_x_minus;
@@ -61,6 +62,7 @@ void IMUIntegrator::SetCalibrationData(const CalibrationData_t *pData)
   m_Calib[3].N = 2 * ACCEL_RES;
   m_Calib[4].N = 2 * ACCEL_RES;
   m_Calib[5].N = 2 * ACCEL_RES;
+  */
 }
 
 void IMUIntegrator::Update(const imu_state_t* rep)
@@ -76,7 +78,11 @@ void IMUIntegrator::Update(const imu_state_t* rep)
     } else {
       delta = rep->timestamp - m_LastTimestamp;
     }
+#if TARGET_PLATFORM == TARGET_PS5
+    delta = delta * 4000;
+#elif TARGET_PLATFORM == TARGET_PS4
     delta = delta * 16 / 3;
+#endif
 
     if (delta == 0)
       // Happens from time to time on Bluetooth...

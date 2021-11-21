@@ -198,6 +198,7 @@ class MainWindow(QtWidgets.QMainWindow):
                     if not udevOk:
                         # Cannot copy a file from the res directory because root hasn't the permissions on the mount dir...
                         sudoLaunch('sh', '-c', 'echo \'SUBSYSTEM=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="09cc", GROUP="plugdev", MODE="0660"\' > /etc/udev/rules.d/80-dsremap.rules')
+                        sudoLaunch('sh', '-c', 'echo \'SUBSYSTEM=="usb", ATTRS{idVendor}=="054c", ATTRS{idProduct}=="0ce6", GROUP="plugdev", MODE="0660"\' > /etc/udev/rules.d/80-dsremap.rules')
                         sudoLaunch('sh', '-c', 'echo \'SUBSYSTEM=="tty", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="8036", GROUP="plugdev", MODE="0660"\' >> /etc/udev/rules.d/80-dsremap.rules')
                 except SudoNotFound:
                     QtWidgets.QMessageBox.critical(self, _('Error'), _('Unable to find <i>sudo</i> on the path.'))

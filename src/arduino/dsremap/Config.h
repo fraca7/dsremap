@@ -29,4 +29,10 @@
 
 #include "Log.h"
 
+// Targeted platform
+#define TARGET_PS4 0
+#define TARGET_PS5 1
+
+#define TARGET_PLATFORM TARGET_PS4
+
 #endif /* _CONFIG_H */

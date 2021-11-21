@@ -7,9 +7,8 @@
 
 #include "Host.h"
 #include "Descriptors.h"
-#include "DS4USB.h"
-#include "DS4Structs.h"
 #include "BytecodeWriter.h"
+#include "USBController.h"
 #include "VM.h"
 #include "version.h"
 
@@ -51,7 +50,7 @@ Host::Host()
   USB_Init();
 }
 
-void Host::OnDeviceReady(DS4USB* pDevice)
+void Host::OnDeviceReady(USBController* pDevice)
 {
   m_pDevice = pDevice;
   USB_Device_CurrentlySelfPowered = true;
@@ -195,11 +194,11 @@ void Host::loop()
     case HostState::PS4:
       if (m_OutLen) {
         controller_state_t ctrl;
-        CONTROLLER_STATE_FROM_BUFFER(&ctrl, m_OutReport);
+        m_pDevice->ControllerStateFromBuffer(&ctrl, m_OutReport);
 
 #ifndef DISABLE_REMAPPING
         imu_state_t imu;
-        IMU_STATE_FROM_BUFFER(&imu, m_OutReport);
+        m_pDevice->IMUStateFromBuffer(&imu, m_OutReport);
 
         m_Integrator.Update(&imu);
 
@@ -234,7 +233,7 @@ void Host::loop()
           }
         }
 
-        CONTROLLER_STATE_TO_BUFFER(&ctrl, m_OutReport);
+        m_pDevice->ControllerStateToBuffer(&ctrl, m_OutReport);
 #endif
 
         Endpoint_SelectEndpoint(DEVICE_EPADDR_IN);
@@ -251,7 +250,7 @@ void Host::loop()
 #endif
 
             // Heuristic to find out we're connected to a PS4 instead of a PC...
-            if (m_pDevice) { // Only go to PS4_Enumerating if the DS4 is plugged.
+            if (m_pDevice) { // Only go to PS4_Enumerating if the controller is plugged.
               ++m_ErrorCount;
               if (m_ErrorCount >= 16) {
                 SET_STATE(HostState::PS4_Enumerating);

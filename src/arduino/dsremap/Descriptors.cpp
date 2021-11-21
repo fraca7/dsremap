@@ -2,7 +2,14 @@
 #include "Config.h"
 #include "Descriptors.h"
 #include "Host.h"
+
+#if TARGET_PLATFORM == TARGET_PS4
 #include "DS4HID.h"
+#elif TARGET_PLATFORM == TARGET_PS5
+#include "DS5HID.h"
+#else
+#error Unknown platform
+#endif
 
 #include "messages.h"
 
@@ -14,7 +21,7 @@ static const USB_Descriptor_String_t PROGMEM LanguageString = USB_STRING_DESCRIP
 static const USB_Descriptor_String_t PROGMEM ManufacturerString = USB_STRING_DESCRIPTOR(L"Sony Interactive Entertainment");
 static const USB_Descriptor_String_t PROGMEM ProductString = USB_STRING_DESCRIPTOR(L"Wireless Controller");
 
-static const uint8_t SoundInterfaces[184] PROGMEM = {
+static const uint8_t SoundInterfaces[] PROGMEM = {
   // As mentioned in the .h we don't need to handle the audio classes but we need to declare them
   0x09,        // bLength
   0x04,        // bDescriptorType (Interface)
@@ -30,7 +37,11 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x24,        // bDescriptorType (See Next Line)
   0x01,        // bDescriptorSubtype (CS_INTERFACE -> HEADER)
   0x00, 0x01,  // bcdADC 1.00
+#if TARGET_PLATFORM == TARGET_PS4
   0x47, 0x00,  // wTotalLength 71
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x49, 0x00,  // wTotalLength 73
+#endif
   0x02,        // binCollection 0x02
   0x01,        // baInterfaceNr 1
   0x02,        // baInterfaceNr 2
@@ -41,12 +52,21 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x01,        // bTerminalID
   0x01, 0x01,  // wTerminalType (USB Streaming)
   0x06,        // bAssocTerminal
+#if TARGET_PLATFORM == TARGET_PS4
   0x02,        // bNrChannels 2
   0x03, 0x00,  // wChannelConfig (Left and Right Front)
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x04,        // bNrChannels 4
+  0x33, 0x00,  // wChannelConfig (Left and Right Front,Left and Right Surround)
+#endif
   0x00,        // iChannelNames
   0x00,        // iTerminal
 
+#if TARGET_PLATFORM == TARGET_PS4
   0x0A,        // bLength
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x0C,        // bLength
+#endif
   0x24,        // bDescriptorType (See Next Line)
   0x06,        // bDescriptorSubtype (CS_INTERFACE -> FEATURE_UNIT)
   0x02,        // bUnitID
@@ -54,12 +74,19 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x01,        // bControlSize 1
   0x03, 0x00,  // bmaControls[0] (Mute,Volume)
   0x00, 0x00,  // bmaControls[1] (None)
+#if TARGET_PLATFORM == TARGET_PS5
+  0x00, 0x00,  // bmaControls[2] (None)
+#endif
 
   0x09,        // bLength
   0x24,        // bDescriptorType (See Next Line)
   0x03,        // bDescriptorSubtype (CS_INTERFACE -> OUTPUT_TERMINAL)
   0x03,        // bTerminalID
+#if TARGET_PLATFORM == TARGET_PS4
   0x02, 0x04,  // wTerminalType (Headset)
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x01, 0x03,  // wTerminalType (Speaker)
+#endif
   0x04,        // bAssocTerminal
   0x02,        // bSourceID
   0x00,        // iTerminal
@@ -124,17 +151,29 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x24,        // bDescriptorType (See Next Line)
   0x02,        // bDescriptorSubtype (CS_INTERFACE -> FORMAT_TYPE)
   0x01,        // bFormatType 1
+#if TARGET_PLATFORM == TARGET_PS4
   0x02,        // bNrChannels (Stereo)
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x04,        // bNrChannels 4
+#endif
   0x02,        // bSubFrameSize 2
   0x10,        // bBitResolution 16
   0x01,        // bSamFreqType 1
+#if TARGET_PLATFORM == TARGET_PS4
   0x00, 0x7D, 0x00,  // tSamFreq[1] 32000 Hz
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x80, 0xBB, 0x00,  // tSamFreq[1] 48000 Hz
+#endif
 
   0x09,        // bLength
   0x05,        // bDescriptorType (See Next Line)
   0x01,        // bEndpointAddress (OUT/H2D)
   0x09,        // bmAttributes (Isochronous, Adaptive, Data EP)
+#if TARGET_PLATFORM == TARGET_PS4
   0x84, 0x00,  // wMaxPacketSize 132
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x88, 0x01,  // wMaxPacketSize 392
+#endif
   0x01,        // bInterval 1 (unit depends on device speed)
   0x00,        // bRefresh
   0x00,        // bSyncAddress
@@ -142,7 +181,11 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x07,        // bLength
   0x25,        // bDescriptorType (See Next Line)
   0x01,        // bDescriptorSubtype (CS_ENDPOINT -> EP_GENERAL)
+#if TARGET_PLATFORM == TARGET_PS4
   0x00,        // bmAttributes (None)
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x01,        // bmAttributes (Sampling Freq Control)
+#endif
   0x00,        // bLockDelayUnits
   0x00, 0x00,  // wLockDelay 0
 
@@ -177,17 +220,29 @@ static const uint8_t SoundInterfaces[184] PROGMEM = {
   0x24,        // bDescriptorType (See Next Line)
   0x02,        // bDescriptorSubtype (CS_INTERFACE -> FORMAT_TYPE)
   0x01,        // bFormatType 1
+#if TARGET_PLATFORM == TARGET_PS4
   0x01,        // bNrChannels (Mono)
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x02,        // bNrChannels (Stereo)
+#endif
   0x02,        // bSubFrameSize 2
   0x10,        // bBitResolution 16
   0x01,        // bSamFreqType 1
+#if TARGET_PLATFORM == TARGET_PS4
   0x80, 0x3E, 0x00,  // tSamFreq[1] 16000 Hz
+#elif TARGET_PLATFORM == TARGET_PS5
+  0x80, 0xBB, 0x00,  // tSamFreq[1] 48000 Hz
+#endif
 
   0x09,        // bLength
   0x05,        // bDescriptorType (See Next Line)
   0x82,        // bEndpointAddress (IN/D2H)
   0x05,        // bmAttributes (Isochronous, Async, Data EP)
+#if TARGET_PLATFORM == TARGET_PS4
   0x22, 0x00,  // wMaxPacketSize 34
+#elif TARGET_PLATFORM == TARGET_PS5
+  0xC4, 0x00,  // wMaxPacketSize 196
+#endif
   0x01,        // bInterval 1 (unit depends on device speed)
   0x00,        // bRefresh
   0x00,        // bSyncAddress
@@ -209,7 +264,11 @@ static const USB_Descriptor_Device_t PROGMEM DeviceDescriptor = {
   .Protocol = USB_CSCP_NoDeviceProtocol,
   .Endpoint0Size = DEVICE_EP_SIZE,
   .VendorID = 0x054c,
+#if TARGET_PLATFORM == TARGET_PS4
   .ProductID = 0x09cc,
+#elif TARGET_PLATFORM == TARGET_PS5
+  .ProductID = 0x0ce6,
+#endif
   .ReleaseNumber = VERSION_BCD(1, 0, 0),
   .ManufacturerStrIndex = STRING_ID_Manufacturer,
   .ProductStrIndex = STRING_ID_Product,
@@ -253,7 +312,11 @@ static const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor = {
     .EndpointAddress = DEVICE_EPADDR_IN,
     .Attributes = EP_TYPE_INTERRUPT|ENDPOINT_ATTR_NO_SYNC|ENDPOINT_USAGE_DATA,
     .EndpointSize = DEVICE_EP_SIZE,
+#if TARGET_PLATFORM == TARGET_PS4
     .PollingIntervalMS = 0x05
+#elif TARGET_PLATFORM == TARGET_PS5
+    .PollingIntervalMS = 0x04
+#endif
   },
 
   .HID_ReportOUTEndpoint = {
@@ -261,7 +324,11 @@ static const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor = {
     .EndpointAddress = DEVICE_EPADDR_OUT,
     .Attributes = EP_TYPE_INTERRUPT|ENDPOINT_ATTR_NO_SYNC|ENDPOINT_USAGE_DATA,
     .EndpointSize = DEVICE_EP_SIZE,
+#if TARGET_PLATFORM == TARGET_PS4
     .PollingIntervalMS = 0x05
+#elif TARGET_PLATFORM == TARGET_PS5
+    .PollingIntervalMS = 0x04
+#endif
   }
 };
 
@@ -298,6 +365,8 @@ void EVENT_USB_Device_ControlRequest()
 {
   if (!Endpoint_IsSETUPReceived())
     return;
+
+  // XXXFIXME: check values for get/min/max on the PS5
 
   if (((USB_ControlRequest.bmRequestType & CONTROL_REQTYPE_RECIPIENT) == REQREC_INTERFACE) && ((USB_ControlRequest.wIndex & 0xFF) < DEVICE_INTERFACE_NUMBER)) {
     switch (USB_ControlRequest.bRequest) {

@@ -2,12 +2,21 @@
 
 #include "Config.h"
 
-#include "DS4USB.h"
 #include "Host.h"
+
+#if TARGET_PLATFORM == TARGET_PS4
+#include "DS4USB.h"
+#elif TARGET_PLATFORM == TARGET_PS5
+#include "DS5USB.h"
+#endif
 
 Host host;
 USB usb;
-DS4USB ds4(&usb, &host);
+#if TARGET_PLATFORM == TARGET_PS4
+DS4USB ctrl(&usb, &host);
+#elif TARGET_PLATFORM == TARGET_PS5
+DS5USB ctrl(&usb, &host);
+#endif
 
 void setup()
 {
