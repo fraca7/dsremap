@@ -25,7 +25,7 @@ class GyroAction(Action):
             self.notifyChanged()
 
     def source(self):
-        return """
+        tmpl = """
 #define DEADZONE 50
 #define ACCEL_FACTOR 5
 
@@ -75,4 +75,9 @@ state gyro_aiming {
     RPadY = ACCEL_FACTOR * ACCELX + 0x80;
   }
 };
-""" % dict(BUTTONCOND=' && '.join([button.name for button in self._buttons]))
+"""
+        if len(self._buttons) == 0:
+            return tmpl % dict(BUTTONCOND='0 != 0')
+        if len(self._buttons) == 1:
+            return tmpl % dict(BUTTONCOND='%s != 0' % self._buttons[0].name)
+        return tmpl % dict(BUTTONCOND=' && '.join([button.name for button in self._buttons]))
