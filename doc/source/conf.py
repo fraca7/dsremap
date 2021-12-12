@@ -35,7 +35,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..', 'src'))
 from dsrlib.meta import Meta
 
 project = Meta.appName()
-copyright = '2020, %s' % Meta.appAuthor()
+copyright = '2020-2021, %s' % Meta.appAuthor()
 author = Meta.appAuthor()
 
 # The short X.Y version
