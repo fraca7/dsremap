@@ -13,6 +13,10 @@ documentation at Readthedocs_.
 
 Changelog:
 
+  * v1.2.2
+
+    * Fix a crash when changing condition for gyro aiming
+
   * v1.2.1
 
     * The RPi0-based system was not working for anybody but me because of a previous manipulation with my PS4. The desktop app has not changed, only the image, so you just have to overwrite your SD card. The new image will be downloaded automatically when you do.
