@@ -2,6 +2,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
+#include <DS4Structs.h>
 #include <VM.h>
 
 typedef struct {
