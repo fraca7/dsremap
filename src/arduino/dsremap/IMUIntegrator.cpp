@@ -92,9 +92,9 @@ void IMUIntegrator::Update(const imu_state_t* rep)
   // NB: the first version used both the accelerometer & gyro
   // data. Turns out just using the gyro data is *way* more precise.
 
-  float gx = (float)mult_frac(m_Calib[0].N, rep->gyroX, m_Calib[0].D) / GYRO_RES;
-  float gy = (float)mult_frac(m_Calib[1].N, rep->gyroY, m_Calib[1].D) / GYRO_RES;
-  float gz = (float)mult_frac(m_Calib[2].N, rep->gyroZ, m_Calib[2].D) / GYRO_RES;
+  float gx = (float)mult_frac(m_Calib[0].N, rep->gyroX - m_Calib[0].bias, m_Calib[0].D) / GYRO_RES;
+  float gy = (float)mult_frac(m_Calib[1].N, rep->gyroY - m_Calib[1].bias, m_Calib[1].D) / GYRO_RES;
+  float gz = (float)mult_frac(m_Calib[2].N, rep->gyroZ - m_Calib[2].bias, m_Calib[2].D) / GYRO_RES;
 
   if (abs(gx) < 1)
     gx = 0.0f;
