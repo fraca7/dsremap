@@ -16,7 +16,7 @@
 
 Host::Host()
   : m_pDevice(NULL),
-#ifndef DISABLE_REMAPPING
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z) || !defined(DISABLE_REMAPPING)
     m_Integrator(),
 #endif
     m_OutLen(0),
@@ -117,7 +117,7 @@ void Host::SetCalibrationData(CalibrationData_t* pData)
   LogInfo(GOT_CALIB);
   LogDump(sizeof(*pData), (uint8_t*)pData);
 
-#ifndef DISABLE_REMAPPING
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z) || !defined(DISABLE_REMAPPING)
   m_Integrator.SetCalibrationData(pData);
 #endif
 }
@@ -196,12 +196,13 @@ void Host::loop()
         controller_state_t ctrl;
         m_pDevice->ControllerStateFromBuffer(&ctrl, m_OutReport);
 
-#ifndef DISABLE_REMAPPING
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z) || !defined(DISABLE_REMAPPING)
         imu_state_t imu;
         m_pDevice->IMUStateFromBuffer(&imu, m_OutReport);
-
         m_Integrator.Update(&imu);
+#endif
 
+#ifndef DISABLE_REMAPPING
         if (m_CurrentConfig < m_Configurations.Count())
           m_Configurations.GetItem(m_CurrentConfig)->Run(&ctrl, &m_Integrator);
 
@@ -234,6 +235,10 @@ void Host::loop()
         }
 
         m_pDevice->ControllerStateToBuffer(&ctrl, m_OutReport);
+#endif
+
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z)
+        m_pDevice->IMUStateToBuffer(&imu, m_OutReport);
 #endif
 
         Endpoint_SelectEndpoint(DEVICE_EPADDR_IN);

@@ -28,3 +28,8 @@ void DS4USB::IMUStateFromBuffer(imu_state_t* state, const uint8_t* data)
 {
   memcpy((uint8_t*)state, data + 10, sizeof(*state));
 }
+
+void DS4USB::IMUStateToBuffer(const imu_state_t* state, uint8_t* data)
+{
+  memcpy(data + 10, (const uint8_t*)state, sizeof(*state));
+}

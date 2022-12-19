@@ -81,3 +81,12 @@ void DS5USB::IMUStateFromBuffer(imu_state_t* state, const uint8_t* data)
 
   // Accelerator data is unused for now
 }
+
+void DS5USB::IMUStateToBuffer(const imu_state_t* state, uint8_t* data)
+{
+  USBReport01_t* r = (USBReport01_t*)data;
+
+  r->gyroX = state->gyroX;
+  r->gyroY = state->gyroY;
+  r->gyroZ = state->gyroZ;
+}

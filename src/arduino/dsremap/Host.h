@@ -11,6 +11,8 @@
 #ifndef DISABLE_REMAPPING
 #include "Configuration.h"
 #include "blink.h"
+#endif
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z) || !defined(DISABLE_REMAPPING)
 #include "IMUIntegrator.h"
 #endif
 
@@ -44,7 +46,7 @@ public:
 
 private:
   USBController* m_pDevice;
-#ifndef DISABLE_REMAPPING
+#if defined(INVERT_GYRO_X) || defined(INVERT_GYRO_Y) || defined(INVERT_GYRO_Z) || !defined(DISABLE_REMAPPING)
   IMUIntegrator m_Integrator;
 #endif
   uint8_t m_OutReport[DEVICE_EP_SIZE];

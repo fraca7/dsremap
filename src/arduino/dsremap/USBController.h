@@ -25,6 +25,7 @@ public:
   virtual void ControllerStateFromBuffer(controller_state_t*, const uint8_t*) = 0;
   virtual void ControllerStateToBuffer(const controller_state_t*, uint8_t*) = 0;
   virtual void IMUStateFromBuffer(imu_state_t*, const uint8_t*) = 0;
+  virtual void IMUStateToBuffer(const imu_state_t*, uint8_t*) = 0;
 
 protected:
   // HIDUniversal impl

@@ -27,6 +27,21 @@
 // code).
 // #define DISABLE_REMAPPING
 
+// The Last of Us part I (and thus probably part II) has some fucked
+// up behavior regarding gyro aiming. Inverting the aiming axes also
+// inverts the gyro (WTF). There is a separate configuration to
+// "revert back" the gyro but it only works in Y.
+// This works on PS5 because the DualSense input report signature does
+// not include the gyro readings for some reason.
+
+// This is NOT compatible with remapping
+
+#ifdef DISABLE_REMAPPING
+#define INVERT_GYRO_X
+#define INVERT_GYRO_Y
+//#define INVERT_GYRO_Z
+#endif
+
 #include "Log.h"
 
 // Targeted platform

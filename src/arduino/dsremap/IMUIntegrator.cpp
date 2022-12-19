@@ -65,8 +65,9 @@ void IMUIntegrator::SetCalibrationData(const CalibrationData_t *pData)
   */
 }
 
-void IMUIntegrator::Update(const imu_state_t* rep)
+void IMUIntegrator::Update(imu_state_t* rep)
 {
+#ifndef DISABLE_REMAPPING
   // Compute timestamp in microseconds
   uint32_t delta = 0;
 
@@ -125,4 +126,15 @@ void IMUIntegrator::Update(const imu_state_t* rep)
   m_LastGyro.y = gy;
   m_LastGyro.z = gz;
   m_LastDelta = delta;
+#endif
+
+#ifdef INVERT_GYRO_X
+  rep->gyroX = (int32_t)m_Calib[0].bias * 2 - rep->gyroX;
+#endif
+#ifdef INVERT_GYRO_Y
+  rep->gyroY = (int32_t)m_Calib[1].bias * 2 - rep->gyroY;
+#endif
+#ifdef INVERT_GYRO_Z
+  rep->gyroZ = (int32_t)m_Calib[2].bias * 2 - rep->gyroZ;
+#endif
 }
