@@ -1,4 +1,9 @@
 
+NOTE
+====
+
+This has been moved to https://codeberg.org/fraca7/dsremap
+
 DSRemap allows you to rewrite the Dualshock 4 inputs on the fly by
 acting as man-in-the-middle between the controller and the PS4.
 
